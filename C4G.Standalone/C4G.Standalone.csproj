@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>C4G.Runtime</RootNamespace>
+
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+        <!-- Package information -->
+        <Version>0.1.0</Version>
+        <PackageId>C4G</PackageId>
+        <Title>Vangogih.C4G</Title>
+        <Product>C4G</Product>
+        <Description>Easy to use, production ready remote game configuration toolset for games made with unity.</Description>
+
+        <PackageTags>config, configs, remote</PackageTags>
+        <!--<PackageReadmeFile>TODO</PackageReadmeFile>-->
+        <!--<PackageIcon>TODO</PackageIcon>-->
+        <!--<PackageProjectUrl>TODO</PackageProjectUrl>-->
+        <RepositoryUrl>https://github.com/vangogih/C4G</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Authors>Aleksei Kozorezov aka @vangogih</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+<!--
+    TODO
+    <ItemGroup>
+        <None Include="..\LICENSE.md" Pack="true" PackagePath="\" />
+        <None Include="..\FastMigrationIcon.png" Pack="true" PackagePath="\" />
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+-->
+
+    <ItemGroup>
+        <Compile Include="..\C4G.Unity\Assets\C4G\**\*.cs" />
+    </ItemGroup>
+
+</Project>
