@@ -15,8 +15,7 @@ namespace C4G.Editor
 
         [MenuItem("Tools/C4G/Test")]
         public static void Test()
-        { 
-            Debug.Log("Test");
+        {
             GoogleCredential googleCredential = GoogleCredential.FromFile(Path.GetFullPath(Path.Combine(Application.dataPath,
                 "C4G", "Editor", "Secrets", "c4g-test-440907-683f7e74850a.json"))).CreateScoped(SheetsService.Scope.SpreadsheetsReadonly); 
             var service = new SheetsService(new BaseClientService.Initializer
@@ -24,11 +23,18 @@ namespace C4G.Editor
                 HttpClientInitializer = googleCredential,
                 ApplicationName = "C4G"
             });
-            var request = service.Spreadsheets.Values.Get(TableId, "Sheet1");
+            string sheetName = "Sheet1";
+            var request = service.Spreadsheets.Values.Get(TableId, sheetName);
             IList<IList<object>> rows = request.Execute().Values;
-            foreach (var objects in rows)
+            ParsedSheet parsedSheet = SheetParser.ParseSheet(sheetName, rows);
+            Debug.Log(parsedSheet.Name);
+            foreach (ParsedPropertyInfo property in parsedSheet.Properties)
             {
-                Debug.Log(string.Join(", ", objects));
+                Debug.Log($"Property {property.Name}: {property.Type}");
+            }
+            foreach (IReadOnlyCollection<string> entity in parsedSheet.Entities)
+            {
+                Debug.Log($"Entity {{{string.Join(", ", entity)}}}");
             }
         }
     }
