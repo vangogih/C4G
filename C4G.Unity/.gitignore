@@ -78,3 +78,16 @@ crashlytics-build.properties
 ##
 ## END OF UNITY
 ##
+
+
+##
+## C4G
+##
+
+# Non public information for auth and similar things
+Secrets/
+Secrets.meta
+
+##
+## END OF C4G
+##
