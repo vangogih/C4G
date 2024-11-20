@@ -1,0 +1,40 @@
+{
+  "Name": "Sheet1",
+  "Entities": [
+    {
+      "Id": "1",
+      "BaseHp": "100",
+      "BaseDamage": "56.5",
+      "Name": "Paladin",
+      "DamagePerLevel": "0.5"
+    },
+    {
+      "Id": "2",
+      "BaseHp": "250",
+      "BaseDamage": "55",
+      "Name": "Thief",
+      "DamagePerLevel": "33.5"
+    },
+    {
+      "Id": "3",
+      "BaseHp": "34",
+      "BaseDamage": "35.1",
+      "Name": "Fairy",
+      "DamagePerLevel": "124.5"
+    },
+    {
+      "Id": "4",
+      "BaseHp": "66",
+      "BaseDamage": "34",
+      "Name": "Bull",
+      "DamagePerLevel": "11.1"
+    },
+    {
+      "Id": "5",
+      "BaseHp": "56",
+      "BaseDamage": "234.5",
+      "Name": "WarHog",
+      "DamagePerLevel": "134.1"
+    }
+  ]
+}
