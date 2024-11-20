@@ -8,7 +8,7 @@ namespace C4G.Editor
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine($"public sealed class {parsedSheet.Name}");
+            sb.AppendLine($"public partial class {parsedSheet.Name}");
             sb.AppendLine("{");
 
             foreach (var property in parsedSheet.Properties)
@@ -26,7 +26,7 @@ namespace C4G.Editor
 
             sb.AppendLine("using System.Collections.Generic;");
             sb.AppendLine();
-            sb.AppendLine($"public sealed class {parsedSheet.Name}Wrapper");
+            sb.AppendLine($"public partial class {parsedSheet.Name}Wrapper");
             sb.AppendLine("{");
             
             sb.AppendLine("    public string Name { get; set; }");
