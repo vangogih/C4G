@@ -9,31 +9,31 @@ namespace C4G.Editor
 {
     public sealed class ParsedSheetToJsonConverter
     {
-        public static void ConvertParsedSheetToJson(ParsedSheet parsedSheet, string fileName)
+        public static void ConvertParsedSheetToJson(ParsedSheet parsedSheet)
         {
             try
             {
                 var jsonOutput = new
                 {
                     parsedSheet.Name,
-                    Entities = new List<Dictionary<string, object>>()
+                    Entities = new List<Dictionary<string, string>>()
                 };
 
                 foreach (var entity in parsedSheet.Entities)
                 {
-                    var entityDict = new Dictionary<string, object>();
+                    var entityDict = new Dictionary<string, string>();
 
                     int index = 0;
                     foreach (var property in parsedSheet.Properties)
                     {
-                        entityDict[property.Name] = entity.ElementAtOrDefault(index);
+                        entityDict[property.Name] = entity.ElementAt(index);
                         index++;
                     }
 
                     jsonOutput.Entities.Add(entityDict);
                 }
 
-                var jsonString = JsonConvert.SerializeObject(jsonOutput, Formatting.Indented);
+                string jsonString = JsonConvert.SerializeObject(jsonOutput, Formatting.Indented);
 
                 string streamingAssetsPath = Path.Combine(Application.dataPath, "StreamingAssets");
 
@@ -44,7 +44,7 @@ namespace C4G.Editor
                 }
 
                 // Get the full path to the output JSON file
-                string filePath = Path.Combine(streamingAssetsPath, $"{fileName}.json");
+                string filePath = Path.Combine(streamingAssetsPath, $"{parsedSheet.Name}.json");
 
                 // Write the JSON string to the file
                 File.WriteAllText(filePath, jsonString);

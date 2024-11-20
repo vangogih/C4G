@@ -12,7 +12,7 @@ namespace C4G.Editor
     public class TestGoogleApis : EditorWindow
     {
         private const string TableId = "1xNbXhj706f2ZLUCqROPkAEki_gRe1CPomkPoWua4ogU";
-        private string _inputSecretFileName = String.Empty;
+        private string _inputSecretFilePath = string.Empty;
 
         [MenuItem("Tools/C4G/Test")]
         public static void ShowWindow()
@@ -23,31 +23,28 @@ namespace C4G.Editor
         private void OnGUI()
         {
             GUILayout.Label("Enter a String", EditorStyles.boldLabel);
-            _inputSecretFileName = GetFirstFoundSecret();
-            _inputSecretFileName = EditorGUILayout.TextField("Secret file name", _inputSecretFileName);
+            _inputSecretFilePath = GetFirstFoundSecretFilePath();
+            _inputSecretFilePath = EditorGUILayout.TextField("Secret file path", _inputSecretFilePath);
 
             if (GUILayout.Button("Submit"))
             {
-                Debug.Log("Submitted value: " + _inputSecretFileName);
+                Debug.Log("Submitted value: " + _inputSecretFilePath);
                 Test();
             }
         }
 
-        private string GetFirstFoundSecret()
+        private static string GetFirstFoundSecretFilePath()
         {
-            string secretsDirectory = Path.GetFullPath(Path.Combine(Application.dataPath, "C4G", "Editor", "Secrets"));
-
-            string[] secretFiles = Directory.GetFiles(secretsDirectory, "*.json");
-
-            return secretFiles.Length > 0 ? Path.GetFileName(secretFiles[0]) : string.Empty;
+            string[] secretFiles = Directory.GetFiles(Constants.SecretsDirectoryPath, "*.json");
+            return secretFiles.Length > 0 ? secretFiles[0] : string.Empty;
         }
 
         private void Test()
         {
             try
             {
-                GoogleCredential googleCredential = GoogleCredential.FromFile(Path.GetFullPath(Path.Combine(Application.dataPath,
-                    "C4G", "Editor", "Secrets", _inputSecretFileName))).CreateScoped(SheetsService.Scope.SpreadsheetsReadonly);
+                GoogleCredential googleCredential = GoogleCredential.FromFile(_inputSecretFilePath)
+                    .CreateScoped(SheetsService.Scope.SpreadsheetsReadonly);
                 
                 var service = new SheetsService(new BaseClientService.Initializer
                 {
@@ -72,7 +69,7 @@ namespace C4G.Editor
                     Debug.Log($"Entity {{{string.Join(", ", entity)}}}");
                 }
                 
-                ParsedSheetToJsonConverter.ConvertParsedSheetToJson(parsedSheet, sheetName);
+                ParsedSheetToJsonConverter.ConvertParsedSheetToJson(parsedSheet);
             }
             catch (Exception ex)
             {
