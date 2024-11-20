@@ -70,11 +70,27 @@ namespace C4G.Editor
                 }
                 
                 ParsedSheetToJsonConverter.ConvertParsedSheetToJson(parsedSheet);
+
+                GenerateCode(parsedSheet);
             }
             catch (Exception ex)
             {
                 Debug.LogError("Error during Test execution: " + ex.Message);
             }
+        }
+
+        private static void GenerateCode(ParsedSheet parsedSheet)
+        {
+            string dtoClass = CodeGenerator.GenerateDTOClass(parsedSheet);
+            string wrapperClass = CodeGenerator.GenerateWrapperClass(parsedSheet);
+            string destinationFolderPath = Path.GetFullPath(Path.Combine(Application.dataPath,
+                "C4G", "Runtime", "Scripts", "Generated"));
+            if (!Directory.Exists(destinationFolderPath))
+                Directory.CreateDirectory(destinationFolderPath);
+            string dtoClassFilePath = Path.Combine(destinationFolderPath, $"{parsedSheet.Name}.cs");
+            File.WriteAllText(dtoClassFilePath, dtoClass);
+            string wrapperClassFilePath = Path.Combine(destinationFolderPath, $"{parsedSheet.Name}Wrapper.cs");
+            File.WriteAllText(wrapperClassFilePath, wrapperClass);
         }
     }
 }
