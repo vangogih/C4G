@@ -203,14 +203,12 @@ public partial class ClassNameWrapper
             var parsedSheetWithNullProps = new ParsedSheet("ClassName", null, new List<List<string>>());
             var parsedSheetWithNullEntities = new ParsedSheet("ClassName", new List<ParsedPropertyInfo>(), null);
 
-            // Act
+            // Act & Assert
             var nullInputException = Assert.Throws<NullReferenceException>(() => CodeGenerator.GenerateWrapperClass(null));
             var nullNameException = Assert.Throws<NullReferenceException>(() => CodeGenerator.GenerateWrapperClass(parsedSheetWithNullName));
             var emptyNameException = Assert.Throws<NullReferenceException>(() => CodeGenerator.GenerateWrapperClass(parsedSheetWithEmptyName));
             var nullPropsException = Assert.Throws<NullReferenceException>(() => CodeGenerator.GenerateWrapperClass(parsedSheetWithNullProps));
             var nullEntitiesException = Assert.Throws<NullReferenceException>(() => CodeGenerator.GenerateWrapperClass(parsedSheetWithNullEntities));
-
-            // Assert
             Assert.AreEqual("Parameter 'parsedSheet' is null", nullInputException.Message);
             Assert.AreEqual("Property 'parsedSheet.Name' is null or empty", nullNameException.Message);
             Assert.AreEqual("Property 'parsedSheet.Name' is null or empty", emptyNameException.Message);
