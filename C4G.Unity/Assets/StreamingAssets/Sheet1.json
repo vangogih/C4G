@@ -1,6 +1,6 @@
 {
-  "Name": "Sheet1",
-  "Entities": [
+  "name": "Sheet1",
+  "entities": [
     {
       "Id": "1",
       "BaseHp": "100",

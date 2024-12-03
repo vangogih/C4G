@@ -1,5 +1,5 @@
 {
-    "name": "C4G.Editor.Tests",
+    "name": "C4G.Tests.Editor",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
