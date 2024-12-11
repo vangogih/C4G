@@ -30,6 +30,7 @@ namespace C4G.Editor
             {
                 Debug.Log("Submitted value: " + _inputSecretFilePath);
                 Test();
+                Debug.Log("Test finished");
             }
         }
 
@@ -45,31 +46,20 @@ namespace C4G.Editor
             {
                 GoogleCredential googleCredential = GoogleCredential.FromFile(_inputSecretFilePath)
                     .CreateScoped(SheetsService.Scope.SpreadsheetsReadonly);
-                
+
                 var service = new SheetsService(new BaseClientService.Initializer
                 {
                     HttpClientInitializer = googleCredential,
                     ApplicationName = "C4G"
                 });
-                
+
                 string sheetName = "Sheet1";
                 var request = service.Spreadsheets.Values.Get(TableId, sheetName);
                 IList<IList<object>> rows = request.Execute().Values;
+
                 ParsedSheet parsedSheet = SheetParser.ParseSheet(sheetName, rows);
-                
-                Debug.Log(parsedSheet.Name);
-                
-                foreach (ParsedPropertyInfo property in parsedSheet.Properties)
-                {
-                    Debug.Log($"Property {property.Name}: {property.Type}");
-                }
-                
-                foreach (IReadOnlyCollection<string> entity in parsedSheet.Entities)
-                {
-                    Debug.Log($"Entity {{{string.Join(", ", entity)}}}");
-                }
-                
-                ParsedSheetToJsonConverter.ConvertParsedSheetToJson(parsedSheet);
+
+                CreateJsonFile(parsedSheet);
 
                 GenerateCode(parsedSheet);
             }
@@ -77,6 +67,22 @@ namespace C4G.Editor
             {
                 Debug.LogError("Error during Test execution: " + ex.Message);
             }
+        }
+
+        private static void CreateJsonFile(ParsedSheet parsedSheet)
+        {
+            string json = ParsedSheetToJsonConverter.ConvertParsedSheetToJson(parsedSheet);
+
+            string streamingAssetsPath = Path.GetFullPath(Path.Combine(Application.dataPath, "StreamingAssets"));
+
+            if (!Directory.Exists(streamingAssetsPath))
+            {
+                Directory.CreateDirectory(streamingAssetsPath);
+            }
+
+            string filePath = Path.Combine(streamingAssetsPath, $"{parsedSheet.Name}.json");
+
+            File.WriteAllText(filePath, json);
         }
 
         private static void GenerateCode(ParsedSheet parsedSheet)

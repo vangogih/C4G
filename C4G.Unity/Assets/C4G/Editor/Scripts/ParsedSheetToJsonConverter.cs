@@ -1,60 +1,69 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using UnityEngine;
 
 namespace C4G.Editor
 {
-    public sealed class ParsedSheetToJsonConverter
+    public static class ParsedSheetToJsonConverter
     {
-        public static void ConvertParsedSheetToJson(ParsedSheet parsedSheet)
+        [JsonObject]
+        private sealed class JsonDto
         {
-            try
+            [JsonProperty("name")]
+            internal string Name { get; }
+
+            [JsonProperty("entities")]
+            internal List<Dictionary<string, string>> Entities { get; }
+
+            internal JsonDto(string name, List<Dictionary<string, string>> entities)
             {
-                var jsonOutput = new
+                Name = name;
+                Entities = entities;
+            }
+
+            public override string ToString()
+            {
+                return $"{{ Name = {Name}, Entities = {Entities} }}";
+            }
+        }
+
+        public static string ConvertParsedSheetToJson(ParsedSheet parsedSheet)
+        {
+            ThrowIfParsedSheetIsInvalid(parsedSheet);
+
+            var jsonDto = new JsonDto(parsedSheet.Name, new List<Dictionary<string, string>>());
+
+            foreach (IReadOnlyCollection<string> entityData in parsedSheet.Entities)
+            {
+                var entityDataDict = new Dictionary<string, string>();
+
+                int index = 0;
+                foreach (var property in parsedSheet.Properties)
                 {
-                    parsedSheet.Name,
-                    Entities = new List<Dictionary<string, string>>()
-                };
-
-                foreach (var entity in parsedSheet.Entities)
-                {
-                    var entityDict = new Dictionary<string, string>();
-
-                    int index = 0;
-                    foreach (var property in parsedSheet.Properties)
-                    {
-                        entityDict[property.Name] = entity.ElementAt(index);
-                        index++;
-                    }
-
-                    jsonOutput.Entities.Add(entityDict);
+                    entityDataDict[property.Name] = entityData.ElementAt(index);
+                    index++;
                 }
 
-                string jsonString = JsonConvert.SerializeObject(jsonOutput, Formatting.Indented);
-
-                string streamingAssetsPath = Path.Combine(Application.dataPath, "StreamingAssets");
-
-                // Ensure the StreamingAssets directory exists
-                if (!Directory.Exists(streamingAssetsPath))
-                {
-                    Directory.CreateDirectory(streamingAssetsPath);
-                }
-
-                // Get the full path to the output JSON file
-                string filePath = Path.Combine(streamingAssetsPath, $"{parsedSheet.Name}.json");
-
-                // Write the JSON string to the file
-                File.WriteAllText(filePath, jsonString);
-
-                Debug.Log($"JSON file was successfully created at {filePath}");
+                jsonDto.Entities.Add(entityDataDict);
             }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Failed to create JSON file: {ex.Message}");
-            }
+
+            return JsonConvert.SerializeObject(jsonDto, Formatting.Indented);
+        }
+
+        private static void ThrowIfParsedSheetIsInvalid(ParsedSheet parsedSheet)
+        {
+            if (parsedSheet == null)
+                throw new NullReferenceException($"Parameter '{nameof(parsedSheet)}' is null");
+
+            if (string.IsNullOrEmpty(parsedSheet.Name))
+                throw new NullReferenceException($"Property '{nameof(parsedSheet)}.{nameof(parsedSheet.Name)}' is null or empty");
+
+            if (parsedSheet.Properties == null)
+                throw new NullReferenceException($"Property '{nameof(parsedSheet)}.{nameof(parsedSheet.Properties)}' is null");
+
+            if (parsedSheet.Entities == null)
+                throw new NullReferenceException($"Property '{nameof(parsedSheet)}.{nameof(parsedSheet.Entities)}' is null");
         }
     }
 }
