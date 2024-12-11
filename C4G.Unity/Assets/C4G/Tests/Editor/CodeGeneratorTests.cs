@@ -15,20 +15,12 @@ namespace C4G.Tests.Editor
 @"public partial class ClassName
 {
     public int Id { get; set; }
-    public int BaseHp { get; set; }
-    public float BaseDamage { get; set; }
-    public string Name { get; set; }
-    public double DamagePerLevel { get; set; }
 }
 ";
             var className = "ClassName";
             var propertyInfos = new List<ParsedPropertyInfo>
             {
-                new ParsedPropertyInfo("Id", "int"),
-                new ParsedPropertyInfo("BaseHp", "int"),
-                new ParsedPropertyInfo("BaseDamage", "float"),
-                new ParsedPropertyInfo("Name", "string"),
-                new ParsedPropertyInfo("DamagePerLevel", "double"),
+                new ParsedPropertyInfo("Id", "int")
             };
             var entities = new List<List<string>>();
             var parsedSheet = new ParsedSheet(className, propertyInfos, entities);
@@ -49,9 +41,6 @@ namespace C4G.Tests.Editor
 {
     public int Id { get; set; }
     public int BaseHp { get; set; }
-    public float BaseDamage { get; set; }
-    public string Name { get; set; }
-    public double DamagePerLevel { get; set; }
 }
 ";
             var className = "ClassName";
@@ -59,9 +48,6 @@ namespace C4G.Tests.Editor
             {
                 new ParsedPropertyInfo("BaseHp", "int"),
                 new ParsedPropertyInfo("Id", "int"),
-                new ParsedPropertyInfo("BaseDamage", "float"),
-                new ParsedPropertyInfo("DamagePerLevel", "double"),
-                new ParsedPropertyInfo("Name", "string"),
             };
             var entities = new List<List<string>>();
             var parsedSheet = new ParsedSheet(className, differentOrderPropertyInfos, entities);
@@ -80,22 +66,10 @@ namespace C4G.Tests.Editor
             string expectedOutput = 
 @"public partial class ClassName
 {
-    public int Id { get; set; }
-    public int BaseHp { get; set; }
-    public float BaseDamage { get; set; }
-    public string Name { get; set; }
-    public double DamagePerLevel { get; set; }
 }
 ";
             var differentClassName = "DifferentClassName";
-            var propertyInfos = new List<ParsedPropertyInfo>
-            {
-                new ParsedPropertyInfo("Id", "int"),
-                new ParsedPropertyInfo("BaseHp", "int"),
-                new ParsedPropertyInfo("BaseDamage", "float"),
-                new ParsedPropertyInfo("Name", "string"),
-                new ParsedPropertyInfo("DamagePerLevel", "double"),
-            };
+            var propertyInfos = new List<ParsedPropertyInfo>();
             var entities = new List<List<string>>();
             var parsedSheet = new ParsedSheet(differentClassName, propertyInfos, entities);
 
@@ -144,14 +118,7 @@ public partial class ClassNameWrapper
 }
 ";
             var className = "ClassName";
-            var propertyInfos = new List<ParsedPropertyInfo>
-            {
-                new ParsedPropertyInfo("Id", "int"),
-                new ParsedPropertyInfo("BaseHp", "int"),
-                new ParsedPropertyInfo("BaseDamage", "float"),
-                new ParsedPropertyInfo("Name", "string"),
-                new ParsedPropertyInfo("DamagePerLevel", "double"),
-            };
+            var propertyInfos = new List<ParsedPropertyInfo>();
             var entities = new List<List<string>>();
             var parsedSheet = new ParsedSheet(className, propertyInfos, entities);
 
@@ -176,14 +143,7 @@ public partial class ClassNameWrapper
 }
 ";
             var differentClassName = "DifferentClassName";
-            var propertyInfos = new List<ParsedPropertyInfo>
-            {
-                new ParsedPropertyInfo("Id", "int"),
-                new ParsedPropertyInfo("BaseHp", "int"),
-                new ParsedPropertyInfo("BaseDamage", "float"),
-                new ParsedPropertyInfo("Name", "string"),
-                new ParsedPropertyInfo("DamagePerLevel", "double"),
-            };
+            var propertyInfos = new List<ParsedPropertyInfo>();
             var entities = new List<List<string>>();
             var parsedSheet = new ParsedSheet(differentClassName, propertyInfos, entities);
 
