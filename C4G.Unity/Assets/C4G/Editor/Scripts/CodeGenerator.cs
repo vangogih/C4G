@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace C4G.Editor
 {
@@ -6,6 +7,8 @@ namespace C4G.Editor
     {
         public static string GenerateDTOClass(ParsedSheet parsedSheet)
         {
+            ThrowIfParsedSheetIsInvalid(parsedSheet);
+
             var sb = new StringBuilder();
 
             sb.AppendLine($"public partial class {parsedSheet.Name}");
@@ -20,8 +23,11 @@ namespace C4G.Editor
 
             return sb.ToString();
         }
+
         public static string GenerateWrapperClass(ParsedSheet parsedSheet)
         {
+            ThrowIfParsedSheetIsInvalid(parsedSheet);
+
             var sb = new StringBuilder();
 
             sb.AppendLine("using System.Collections.Generic;");
@@ -35,6 +41,21 @@ namespace C4G.Editor
             sb.AppendLine("}");
 
             return sb.ToString();
+        }
+
+        private static void ThrowIfParsedSheetIsInvalid(ParsedSheet parsedSheet)
+        {
+            if (parsedSheet == null)
+                throw new NullReferenceException($"Parameter '{nameof(parsedSheet)}' is null");
+
+            if (string.IsNullOrEmpty(parsedSheet.Name))
+                throw new NullReferenceException($"Property '{nameof(parsedSheet)}.{nameof(parsedSheet.Name)}' is null or empty");
+
+            if (parsedSheet.Properties == null)
+                throw new NullReferenceException($"Property '{nameof(parsedSheet)}.{nameof(parsedSheet.Properties)}' is null");
+
+            if (parsedSheet.Entities == null)
+                throw new NullReferenceException($"Property '{nameof(parsedSheet)}.{nameof(parsedSheet.Entities)}' is null");
         }
     }
 }
