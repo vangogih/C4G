@@ -12,7 +12,11 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "nunit.framework.dll"
+        "nunit.framework.dll",
+        "Google.Apis.Auth.dll",
+        "Google.Apis.Core.dll",
+        "Google.Apis.dll",
+        "Google.Apis.Sheets.v4.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [
