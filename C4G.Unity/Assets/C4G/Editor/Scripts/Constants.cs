@@ -7,5 +7,7 @@ namespace C4G.Editor
     {
         public static readonly string SecretsDirectoryPath =
             Path.GetFullPath(Path.Combine(Application.dataPath, "C4G", "Editor", "Secrets"));
+        
+        public static readonly string CollectionSeparatorSymbol = ",";
     }
 }

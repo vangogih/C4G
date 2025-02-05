@@ -42,13 +42,20 @@ namespace C4G.Editor
                 foreach (var property in parsedSheet.Properties)
                 {
                     entityDataDict[property.Name] = entityData.ElementAt(index);
+                    if (entityDataDict[property.Name].Contains(Constants.CollectionSeparatorSymbol))
+                    {
+                        entityDataDict[property.Name] = entityDataDict[property.Name].Replace(Constants.CollectionSeparatorSymbol, ",");
+                        entityDataDict[property.Name] = $"[{entityDataDict[property.Name]}]";
+                    }
                     index++;
                 }
 
                 jsonDto.Entities.Add(entityDataDict);
             }
 
-            return JsonConvert.SerializeObject(jsonDto, Formatting.Indented);
+            var result = JsonConvert.SerializeObject(jsonDto, Formatting.Indented);
+            return result.Replace("\"[", "[").Replace("]\"", "]");
+
         }
 
         private static void ThrowIfParsedSheetIsInvalid(ParsedSheet parsedSheet)
