@@ -1,6 +1,6 @@
 {
     "name": "C4G.Editor",
-    "references": [],
+    "references": ["GUID:a1f86a2eface5e940acf9ec88f4cccf5"],
     "includePlatforms": [
         "Editor"
     ],

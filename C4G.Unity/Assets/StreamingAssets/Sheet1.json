@@ -6,35 +6,45 @@
       "BaseHp": "100",
       "BaseDamage": "56.5",
       "Name": "Paladin",
-      "DamagePerLevel": "0.5"
+      "DamagePerLevel": "0.5",
+      "SomeIntInfoList": "1,2,3",
+      "SomeIntInfoSet": "1,2,3"
     },
     {
       "Id": "2",
       "BaseHp": "250",
       "BaseDamage": "55",
       "Name": "Thief",
-      "DamagePerLevel": "33.5"
+      "DamagePerLevel": "33.5",
+      "SomeIntInfoList": "4,5,6",
+      "SomeIntInfoSet": "4,5,6"
     },
     {
       "Id": "3",
       "BaseHp": "34",
       "BaseDamage": "35.1",
       "Name": "Fairy",
-      "DamagePerLevel": "124.5"
+      "DamagePerLevel": "124.5",
+      "SomeIntInfoList": "7,8,9",
+      "SomeIntInfoSet": "7,8,9"
     },
     {
       "Id": "4",
       "BaseHp": "66",
       "BaseDamage": "34",
       "Name": "Bull",
-      "DamagePerLevel": "11.1"
+      "DamagePerLevel": "11.1",
+      "SomeIntInfoList": "2,4,6",
+      "SomeIntInfoSet": "2,4,6"
     },
     {
       "Id": "5",
       "BaseHp": "56",
       "BaseDamage": "234.5",
       "Name": "WarHog",
-      "DamagePerLevel": "134.1"
+      "DamagePerLevel": "134.1",
+      "SomeIntInfoList": "3,5,7",
+      "SomeIntInfoSet": "3,5,7"
     }
   ]
 }
