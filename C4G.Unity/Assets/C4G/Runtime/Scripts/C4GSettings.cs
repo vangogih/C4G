@@ -8,11 +8,13 @@ namespace C4G.Runtime.Scripts
     {
         [SerializeField] private string _tableId;
         [SerializeField] private string _sheetName;
+        [SerializeField] private string _clientSecret;
         [SerializeField, FolderReference] private string _generatedCodeFolderPath;
         [SerializeField, FolderReference] private string _generatedDataFolderPath;
         
         public string TableId => _tableId;
         public string SheetName => _sheetName;
+        public string ClientSecret => _clientSecret;
         public string GeneratedCodeFolderFullPath => Path.GetFullPath(Path.Combine(Application.dataPath, _generatedCodeFolderPath));
         public string GeneratedDataFolderFullPath => Path.GetFullPath(Path.Combine(Application.dataPath, _generatedDataFolderPath));
     }

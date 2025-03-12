@@ -17,28 +17,10 @@ namespace C4G.Editor
     public sealed class C4GWindow : EditorWindow
     {
         private const string LOG_TAG = "[C4G]";
-        private const string C4G_CLIENT_SECRET_PREFS_KEY = "C4G_ClientSecret";
 
-        private bool _pendingRequest;
+        private bool _isConfigsUpdateInProgress;
         private C4GSettings _settings;
         private UnityEditor.Editor _settingsEditor;
-
-        private string _clientSecret;
-        private string ClientSecret
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_clientSecret) && EditorPrefs.HasKey(C4G_CLIENT_SECRET_PREFS_KEY))
-                    _clientSecret = EditorPrefs.GetString(C4G_CLIENT_SECRET_PREFS_KEY);
-
-                return _clientSecret;
-            }
-            set
-            {
-                _clientSecret = value;
-                EditorPrefs.SetString(C4G_CLIENT_SECRET_PREFS_KEY, value);
-            }
-        }
 
         [MenuItem("Tools/C4G/Open C4G Window")]
         public static void ShowWindow()
@@ -48,7 +30,7 @@ namespace C4G.Editor
 
         private void OnGUI()
         {
-            if (_pendingRequest)
+            if (_isConfigsUpdateInProgress)
             {
                 EditorGUILayout.HelpBox("Waiting for pending request...", MessageType.Info);
                 GUI.enabled = false;
@@ -77,9 +59,7 @@ namespace C4G.Editor
 
             _settingsEditor.OnInspectorGUI();
 
-            ClientSecret = EditorGUILayout.TextField("Client Secret", ClientSecret);
-
-            if (string.IsNullOrEmpty(ClientSecret))
+            if (string.IsNullOrEmpty(_settings.ClientSecret))
             {
                 EditorGUILayout.HelpBox("Setup client secret first", MessageType.Warning);
                 GUI.enabled = false;
@@ -93,17 +73,17 @@ namespace C4G.Editor
 
         private async Task UpdateConfigsAsync()
         {
-            if (_pendingRequest)
+            if (_isConfigsUpdateInProgress)
                 return;
 
-            _pendingRequest = true;
+            _isConfigsUpdateInProgress = true;
 
             EditorUtility.DisplayProgressBar("C4G", "Updating configs...", 0.1f);
 
             try
             {
                 UserCredential credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    (await GoogleClientSecrets.FromStreamAsync(new MemoryStream(Encoding.UTF8.GetBytes(ClientSecret)))).Secrets,
+                    (await GoogleClientSecrets.FromStreamAsync(new MemoryStream(Encoding.UTF8.GetBytes(_settings.ClientSecret)))).Secrets,
                     new[] { SheetsService.Scope.SpreadsheetsReadonly },
                     "user",
                     CancellationToken.None,
@@ -136,7 +116,7 @@ namespace C4G.Editor
                                $"{ex.Message}");
             }
 
-            _pendingRequest = false;
+            _isConfigsUpdateInProgress = false;
 
             EditorUtility.ClearProgressBar();
             Debug.Log($"{LOG_TAG} Configs updated");
