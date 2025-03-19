@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Text;
+using C4G.Editor.Core;
 
-namespace C4G.Editor
+namespace C4G.Editor.Unity
 {
     public static class CodeGenerator
     {

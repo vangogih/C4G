@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using C4G.Editor;
+using C4G.Editor.Core;
+using C4G.Editor.Unity;
 using NUnit.Framework;
 
-namespace C4G.Tests.Editor
+namespace C4G.Tests.Editor.Unity
 {
     public class SheetParserTests
     {
