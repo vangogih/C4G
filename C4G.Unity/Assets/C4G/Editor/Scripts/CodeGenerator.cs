@@ -1,57 +1,49 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using UnityEngine;
 
 namespace C4G.Editor
 {
     public static class CodeGenerator
     {
-        private const string CollectionsNamespace = "using System.Collections.Generic;";
+        private const string CollectionsNamespace = "System.Collections.Generic";
 
         public static string GenerateDTOClass(ParsedSheet parsedSheet)
         {
             ValidateParsedSheet(parsedSheet);
 
-            var builder = new StringBuilder();
+            var codeWriter = new CodeWriter();
 
-            AddCollectionsNamespaceIfNecessary(parsedSheet, builder);
-
-            builder.AppendLine($"public partial class {parsedSheet.Name}");
-            builder.AppendLine("{");
-            foreach (var property in parsedSheet.Properties)
+            AddCollectionsNamespaceIfNecessary(parsedSheet, codeWriter);
+            codeWriter.WritePartialClass(parsedSheet.Name, () =>
             {
-                builder.AppendLine($"    public {property.Type} {property.Name} {{ get; set; }}");
-            }
+                foreach (var property in parsedSheet.Properties)
+                    codeWriter.WritePublicProperty(property.Name, property.Type);
+            });
 
-            builder.AppendLine("}");
-
-            return builder.ToString();
+            return codeWriter.ToString();
         }
 
         public static string GenerateWrapperClass(ParsedSheet parsedSheet)
         {
             ValidateParsedSheet(parsedSheet);
 
-            var builder = new StringBuilder();
+            var codeWriter = new CodeWriter();
 
-            builder.AppendLine(CollectionsNamespace);
-            builder.AppendLine();
-            builder.AppendLine($"public partial class {parsedSheet.Name}Wrapper");
-            builder.AppendLine("{");
-            builder.AppendLine("    public string Name { get; set; }");
-            builder.AppendLine(
-                $"    public List<{parsedSheet.Name}> Entities {{ get; set; }} = new List<{parsedSheet.Name}>();");
-            builder.AppendLine("}");
+            codeWriter.AddUsing(CollectionsNamespace);
+            codeWriter.WritePartialClass($"{parsedSheet.Name}Wrapper", () =>
+            {
+                codeWriter.WritePublicProperty("Name", "string");
+                codeWriter.WritePublicProperty("Entities", $"List<{parsedSheet.Name}>", result: $"new List<{parsedSheet.Name}>()");
+            });
 
-            return builder.ToString();
+            return codeWriter.ToString();
         }
 
-        private static void AddCollectionsNamespaceIfNecessary(ParsedSheet parsedSheet, StringBuilder builder)
+        private static void AddCollectionsNamespaceIfNecessary(ParsedSheet parsedSheet, CodeWriter codeWriter)
         {
             string[] collectionTypes = { "List", "HashSet", "Dictionary" };
-            
-            // Check if any property type matches the generic collections robustly
+
             if (!parsedSheet.Properties.Any(property =>
                     collectionTypes.Any(type =>
                         property.Type.StartsWith(type, StringComparison.Ordinal) ||
@@ -60,8 +52,7 @@ namespace C4G.Editor
                 return;
             }
 
-            builder.AppendLine(CollectionsNamespace);
-            builder.AppendLine();
+            codeWriter.AddUsing(CollectionsNamespace);
         }
 
         private static void ValidateParsedSheet(ParsedSheet parsedSheet)

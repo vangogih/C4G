@@ -1,4 +1,10 @@
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//     THIS CODE IS GENERATED   
+//          DO NOT EDIT         
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 using System.Collections.Generic;
+
 
 public partial class Sheet1
 {
@@ -9,4 +15,5 @@ public partial class Sheet1
     public double DamagePerLevel { get; set; }
     public List<int> SomeIntInfoList { get; set; }
     public HashSet<int> SomeIntInfoSet { get; set; }
+    public Dictionary<int, string> SomeIntInfoDict { get; set; }
 }

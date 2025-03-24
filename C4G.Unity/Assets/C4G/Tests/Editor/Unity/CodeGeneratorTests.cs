@@ -12,7 +12,13 @@ namespace C4G.Tests.Editor.Unity
         {
             // Arrange
             string expectedOutput =
-@"public partial class ClassName
+@"// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//     THIS CODE IS GENERATED   
+//          DO NOT EDIT         
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+public partial class ClassName
 {
     public int Id { get; set; }
 }
@@ -109,7 +115,12 @@ namespace C4G.Tests.Editor.Unity
         {
             // Arrange
             string expectedOutput =
-@"using System.Collections.Generic;
+@"// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//     THIS CODE IS GENERATED   
+//          DO NOT EDIT         
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+using System.Collections.Generic;
 
 public partial class ClassNameWrapper
 {
