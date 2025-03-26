@@ -11,5 +11,7 @@ namespace C4G.Editor.Core
         string ConvertParsedSheetToJsonString(ParsedSheet parsedSheet);
         string GenerateDTOClassFromParsedSheet(ParsedSheet parsedSheet);
         string GenerateWrapperClassFromParsedSheet(ParsedSheet parsedSheet);
+        void GenerateJsonConfigsAndWriteToFolder(ParsedSheet parsedSheet, string folderPath);
+        void GenerateCodeAndWriteToFolder(ParsedSheet parsedSheet, string folderPath);
     }
 }

@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using C4G.Editor.Core;
-using C4G.Runtime;
 using UnityEditor;
 using UnityEngine;
 
@@ -129,11 +128,11 @@ namespace C4G.Editor.Unity
 
                 EditorUtility.DisplayProgressBar("C4G", "Generating data...", 0.8f);
 
-                CreateJsonFile(facade, parsedSheet, _settings.GeneratedDataFolderFullPath);
+                facade.GenerateJsonConfigsAndWriteToFolder(parsedSheet, _settings.GeneratedDataFolderFullPath);
 
                 EditorUtility.DisplayProgressBar("C4G", "Generating code...", 0.9f);
 
-                GenerateCode(facade, parsedSheet, _settings.GeneratedCodeFolderFullPath);
+                facade.GenerateCodeAndWriteToFolder(parsedSheet, _settings.GeneratedCodeFolderFullPath);
             }
             catch (TaskCanceledException) { }
             catch (Exception ex)
@@ -150,35 +149,6 @@ namespace C4G.Editor.Unity
 
             EditorUtility.ClearProgressBar();
             Debug.Log($"{LOG_TAG} Configs updated");
-        }
-
-        private static void CreateJsonFile(IC4GFacade facade, ParsedSheet parsedSheet, string folderPath)
-        {
-            string json = facade.ConvertParsedSheetToJsonString(parsedSheet);
-
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-
-            string filePath = Path.Combine(folderPath, $"{parsedSheet.Name}.json");
-
-            File.WriteAllText(filePath, json);
-        }
-
-        private static void GenerateCode(IC4GFacade facade, ParsedSheet parsedSheet, string folderPath)
-        {
-            string dtoClass = facade.GenerateDTOClassFromParsedSheet(parsedSheet);
-            string wrapperClass = facade.GenerateWrapperClassFromParsedSheet(parsedSheet);
-
-            if (!Directory.Exists(folderPath))
-                Directory.CreateDirectory(folderPath);
-
-            string dtoClassFilePath = Path.Combine(folderPath, $"{parsedSheet.Name}.cs");
-            File.WriteAllText(dtoClassFilePath, dtoClass);
-
-            string wrapperClassFilePath = Path.Combine(folderPath, $"{parsedSheet.Name}Wrapper.cs");
-            File.WriteAllText(wrapperClassFilePath, wrapperClass);
         }
     }
 }

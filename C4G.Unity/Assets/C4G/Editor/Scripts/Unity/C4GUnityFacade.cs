@@ -55,5 +55,32 @@ namespace C4G.Editor.Unity
 
         public string GenerateWrapperClassFromParsedSheet(ParsedSheet parsedSheet)
             => CodeGenerator.GenerateWrapperClass(parsedSheet);
+
+        public void GenerateJsonConfigsAndWriteToFolder(ParsedSheet parsedSheet, string folderPath)
+        {
+            string json = ConvertParsedSheetToJsonString(parsedSheet);
+
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
+
+            string filePath = Path.Combine(folderPath, $"{parsedSheet.Name}.json");
+
+            File.WriteAllText(filePath, json);
+        }
+
+        public void GenerateCodeAndWriteToFolder(ParsedSheet parsedSheet, string folderPath)
+        {
+            string dtoClass = GenerateDTOClassFromParsedSheet(parsedSheet);
+            string wrapperClass = GenerateWrapperClassFromParsedSheet(parsedSheet);
+
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
+
+            string dtoClassFilePath = Path.Combine(folderPath, $"{parsedSheet.Name}.cs");
+            File.WriteAllText(dtoClassFilePath, dtoClass);
+
+            string wrapperClassFilePath = Path.Combine(folderPath, $"{parsedSheet.Name}Wrapper.cs");
+            File.WriteAllText(wrapperClassFilePath, wrapperClass);
+        }
     }
 }

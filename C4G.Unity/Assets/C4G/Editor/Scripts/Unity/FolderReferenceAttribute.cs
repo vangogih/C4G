@@ -1,10 +1,8 @@
 using UnityEngine;
 
-namespace C4G.Runtime
+namespace C4G.Editor.Unity
 {
-    internal class FolderReferenceAttribute : PropertyAttribute { }
-
-#if UNITY_EDITOR
+    internal class FolderReferenceAttribute : PropertyAttribute {}
 
     [UnityEditor.CustomPropertyDrawer(typeof(FolderReferenceAttribute))]
     internal sealed class FolderReferenceDrawer : UnityEditor.PropertyDrawer
@@ -50,6 +48,4 @@ namespace C4G.Runtime
             }
         }
     }
-
-#endif
 }

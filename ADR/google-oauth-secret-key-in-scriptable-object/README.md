@@ -1,4 +1,4 @@
-# Decision record for google oauth secret key in so
+# Decision record for google oauth secret key in scriptable object
 
 ## Status
 
