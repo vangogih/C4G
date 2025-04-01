@@ -1,7 +1,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace C4G.Editor.Unity
+namespace C4G.Editor
 {
     [CreateAssetMenu(menuName = "C4G/Settings")]
     public class C4GSettings : ScriptableObject

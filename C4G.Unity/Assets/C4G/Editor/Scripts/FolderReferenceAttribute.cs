@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace C4G.Editor.Unity
+namespace C4G.Editor
 {
     internal class FolderReferenceAttribute : PropertyAttribute {}
 

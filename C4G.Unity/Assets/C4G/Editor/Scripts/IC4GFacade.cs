@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace C4G.Editor.Core
+namespace C4G.Editor
 {
     public interface IC4GFacade
     {

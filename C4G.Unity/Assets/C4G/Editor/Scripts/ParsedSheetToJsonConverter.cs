@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using C4G.Editor.Core;
 using Newtonsoft.Json;
 
-namespace C4G.Editor.Unity
+namespace C4G.Editor
 {
     public static class ParsedSheetToJsonConverter
     {

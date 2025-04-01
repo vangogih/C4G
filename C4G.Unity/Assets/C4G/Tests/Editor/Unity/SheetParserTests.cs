@@ -1,8 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using C4G.Editor.Core;
-using C4G.Editor.Unity;
+using C4G.Editor;
 using NUnit.Framework;
 
 namespace C4G.Tests.Editor.Unity

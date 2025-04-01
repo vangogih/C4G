@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using C4G.Editor.Core;
 using UnityEditor;
 using UnityEngine;
 
-namespace C4G.Editor.Unity
+namespace C4G.Editor
 {
     public sealed class C4GWindow : EditorWindow
     {

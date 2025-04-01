@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace C4G.Editor.Core
+namespace C4G.Editor
 {
     public sealed class ParsedSheet
     {

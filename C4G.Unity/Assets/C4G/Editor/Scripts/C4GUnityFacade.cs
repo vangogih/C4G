@@ -1,16 +1,14 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using C4G.Editor.Core;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Util.Store;
 
-namespace C4G.Editor.Unity
+namespace C4G.Editor
 {
     public sealed class C4GUnityFacade : IC4GFacade
     {
