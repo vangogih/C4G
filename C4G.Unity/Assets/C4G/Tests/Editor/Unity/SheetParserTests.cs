@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using C4G.Editor;
 using NUnit.Framework;
 
-namespace C4G.Tests.Editor
+namespace C4G.Tests.Editor.Unity
 {
     public class SheetParserTests
     {

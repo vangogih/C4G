@@ -3,32 +3,6 @@ using System.Collections.Generic;
 
 namespace C4G.Editor
 {
-    public sealed class ParsedPropertyInfo
-    {
-        public readonly string Name;
-        public readonly string Type;
-
-        public ParsedPropertyInfo(string name, string type)
-        {
-            Name = name;
-            Type = type;
-        }
-    }
-
-    public sealed class ParsedSheet
-    {
-        public readonly string Name;
-        public readonly IReadOnlyCollection<ParsedPropertyInfo> Properties;
-        public readonly IReadOnlyCollection<IReadOnlyCollection<string>> Entities;
-
-        public ParsedSheet(string name, IReadOnlyCollection<ParsedPropertyInfo> properties, IReadOnlyCollection<IReadOnlyCollection<string>> entities)
-        {
-            Name = name;
-            Properties = properties;
-            Entities = entities;
-        }
-    }
-
     public static class SheetParser
     {
         public static ParsedSheet ParseSheet(string sheetName, IList<IList<object>> sheetData)

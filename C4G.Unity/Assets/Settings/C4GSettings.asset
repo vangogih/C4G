@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b7965ab6daa4625ba884df7a11abecd, type: 3}
+  m_Name: C4GSettings
+  m_EditorClassIdentifier: 
+  _tableId: 1xNbXhj706f2ZLUCqROPkAEki_gRe1CPomkPoWua4ogU
+  _sheetName: Sheet1
+  _clientSecret: '{"installed":{"client_id":"510360260530-f719ev0kb9n7lm121r5v3ths14mgg3jn.apps.googleusercontent.com","project_id":"c4g-test-440907","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"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","redirect_uris":["http://localhost"]}}'
+  _generatedCodeFolderPath: Scripts/Generated
+  _generatedDataFolderPath: StreamingAssets
