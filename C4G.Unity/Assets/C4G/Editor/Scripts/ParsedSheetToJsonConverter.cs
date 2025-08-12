@@ -42,9 +42,9 @@ namespace C4G.Editor
                 foreach (var property in parsedSheet.Properties)
                 {
                     entityDataDict[property.Name] = entityData.ElementAt(index);
-                    if (entityDataDict[property.Name].Contains(Constants.CollectionSeparatorSymbol))
+                    if (entityDataDict[property.Name].Contains(","))
                     {
-                        entityDataDict[property.Name] = entityDataDict[property.Name].Replace(Constants.CollectionSeparatorSymbol, ",");
+                        entityDataDict[property.Name] = entityDataDict[property.Name].Replace(",", ",");
                         entityDataDict[property.Name] = $"[{entityDataDict[property.Name]}]";
                     }
                     index++;

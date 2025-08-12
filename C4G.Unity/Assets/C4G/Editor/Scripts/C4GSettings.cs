@@ -11,6 +11,8 @@ namespace C4G.Editor
         [SerializeField] private string _clientSecret;
         [SerializeField, FolderReference] private string _generatedCodeFolderPath;
         [SerializeField, FolderReference] private string _generatedDataFolderPath;
+        
+        [SerializeField] private Mapper _mapper = new Mapper();
 
         public string TableId => _tableId;
         public string SheetName => _sheetName;
@@ -22,5 +24,17 @@ namespace C4G.Editor
         public bool IsGeneratedDataFolderValid => !string.IsNullOrEmpty(_generatedCodeFolderPath) && 
                                                   Directory.Exists(GeneratedDataFolderFullPath);
         public string GeneratedDataFolderFullPath => Path.GetFullPath(Path.Combine(Application.dataPath, _generatedDataFolderPath));
+    }
+
+    [System.Serializable]
+    public class Mapper
+    {
+        public SerializableStringDictionary Aliases = new SerializableStringDictionary();
+
+        public Mapper()
+        {
+            Aliases.AllowEmptyKeys = false;
+            Aliases.TrimWhitespace = false;
+        }
     }
 }
