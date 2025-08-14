@@ -43,11 +43,11 @@ jobs:
 
       - name: Set short hash commit value
         id: commit
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUT
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Set comment message
         id: comment
-        run: echo "value=$(cat "${{ steps.unity-test.outputs.coveragePath }}/Report/Summary.md")" >> $GITHUB_OUT
+        run: echo "value=$(cat "${{ steps.unity-test.outputs.coveragePath }}/Report/Summary.md")" >> $GITHUB_OUTPUT
 
       - name: Find Comment
         uses: peter-evans/find-comment@v3
