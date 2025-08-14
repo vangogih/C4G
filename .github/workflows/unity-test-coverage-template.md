@@ -1,6 +1,6 @@
 Unity Test Coverage output:
 
 Commit: {{ .commit_sha }}
-Last updated: {{ .time_update }}
+Last updated: {{ .updated_time }}
 
 {{ .report_text }}
