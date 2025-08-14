@@ -50,7 +50,7 @@ jobs:
           echo "" >> comment.md
           echo "---" >> comment.md
           echo "" >> comment.md
-          cat "${{ steps.unity-test.outputs.coveragePath }}/Reports/Summary.md" >> comment.md
+          cat "${{ steps.unity-test.outputs.coveragePath }}/Report/Summary.md" >> comment.md
 
       - name: Find Comment
         uses: peter-evans/find-comment@v3
