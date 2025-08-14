@@ -46,8 +46,13 @@ jobs:
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Set comment message
-        id: comment
-        run: echo "value=$(cat "${{ steps.unity-test.outputs.coveragePath }}/Report/Summary.md")" >> $GITHUB_OUTPUT
+        id: report
+        run: |
+          BODY=$(cat CodeCoverage/Report/Summary.md)
+          BODY="${BODY//'%'/'%25'}"
+          BODY="${BODY//$'\n'/'%0A'}"
+          BODY="${BODY//$'\r'/'%0D'}"
+          echo "text=$BODY" >> $GITHUB_OUTPUT
 
       - name: Find Comment
         uses: peter-evans/find-comment@v3
@@ -66,5 +71,5 @@ jobs:
           vars: |
             commit_sha: ${{ steps.commit.outputs.sha_short }}
             updated_time: ${{ github.event.repository.updated_at}}
-            report_text: ${{ steps.comment.outputs.value }}
+            report_text: ${{ steps.comment.outputs.text }}
           edit-mode: replace
