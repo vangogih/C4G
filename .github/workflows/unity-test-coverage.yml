@@ -1,0 +1,60 @@
+name: unity-test-coverage
+
+on:
+  pull_request:
+    branches:
+      - "dev"
+      - "master"
+
+  workflow_call:
+
+jobs:
+  test-coverage-unity:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        unityVersion:
+          - 2019.4.40f1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cache Unity Library
+        uses: actions/cache@v3
+        with:
+          path: C4G.Unity/Library
+          key: Library-C4G.Unity-${{ matrix.unityVersion }}
+          restore-keys: |
+            Library-C4G.Unity-
+            Library-
+
+      - name: Unity Test Runner
+        uses: game-ci/unity-test-runner@v4
+        id: unity-test
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: ./C4G.Unity
+          unityVersion: ${{ matrix.unityVersion }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          testMode: editmode
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Unity Test Coverage output
+  
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Unity Test Coverage output:
+            ${{ steps.unity-test.outputs.coveragePath  }}/Report/Summary.md
+          edit-mode: replace
