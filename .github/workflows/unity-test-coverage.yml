@@ -46,7 +46,6 @@ jobs:
           echo "### Unity Test Coverage output" > comment.md
           echo "" >> comment.md  
           echo "**Commit:** $(git rev-parse HEAD)" >> comment.md
-          echo "**Date:** $(git log -1 --format=%cd)" >> comment.md
           echo "" >> comment.md
           echo "---" >> comment.md
           echo "" >> comment.md
