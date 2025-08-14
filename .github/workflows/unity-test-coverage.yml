@@ -54,14 +54,6 @@ jobs:
           BODY="${BODY//$'\r'/'%0D'}"
           echo "text=$BODY" >> $GITHUB_OUTPUT
 
-      - name: Find Comment
-        uses: peter-evans/find-comment@v3
-        id: fc
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: Unity Test Coverage output
-
       - name: Render template
         id: template
         uses: chuhlomin/render-template@v1.4
@@ -70,7 +62,15 @@ jobs:
           vars: |
             commit_sha: ${{ steps.commit.outputs.sha_short }}
             updated_time: ${{ github.event.repository.updated_at}}
-            report_text: ${{ steps.comment.outputs.text }}
+            report_text: ${{ steps.report.outputs.text }}
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Unity Test Coverage output
   
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@v4
