@@ -41,29 +41,16 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           testMode: editmode
 
-      - name: Set short hash commit value
-        id: commit
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-      #- name: Set comment message
-       # id: report
-        #run: |
-         # BODY=$(cat )
-          #BODY="${BODY//'%'/'%25'}"
-          #BODY="${BODY//$'\n'/'%0A'}"
-          #BODY="${BODY//$'\r'/'%0D'}"
-          #echo "text=$BODY" >> $GITHUB_OUTPUT
-
-      - name: Render template
-        id: template
-        uses: chuhlomin/render-template@v1.4
-        with:
-          template: .github/workflows/unity-test-coverage-template.md
-          vars: |
-            commit_sha: ${{ steps.commit.outputs.sha_short }}
-            updated_time: ${{ github.event.repository.updated_at}}
-            report_text: |
-              ${{ file "CodeCoverage/Report/Summary.md" }}
+      - name: Form comment msg
+        run: |
+          echo "### Unity Test Coverage output" > comment.md
+          echo "" >> comment.md  
+          echo "**Commit:** $(git rev-parse HEAD)" >> comment.md
+          echo "**Date:** $(git log -1 --format=%cd)" >> comment.md
+          echo "" >> comment.md
+          echo "---" >> comment.md
+          echo "" >> comment.md
+          cat "${{ steps.unity-test.outputs.coveragePath }}/Reports/Summary.md" >> comment.md
 
       - name: Find Comment
         uses: peter-evans/find-comment@v3
@@ -78,5 +65,5 @@ jobs:
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
-          body: ${{ steps.template.outputs.result }}
+          body-path: 'comment.md'
           edit-mode: replace
