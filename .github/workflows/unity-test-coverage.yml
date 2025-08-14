@@ -61,15 +61,21 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body-includes: Unity Test Coverage output
+
+      - name: Render template
+        id: template
+        uses: chuhlomin/render-template@v1.4
+        with:
+          template: .github/workflows/unity-test-coverage-template.md
+          vars: |
+            commit_sha: ${{ steps.commit.outputs.sha_short }}
+            updated_time: ${{ github.event.repository.updated_at}}
+            report_text: ${{ steps.comment.outputs.text }}
   
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@v4
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
-          template: .github/comment-template.md
-          vars: |
-            commit_sha: ${{ steps.commit.outputs.sha_short }}
-            updated_time: ${{ github.event.repository.updated_at}}
-            report_text: ${{ steps.comment.outputs.text }}
+          body: ${{ steps.template.outputs.result }}
           edit-mode: replace
