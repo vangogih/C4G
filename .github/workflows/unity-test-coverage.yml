@@ -45,14 +45,14 @@ jobs:
         id: commit
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
-      - name: Set comment message
-        id: report
-        run: |
-          BODY=$(cat CodeCoverage/Report/Summary.md)
-          BODY="${BODY//'%'/'%25'}"
-          BODY="${BODY//$'\n'/'%0A'}"
-          BODY="${BODY//$'\r'/'%0D'}"
-          echo "text=$BODY" >> $GITHUB_OUTPUT
+      #- name: Set comment message
+       # id: report
+        #run: |
+         # BODY=$(cat )
+          #BODY="${BODY//'%'/'%25'}"
+          #BODY="${BODY//$'\n'/'%0A'}"
+          #BODY="${BODY//$'\r'/'%0D'}"
+          #echo "text=$BODY" >> $GITHUB_OUTPUT
 
       - name: Render template
         id: template
@@ -62,7 +62,8 @@ jobs:
           vars: |
             commit_sha: ${{ steps.commit.outputs.sha_short }}
             updated_time: ${{ github.event.repository.updated_at}}
-            report_text: ${{ steps.report.outputs.text }}
+            report_text: |
+              ${{ file "CodeCoverage/Report/Summary.md" }}
 
       - name: Find Comment
         uses: peter-evans/find-comment@v3
