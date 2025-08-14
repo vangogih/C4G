@@ -41,6 +41,14 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           testMode: editmode
 
+      - name: Set short hash commit value
+        id: commit
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUT
+
+      - name: Set comment message
+        id: comment
+        run: echo "value=$(cat "${{ steps.unity-test.outputs.coveragePath }}/Report/Summary.md")" >> $GITHUB_OUT
+
       - name: Find Comment
         uses: peter-evans/find-comment@v3
         id: fc
@@ -54,7 +62,9 @@ jobs:
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            Unity Test Coverage output:
-            ${{ steps.unity-test.outputs.coveragePath  }}/Report/Summary.md
+          template: .github/comment-template.md
+          vars: |
+            commit_sha: ${{ steps.commit.outputs.sha_short }}
+            updated_time: ${{ github.event.repository.updated_at}}
+            report_text: ${{ steps.comment.outputs.value }}
           edit-mode: replace
