@@ -46,7 +46,7 @@ jobs:
         run: |
           echo "### Unity Test Coverage output" > comment.md
           echo "" >> comment.md  
-          echo "**Commit:** $(git rev-parse HEAD)" >> comment.md
+          echo "**Last updated:** ${{ github.event.pull_request.head.sha }}" >> comment.md
           echo "" >> comment.md
           echo "---" >> comment.md
           echo "" >> comment.md
