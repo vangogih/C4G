@@ -40,7 +40,7 @@ jobs:
           unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           testMode: editmode
-          customParameters: -enableCodeCoverage -coverageOptions "generateBadgeReport;pathStrippingPatterns:**Assets/Scripts/Generated/**;assemblyFilters:C4G.Editor"
+          customParameters: -enableCodeCoverage -coverageOptions "generateBadgeReport;pathFilters:-**Assets/Scripts/Generated/**;assemblyFilters:+C4G.*,-C4G.Tests.*"
 
       - name: Form comment msg
         run: |
