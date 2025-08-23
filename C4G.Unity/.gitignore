@@ -91,6 +91,8 @@ crashlytics-build.properties
 Secrets/
 Secrets.meta
 
+CodeCoverage/
+
 ##
 ## END OF C4G
 ##
