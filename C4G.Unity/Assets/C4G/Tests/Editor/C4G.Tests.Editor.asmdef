@@ -3,7 +3,7 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "C4G.Editor"
+        "C4G.Core"
     ],
     "includePlatforms": [
         "Editor"

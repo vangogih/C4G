@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using C4G.Core;
+using C4G.Core.SheetsParsing;
+using C4G.Core.Utils;
 using UnityEditor;
 using UnityEngine;
 
@@ -90,7 +93,7 @@ namespace C4G.Editor
                 GUI.enabled = false;
             }
 
-            if (!_settings.IsGeneratedDataFolderValid)
+            if (!_settings.IsSerializedConfigsFolderValid)
             {
                 GUI.enabled = true;
                 EditorGUILayout.HelpBox("Please, browse valid generated data folder", MessageType.Warning);
@@ -109,28 +112,23 @@ namespace C4G.Editor
 
             try
             {
-                IC4GFacade facade = new C4GUnityFacade(_settings.TableId, _settings.SheetName, _settings.ClientSecret);
+                C4GFacade c4gFacade = new C4GFacade(_settings);
 
-                Task<IList<IList<object>>> loadRawConfigTask = facade.LoadRawConfigAsync(cts.Token);
-                while (!loadRawConfigTask.IsCompleted && !loadRawConfigTask.IsCanceled && !loadRawConfigTask.IsFaulted)
+                Task<Result<EC4GError>> c4gRunTask = c4gFacade.RunAsync(cts.Token);
+                while (!c4gRunTask.IsCompleted && !c4gRunTask.IsCanceled && !c4gRunTask.IsFaulted)
                 {
-                    if (EditorUtility.DisplayCancelableProgressBar("C4G", "Loading raw config...", 0.1f))
+                    if (EditorUtility.DisplayCancelableProgressBar("C4G", "Loading...", 0.5f))
                         cts.Cancel();
 
                     await Task.Delay(50, cts.Token);
                 }
 
-                EditorUtility.DisplayProgressBar("C4G", "Parsing config...", 0.5f);
+                Result<EC4GError> c4gRunResult = await c4gFacade.RunAsync(cts.Token);
 
-                ParsedSheet parsedSheet = facade.ParseSheet(_settings.SheetName, loadRawConfigTask.Result);
-
-                EditorUtility.DisplayProgressBar("C4G", "Generating data...", 0.8f);
-
-                facade.GenerateJsonConfigsAndWriteToFolder(parsedSheet, _settings.GeneratedDataFolderFullPath);
-
-                EditorUtility.DisplayProgressBar("C4G", "Generating code...", 0.9f);
-
-                facade.GenerateCodeAndWriteToFolder(parsedSheet, _settings.GeneratedCodeFolderFullPath);
+                if (c4gRunResult.IsOk)
+                    Debug.Log($"{LOG_TAG} Successful Run");
+                else
+                    Debug.LogError($"{LOG_TAG} Error During Run {c4gRunResult.Error}");
             }
             catch (TaskCanceledException) { }
             catch (Exception ex)
@@ -141,12 +139,9 @@ namespace C4G.Editor
             finally
             {
                 cts.Dispose();
+                _isConfigsUpdateInProgress = false;
+                EditorUtility.ClearProgressBar();
             }
-
-            _isConfigsUpdateInProgress = false;
-
-            EditorUtility.ClearProgressBar();
-            Debug.Log($"{LOG_TAG} Configs updated");
         }
     }
 }
