@@ -1,40 +1,44 @@
 using System.IO;
+using C4G.Core.Settings;
 using UnityEngine;
 
 namespace C4G.Editor
 {
     [CreateAssetMenu(menuName = "C4G/Settings")]
-    public class C4GSettings : ScriptableObject
+    public class C4GSettings : ScriptableObject, IC4GSettingsFacade
     {
         [SerializeField] private string _tableId;
         [SerializeField] private string _sheetName;
         [SerializeField] private string _clientSecret;
         [SerializeField, FolderReference] private string _generatedCodeFolderPath;
-        [SerializeField, FolderReference] private string _generatedDataFolderPath;
-        
-        [SerializeField] private Mapper _mapper = new Mapper();
+        [SerializeField, FolderReference] private string _serializedConfigsFolderPath;
 
         public string TableId => _tableId;
         public string SheetName => _sheetName;
         public string ClientSecret => _clientSecret;
+        public string GeneratedCodeFolderFullPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_generatedCodeFolderPath))
+                    return null;
+                return Path.GetFullPath(Path.Combine(Application.dataPath, _generatedCodeFolderPath));
+            }
+        }
+
+        public string SerializedConfigsFolderFullPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_serializedConfigsFolderPath))
+                    return null;
+                return Path.GetFullPath(Path.Combine(Application.dataPath, _serializedConfigsFolderPath));
+            }
+        }
 
         public bool IsGeneratedCodeFolderValid => !string.IsNullOrEmpty(_generatedCodeFolderPath) &&
                                                   Directory.Exists(GeneratedCodeFolderFullPath);
-        public string GeneratedCodeFolderFullPath => Path.GetFullPath(Path.Combine(Application.dataPath, _generatedCodeFolderPath));
-        public bool IsGeneratedDataFolderValid => !string.IsNullOrEmpty(_generatedCodeFolderPath) && 
-                                                  Directory.Exists(GeneratedDataFolderFullPath);
-        public string GeneratedDataFolderFullPath => Path.GetFullPath(Path.Combine(Application.dataPath, _generatedDataFolderPath));
-    }
-
-    [System.Serializable]
-    public class Mapper
-    {
-        public SerializableStringDictionary Aliases = new SerializableStringDictionary();
-
-        public Mapper()
-        {
-            Aliases.AllowEmptyKeys = false;
-            Aliases.TrimWhitespace = false;
-        }
+        public bool IsSerializedConfigsFolderValid => !string.IsNullOrEmpty(_generatedCodeFolderPath) &&
+                                                  Directory.Exists(SerializedConfigsFolderFullPath);
     }
 }

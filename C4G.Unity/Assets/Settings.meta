@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:C4G.Unity/Assets/Scripts/Generated.meta
+guid: b1f740c4ad439b540818faafe079aef0
+========
 guid: 4982e0fdd6bc03441af8582b665b7a3f
+>>>>>>>> dev:C4G.Unity/Assets/Settings.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:C4G.Unity/Assets/C4G/Editor/Scripts/Mapper.meta
+guid: cb7147cf42c500244b938edb1f57e3e1
+========
 guid: 82562a1683cf97a4e9ac69ee253b7373
+>>>>>>>> dev:C4G.Unity/Assets/Scripts.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
