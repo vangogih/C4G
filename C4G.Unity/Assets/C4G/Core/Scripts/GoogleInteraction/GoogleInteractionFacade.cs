@@ -25,10 +25,10 @@ namespace C4G.Core.GoogleInteraction
             _clientSecret = clientSecret;
         }
 
-        public async Task<Result<IList<IList<object>>, EC4GError>> LoadRawConfigAsync(CancellationToken ct)
+        public async Task<Result<IList<IList<object>>, C4GError>> LoadRawConfigAsync(CancellationToken ct)
         {
             if (ct.IsCancellationRequested)
-                return Result<IList<IList<object>>, EC4GError>.FromError(EC4GError.TaskCancelled);
+                return Result<IList<IList<object>>, C4GError>.FromError(C4GError.TaskCancelled);
 
             byte[] clientSecretBytes = Encoding.UTF8.GetBytes(_clientSecret);
             MemoryStream clientSecretMemoryStream = new MemoryStream(clientSecretBytes);
@@ -49,7 +49,7 @@ namespace C4G.Core.GoogleInteraction
             SpreadsheetsResource.ValuesResource.GetRequest request = sheetsService.Spreadsheets.Values.Get(_tableId, _sheetName);
             ValueRange response = await request.ExecuteAsync(ct);
 
-            return Result<IList<IList<object>>, EC4GError>.FromValue(response.Values);
+            return Result<IList<IList<object>>, C4GError>.FromValue(response.Values);
         }
     }
 }

@@ -28,14 +28,14 @@ namespace C4G.Core
             _ioFacade = new IOFacade();
         }
 
-        public async Task<Result<EC4GError>> RunAsync(CancellationToken ct)
+        public async Task<Result<C4GError>> RunAsync(CancellationToken ct)
         {
             if (ct.IsCancellationRequested)
-                return Result<EC4GError>.FromError(EC4GError.TaskCancelled);
+                return Result<C4GError>.FromError(C4GError.TaskCancelled);
 
             var rawConfigsResult = await _googleInteractionFacade.LoadRawConfigAsync(ct);
             if (ct.IsCancellationRequested)
-                return Result<EC4GError>.FromError(EC4GError.TaskCancelled);
+                return Result<C4GError>.FromError(C4GError.TaskCancelled);
             if (!rawConfigsResult.IsOk)
                 return rawConfigsResult.WithoutValue();
 
