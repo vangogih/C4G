@@ -8,11 +8,11 @@ namespace C4G.Core
 {
     public class ConfigsSerializationFacade
     {
-        public Result<string, EC4GError> Serialize(ParsedSheet parsedSheet)
+        public Result<string, string> Serialize(ParsedSheet parsedSheet)
         {
-            EC4GError error = ValidateParsedSheet(parsedSheet);
-            if (error != EC4GError.None)
-                return Result<string, EC4GError>.FromError(error);
+            bool isValid = ValidateParsedSheet(parsedSheet, out string error);
+            if (!isValid)
+                return Result<string, string>.FromError(error);
 
             var jsonDto = new JsonDto(parsedSheet.Name, new List<Dictionary<string, string>>());
 
@@ -32,34 +32,45 @@ namespace C4G.Core
 
             string json = JsonConvert.SerializeObject(jsonDto, Formatting.Indented);
 
-            return Result<string, EC4GError>.FromValue(json);
+            return Result<string, string>.FromValue(json);
         }
 
-        private static EC4GError ValidateParsedSheet(ParsedSheet parsedSheet)
+        private static bool ValidateParsedSheet(ParsedSheet parsedSheet, out string error)
         {
+            error = string.Empty;
+
             if (string.IsNullOrEmpty(parsedSheet.Name))
-                return EC4GError.CS_ParsedSheetNameNullOrEmpty;
-
-            if (parsedSheet.Properties == null)
-                return EC4GError.CS_ParsedSheetPropertiesNull;
-
-            if (parsedSheet.Entities == null)
-                return EC4GError.CS_ParsedSheetEntitiesNull;
-
-            HashSet<string> propertyNamesHashSet = new HashSet<string>();
-            foreach (ParsedPropertyInfo parsedPropertyInfo in parsedSheet.Properties)
+                error = "Configs serialization error. ParsedSheet name is null or empty";
+            else if (parsedSheet.Properties == null)
+                error = "Configs serialization error. ParsedSheet properties are null";
+            else if (parsedSheet.Entities == null)
+                error = "Configs serialization error. ParsedSheet entities are null";
+            else
             {
-                if (!propertyNamesHashSet.Add(parsedPropertyInfo.Name))
-                    return EC4GError.CS_ParsedSheetDuplicatedPropertyName;
-            }
-            
-            foreach (IReadOnlyCollection<string> entity in parsedSheet.Entities)
-            {
-                if (entity.Count != parsedSheet.Properties.Count)
-                    return EC4GError.CS_ParsedSheetMismatchedEntitiesCount;
+                HashSet<string> propertyNamesHashSet = new HashSet<string>();
+                foreach (ParsedPropertyInfo parsedPropertyInfo in parsedSheet.Properties)
+                {
+                    if (!propertyNamesHashSet.Add(parsedPropertyInfo.Name))
+                    {
+                        error = "Configs serialization error. ParsedSheet has duplicated property names";
+                        break;
+                    }
+                }
+
+                if (string.IsNullOrEmpty(error))
+                {
+                    foreach (IReadOnlyCollection<string> entity in parsedSheet.Entities)
+                    {
+                        if (entity.Count != parsedSheet.Properties.Count)
+                        {
+                            error = "Configs serialization error. Entity count doesn't match properties count";
+                            break;
+                        }
+                    }
+                }
             }
 
-            return EC4GError.None;
+            return string.IsNullOrEmpty(error);
         }
 
         [JsonObject]

@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using C4G.Core;
-using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using UnityEditor;
 using UnityEngine;
@@ -114,7 +112,7 @@ namespace C4G.Editor
             {
                 C4GFacade c4gFacade = new C4GFacade(_settings);
 
-                Task<Result<EC4GError>> c4gRunTask = c4gFacade.RunAsync(cts.Token);
+                Task<Result<string>> c4gRunTask = c4gFacade.RunAsync(cts.Token);
                 while (!c4gRunTask.IsCompleted && !c4gRunTask.IsCanceled && !c4gRunTask.IsFaulted)
                 {
                     if (EditorUtility.DisplayCancelableProgressBar("C4G", "Loading...", 0.5f))
@@ -123,7 +121,7 @@ namespace C4G.Editor
                     await Task.Delay(50, cts.Token);
                 }
 
-                Result<EC4GError> c4gRunResult = await c4gFacade.RunAsync(cts.Token);
+                Result<string> c4gRunResult = await c4gRunTask;
 
                 if (c4gRunResult.IsOk)
                     Debug.Log($"{LOG_TAG} Successful Run");

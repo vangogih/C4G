@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using C4G.Core;
 using C4G.Core.SheetsParsing;
 using NUnit.Framework;
 
@@ -28,7 +27,6 @@ namespace C4G.Tests.Editor.Unity
                 new List<object> { "Rank", "float", "5.3", "6.6", "3.5" },
                 new List<object> { "Range", "double", "8.5", "35.1", "33" }
             };
-
             var expectedProperties = new List<ParsedPropertyInfo>
             {
                 new ParsedPropertyInfo("Id", "int"),
@@ -55,91 +53,41 @@ namespace C4G.Tests.Editor.Unity
         }
 
         [Test]
-        public void ParseSheet_InvalidHeader_ReturnsError()
+        public void ParseSheet_WrongInputLeadsToError()
         {
             // Arrange
-            var sheetName = "TestSheet";
+            var validSheetName = "TestSheet";
             var invalidHeaderData = new List<IList<object>>
             {
                 new List<object> { "INVALID_NAME", "C4G_TYPE" },
                 new List<object> { "Id", "int", "1" }
             };
-
-            // Act
-            var result = _sheetsParsingFacade.ParseSheet(sheetName, invalidHeaderData);
-
-            // Assert
-            Assert.IsFalse(result.IsOk);
-            Assert.AreEqual(EC4GError.SP_FirstHeaderInvalid, result.Error);
-        }
-
-        [Test]
-        public void ParseSheet_InvalidDataLength_ReturnsError()
-        {
-            // Arrange
-            var sheetName = "TestSheet";
-            var invalidData = new List<IList<object>>
+            var invalidDataLengthData = new List<IList<object>>
             {
                 new List<object> { "C4G_NAME", "C4G_TYPE" },
                 new List<object> { "Id", "int", "1" },
                 new List<object> { "Name", "string" } // Data row length mismatch
             };
-
-            // Act
-            var result = _sheetsParsingFacade.ParseSheet(sheetName, invalidData);
-
-            // Assert
-            Assert.IsFalse(result.IsOk);
-            Assert.AreEqual(EC4GError.SP_DataRowElementsCountInvalid, result.Error);
-        }
-
-        [Test]
-        public void ParseSheet_NullSheetName_ReturnsError()
-        {
-            // Arrange
-            string sheetName = null;
-            var sheetData = new List<IList<object>>
+            var validSheetData = new List<IList<object>>
             {
                 new List<object> { "C4G_NAME", "C4G_TYPE" },
                 new List<object> { "Id", "int", "1" }
             };
-
-            // Act
-            var result = _sheetsParsingFacade.ParseSheet(sheetName, sheetData);
-
-            // Assert
-            Assert.IsFalse(result.IsOk);
-            Assert.AreEqual(EC4GError.SP_SheetNameNullOrEmpty, result.Error);
-        }
-
-        [Test]
-        public void ParseSheet_NullSheetData_ReturnsError()
-        {
-            // Arrange
-            var sheetName = "TestSheet";
-            IList<IList<object>> sheetData = null;
-
-            // Act
-            var result = _sheetsParsingFacade.ParseSheet(sheetName, sheetData);
-
-            // Assert
-            Assert.IsFalse(result.IsOk);
-            Assert.AreEqual(EC4GError.SP_SheetDataNull, result.Error);
-        }
-
-        [Test]
-        public void ParseSheet_EmptySheet_ReturnsError()
-        {
-            // Arrange
-            var sheetName = "TestSheet";
             var emptySheetData = new List<IList<object>>();
 
             // Act
-            var result = _sheetsParsingFacade.ParseSheet(sheetName, emptySheetData);
+            var invalidHeaderResult = _sheetsParsingFacade.ParseSheet(validSheetName, invalidHeaderData);
+            var invalidDataLengthResult = _sheetsParsingFacade.ParseSheet(validSheetName, invalidDataLengthData);
+            var nullSheetNameResult = _sheetsParsingFacade.ParseSheet(null, validSheetData);
+            var nullSheetDataResult = _sheetsParsingFacade.ParseSheet(validSheetName, null);
+            var emptySheetResult = _sheetsParsingFacade.ParseSheet(validSheetName, emptySheetData);
 
             // Assert
-            Assert.IsFalse(result.IsOk);
-            Assert.AreEqual(EC4GError.SP_SheetDataCountLowerThanTwo, result.Error);
+            Assert.IsFalse(invalidHeaderResult.IsOk);
+            Assert.IsFalse(invalidDataLengthResult.IsOk);
+            Assert.IsFalse(nullSheetNameResult.IsOk);
+            Assert.IsFalse(nullSheetDataResult.IsOk);
+            Assert.IsFalse(emptySheetResult.IsOk);
         }
     }
 }

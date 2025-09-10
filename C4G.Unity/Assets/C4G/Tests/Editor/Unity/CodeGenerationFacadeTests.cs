@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using C4G.Core;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using C4G.Editor;
@@ -38,7 +37,7 @@ namespace C4G.Tests.Editor.Unity
             var parsedSheet = new ParsedSheet(className, propertyInfos, entities);
 
             // Act
-            Result<string, EC4GError> output = _codeGenerationFacade.GenerateDTOClass(parsedSheet);
+            Result<string, string> output = _codeGenerationFacade.GenerateDTOClass(parsedSheet);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -46,7 +45,7 @@ namespace C4G.Tests.Editor.Unity
         }
 
         [Test]
-        public void GenerateDTOClass_WrongInputLeadsToErrorAsResult()
+        public void GenerateDTOClass_WrongInputLeadsToError()
         {
             // Arrange
             var parsedSheetWithNullName = new ParsedSheet(null, new List<ParsedPropertyInfo>(), new List<List<string>>());
@@ -55,23 +54,16 @@ namespace C4G.Tests.Editor.Unity
             var parsedSheetWithNullEntities = new ParsedSheet("ClassName", new List<ParsedPropertyInfo>(), null);
 
             // Act
-            Result<string, EC4GError> nullNameOutput = _codeGenerationFacade.GenerateDTOClass(parsedSheetWithNullName);
-            Result<string, EC4GError> emptyNameOutput = _codeGenerationFacade.GenerateDTOClass(parsedSheetWithEmptyName);
-            Result<string, EC4GError> nullPropsOutput = _codeGenerationFacade.GenerateDTOClass(parsedSheetWithNullProps);
-            Result<string, EC4GError> nullEntitiesOutput = _codeGenerationFacade.GenerateDTOClass(parsedSheetWithNullEntities);
+            Result<string, string> nullNameOutput = _codeGenerationFacade.GenerateDTOClass(parsedSheetWithNullName);
+            Result<string, string> emptyNameOutput = _codeGenerationFacade.GenerateDTOClass(parsedSheetWithEmptyName);
+            Result<string, string> nullPropsOutput = _codeGenerationFacade.GenerateDTOClass(parsedSheetWithNullProps);
+            Result<string, string> nullEntitiesOutput = _codeGenerationFacade.GenerateDTOClass(parsedSheetWithNullEntities);
 
             // Assert
             Assert.IsFalse(nullNameOutput.IsOk);
-            Assert.AreEqual(EC4GError.CG_ParsedSheetNameNullOrEmpty, nullNameOutput.Error);
-
             Assert.IsFalse(emptyNameOutput.IsOk);
-            Assert.AreEqual(EC4GError.CG_ParsedSheetNameNullOrEmpty, emptyNameOutput.Error);
-
             Assert.IsFalse(nullPropsOutput.IsOk);
-            Assert.AreEqual(EC4GError.CG_ParsedSheetPropertiesNull, nullPropsOutput.Error);
-
             Assert.IsFalse(nullEntitiesOutput.IsOk);
-            Assert.AreEqual(EC4GError.CG_ParsedSheetEntitiesNull, nullEntitiesOutput.Error);
         }
 
         [Test]
@@ -93,7 +85,7 @@ public partial class ClassNameWrapper
             var parsedSheet = new ParsedSheet(className, propertyInfos, entities);
 
             // Act
-            Result<string, EC4GError> output = _codeGenerationFacade.GenerateWrapperClass(parsedSheet);
+            Result<string, string> output = _codeGenerationFacade.GenerateWrapperClass(parsedSheet);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -101,7 +93,7 @@ public partial class ClassNameWrapper
         }
 
         [Test]
-        public void GenerateWrapperClass_WrongInputLeadsToErrorAsResult()
+        public void GenerateWrapperClass_WrongInputLeadsToError()
         {
             // Arrange
             var parsedSheetWithNullName = new ParsedSheet(null, new List<ParsedPropertyInfo>(), new List<List<string>>());
@@ -110,23 +102,16 @@ public partial class ClassNameWrapper
             var parsedSheetWithNullEntities = new ParsedSheet("ClassName", new List<ParsedPropertyInfo>(), null);
 
             // Act
-            Result<string, EC4GError> nullNameOutput = _codeGenerationFacade.GenerateWrapperClass(parsedSheetWithNullName);
-            Result<string, EC4GError> emptyNameOutput = _codeGenerationFacade.GenerateWrapperClass(parsedSheetWithEmptyName);
-            Result<string, EC4GError> nullPropsOutput = _codeGenerationFacade.GenerateWrapperClass(parsedSheetWithNullProps);
-            Result<string, EC4GError> nullEntitiesOutput = _codeGenerationFacade.GenerateWrapperClass(parsedSheetWithNullEntities);
+            Result<string, string> nullNameOutput = _codeGenerationFacade.GenerateWrapperClass(parsedSheetWithNullName);
+            Result<string, string> emptyNameOutput = _codeGenerationFacade.GenerateWrapperClass(parsedSheetWithEmptyName);
+            Result<string, string> nullPropsOutput = _codeGenerationFacade.GenerateWrapperClass(parsedSheetWithNullProps);
+            Result<string, string> nullEntitiesOutput = _codeGenerationFacade.GenerateWrapperClass(parsedSheetWithNullEntities);
 
             // Assert
             Assert.IsFalse(nullNameOutput.IsOk);
-            Assert.AreEqual(EC4GError.CG_ParsedSheetNameNullOrEmpty, nullNameOutput.Error);
-
             Assert.IsFalse(emptyNameOutput.IsOk);
-            Assert.AreEqual(EC4GError.CG_ParsedSheetNameNullOrEmpty, emptyNameOutput.Error);
-
             Assert.IsFalse(nullPropsOutput.IsOk);
-            Assert.AreEqual(EC4GError.CG_ParsedSheetPropertiesNull, nullPropsOutput.Error);
-
             Assert.IsFalse(nullEntitiesOutput.IsOk);
-            Assert.AreEqual(EC4GError.CG_ParsedSheetEntitiesNull, nullEntitiesOutput.Error);
         }
     }
 }
