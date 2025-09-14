@@ -6,25 +6,27 @@ namespace C4G.Editor
 {
     public class CodeGenerationFacade
     {
+        private readonly CodeWriter _codeWriter = new CodeWriter("    ");
+
         public Result<string, string> GenerateDTOClass(ParsedSheet parsedSheet)
         {
             bool isValid = ValidateParsedSheet(parsedSheet, out string error);
             if (!isValid)
                 return Result<string, string>.FromError(error);
 
-            var sb = new StringBuilder();
+            _codeWriter.Clear();
 
-            sb.AppendLine($"public partial class {parsedSheet.Name}");
-            sb.AppendLine("{");
+            _codeWriter
+                .WritePublicClass(name: parsedSheet.Name, isPartial: true, baseClass: string.Empty, w =>
+                {
+                    for (var propertyIndex = 0; propertyIndex < parsedSheet.Properties.Count; propertyIndex++)
+                    {
+                        ParsedPropertyInfo property = parsedSheet.Properties[propertyIndex];
+                        w.WritePublicProperty(property.Name, property.Type);
+                    }
+                });
 
-            foreach (var property in parsedSheet.Properties)
-            {
-                sb.AppendLine($"    public {property.Type} {property.Name} {{ get; set; }}");
-            }
-
-            sb.AppendLine("}");
-
-            string generatedClass = sb.ToString();
+            string generatedClass = _codeWriter.Build();
 
             return Result<string, string>.FromValue(generatedClass);
         }
@@ -35,19 +37,17 @@ namespace C4G.Editor
             if (!isValid)
                 return Result<string, string>.FromError(error);
 
-            var sb = new StringBuilder();
+            _codeWriter.Clear();
 
-            sb.AppendLine("using System.Collections.Generic;");
-            sb.AppendLine();
-            sb.AppendLine($"public partial class {parsedSheet.Name}Wrapper");
-            sb.AppendLine("{");
-            
-            sb.AppendLine("    public string Name { get; set; }");
-            sb.AppendLine($"    public List<{parsedSheet.Name}> Entities {{ get; set; }} = new List<{parsedSheet.Name}>();");
+            _codeWriter
+                .AddUsing("System.Collections.Generic")
+                .WritePublicClass(name: $"{parsedSheet.Name}Wrapper", isPartial: true, baseClass: string.Empty, w =>
+                {
+                    w.WritePublicProperty("Name", "string");
+                    w.WritePublicProperty("Entities", $"List<{parsedSheet.Name}>", $"new List<{parsedSheet.Name}>()");
+                });
 
-            sb.AppendLine("}");
-
-            string generatedClass = sb.ToString();
+            string generatedClass = _codeWriter.Build();
 
             return Result<string, string>.FromValue(generatedClass);
         }
