@@ -21,11 +21,13 @@ namespace C4G.Tests.Editor.Unity
         {
             // Arrange
             string expectedOutput =
-@"public partial class ClassName
-{
-    public int Id { get; set; }
-    public int BaseHp { get; set; }
-}
+$@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
+
+public partial class ClassName
+{{
+    public int Id {{ get; set; }}
+    public int BaseHp {{ get; set; }}
+}}
 ";
             var className = "ClassName";
             var propertyInfos = new List<ParsedPropertyInfo>
@@ -71,13 +73,15 @@ namespace C4G.Tests.Editor.Unity
         {
             // Arrange
             string expectedOutput =
-@"using System.Collections.Generic;
+$@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
+
+using System.Collections.Generic;
 
 public partial class ClassNameWrapper
-{
-    public string Name { get; set; }
-    public List<ClassName> Entities { get; set; } = new List<ClassName>();
-}
+{{
+    public string Name {{ get; set; }}
+    public List<ClassName> Entities {{ get; set; }} = new List<ClassName>();
+}}
 ";
             var className = "ClassName";
             var propertyInfos = new List<ParsedPropertyInfo>();
