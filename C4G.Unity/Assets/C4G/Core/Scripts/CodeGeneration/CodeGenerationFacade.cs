@@ -16,6 +16,7 @@ namespace C4G.Editor
             _codeWriter.Clear();
 
             _codeWriter
+                .AddUsing("System.Collections.Generic")
                 .WritePublicClass(name: parsedSheet.Name, isPartial: true, baseClass: string.Empty, w =>
                 {
                     for (var propertyIndex = 0; propertyIndex < parsedSheet.Properties.Count; propertyIndex++)
