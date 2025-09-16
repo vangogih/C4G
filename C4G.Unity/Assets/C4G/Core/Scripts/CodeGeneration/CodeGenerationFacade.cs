@@ -1,5 +1,4 @@
-﻿using System.Text;
-using C4G.Core.SheetsParsing;
+﻿using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 
 namespace C4G.Editor
