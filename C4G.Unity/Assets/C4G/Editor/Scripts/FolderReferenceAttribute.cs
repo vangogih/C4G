@@ -1,17 +1,19 @@
+using UnityEditor;
 using UnityEngine;
+using System.IO;
 
 namespace C4G.Editor
 {
     internal class FolderReferenceAttribute : PropertyAttribute {}
 
-    [UnityEditor.CustomPropertyDrawer(typeof(FolderReferenceAttribute))]
-    internal sealed class FolderReferenceDrawer : UnityEditor.PropertyDrawer
+    [CustomPropertyDrawer(typeof(FolderReferenceAttribute))]
+    internal sealed class FolderReferenceDrawer : PropertyDrawer
     {
-        public override void OnGUI(Rect position, UnityEditor.SerializedProperty property, GUIContent label)
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            if (property.propertyType != UnityEditor.SerializedPropertyType.String)
+            if (property.propertyType != SerializedPropertyType.String)
             {
-                UnityEditor.EditorGUI.LabelField(position, label.text, "Use [FolderReference] with string fields only");
+                EditorGUI.LabelField(position, label.text, "Use [FolderReference] with string fields only");
                 return;
             }
 
@@ -25,27 +27,64 @@ namespace C4G.Editor
             bool isGuiEnabled = GUI.enabled;
             GUI.enabled = false;
 
-            UnityEditor.EditorGUI.PropertyField(textFieldRect, property, label);
+            EditorGUI.PropertyField(textFieldRect, property, label);
 
             GUI.enabled = isGuiEnabled;
 
             if (GUI.Button(buttonRect, "Browse"))
             {
-                string currentPath = property.stringValue;
-                string newPath = UnityEditor.EditorUtility.OpenFolderPanel("Select Folder", currentPath, "");
-                string assetsFolderPath = Application.dataPath;
+                string projectFolderPath = GetProjectFolderPath();
+                string folderRelativePath = property.stringValue;
 
-                if (!newPath.StartsWith(assetsFolderPath))
+                (string parentFolderRelativePath, string folderName) = SplitFolderRelativePathForDialog(projectFolderPath, folderRelativePath);
+
+                string selectedFolderPath = EditorUtility.OpenFolderPanel("Select Folder", parentFolderRelativePath, folderName);
+
+                if (string.IsNullOrEmpty(selectedFolderPath))
+                    return;
+
+                if (!selectedFolderPath.StartsWith(projectFolderPath))
                 {
-                    UnityEditor.EditorUtility.DisplayDialog("C4G", "Pick folder inside Assets folder", "Ok");
+                    EditorUtility.DisplayDialog("C4G", "Selected folder must be inside project", "Ok");
                 }
                 else
                 {
-                    property.stringValue = newPath.Length == assetsFolderPath.Length
+                    property.stringValue = selectedFolderPath.Length == projectFolderPath.Length
                         ? string.Empty
-                        : newPath.Substring(assetsFolderPath.Length + 1);
+                        : selectedFolderPath.Substring(projectFolderPath.Length + 1);
                 }
             }
+        }
+
+        private static (string parentFolderRelativePath, string folderName) SplitFolderRelativePathForDialog(
+            string projectFolderPath, string folderRelativePath)
+        {
+            if (string.IsNullOrWhiteSpace(folderRelativePath) || folderRelativePath.IndexOf('\\') != -1)
+                return (parentFolderRelativePath: string.Empty, folderName: string.Empty);
+
+            string folderPath = $"{projectFolderPath}/{folderRelativePath}";
+
+            if (!Directory.Exists(folderPath))
+                return (parentFolderRelativePath: string.Empty, folderName: string.Empty);
+
+            string cleanFolderRelativePath = folderRelativePath.TrimEnd('/');
+            int lastSlashIndex = cleanFolderRelativePath.LastIndexOf('/');
+
+            if (lastSlashIndex == -1)
+                return (parentFolderRelativePath: string.Empty, folderName: cleanFolderRelativePath);
+
+            string parentFolderRelativePath = cleanFolderRelativePath.Substring(0, lastSlashIndex);
+            string folderName = cleanFolderRelativePath.Substring(lastSlashIndex + 1);
+
+            return (parentFolderRelativePath, folderName);
+        }
+
+        private static string GetProjectFolderPath()
+        {
+            const int assetsFolderSubstringLength = 7;
+            int pathLengthWithoutAssetsSubstring = Application.dataPath.Length - assetsFolderSubstringLength;
+            string projectFolderPath = Application.dataPath.Substring(0, pathLengthWithoutAssetsSubstring);
+            return projectFolderPath;
         }
     }
 }
