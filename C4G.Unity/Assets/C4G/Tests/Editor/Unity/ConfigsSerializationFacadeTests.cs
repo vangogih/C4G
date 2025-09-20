@@ -288,7 +288,7 @@ namespace C4G.Tests.Editor.Unity
                 };
                 var entities = new List<List<string>>
                 {
-                    new List<string> { "999999999999999999999" } // Больше int.MaxValue
+                    new List<string> { "999999999999999999999" }
                 };
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
@@ -912,10 +912,10 @@ namespace C4G.Tests.Editor.Unity
                 var name = "MalformedSheet";
                 var properties = new List<ParsedPropertyInfo>
                 {
-                    new ParsedPropertyInfo("BadList1", "List<>"), // Пустой тип
-                    new ParsedPropertyInfo("BadList2", "List<int"), // Нет закрывающей скобки
-                    new ParsedPropertyInfo("BadList3", "Listint>"), // Нет открывающей скобки
-                    new ParsedPropertyInfo("BadList4", "List<int,string>") // Множественные типы
+                    new ParsedPropertyInfo("BadList1", "List<>"),
+                    new ParsedPropertyInfo("BadList2", "List<int"),
+                    new ParsedPropertyInfo("BadList3", "Listint>"),
+                    new ParsedPropertyInfo("BadList4", "List<int,string>")
                 };
                 var entities = new List<List<string>>
                 {
@@ -941,7 +941,7 @@ namespace C4G.Tests.Editor.Unity
                     new ParsedPropertyInfo("LargeList", "List<int>")
                 };
 
-                var largeList = string.Join(",", Enumerable.Range(1, 10000)); // 10000 элементов
+                var largeList = string.Join(",", Enumerable.Range(1, 10000));
                 var entities = new List<List<string>>
                 {
                     new List<string> { "1", largeList }
