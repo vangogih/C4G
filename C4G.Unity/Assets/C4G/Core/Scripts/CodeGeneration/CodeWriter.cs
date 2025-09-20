@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace C4G.Editor
+namespace C4G.Core.CodeGeneration
 {
     internal sealed class CodeWriter
     {

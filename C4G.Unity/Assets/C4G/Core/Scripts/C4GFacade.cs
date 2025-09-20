@@ -1,29 +1,32 @@
-using System.Linq;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using C4G.Core.CodeGeneration;
+using C4G.Core.ConfigsSerialization;
 using C4G.Core.Settings;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
-using C4G.Editor;
 
 namespace C4G.Core
 {
     public sealed class C4GFacade
     {
-        private readonly IC4GSettings _settings;
-        private readonly CodeGeneration _codeGeneration;
+        private readonly IC4GSettingsProvider _settingsProvider;
+        private readonly GoogleInteraction.GoogleInteraction _googleInteraction;
+        private readonly CodeGenerator _codeGenerator;
         private readonly SheetsParsing.SheetsParsing _sheetsParsing;
-        private readonly ConfigsSerialization _configsSerialization;
+        private readonly ConfigsSerializer _configsSerializer;
         private readonly IO.IO _io;
 
-        private GoogleInteraction.GoogleInteraction _googleInteraction;
-
-        public C4GFacade(IC4GSettings settings)
+        public C4GFacade(IC4GSettingsProvider settingsProvider)
         {
-            _settings = settings;
-            _codeGeneration = new CodeGeneration();
+            _settingsProvider = settingsProvider;
+
+            _googleInteraction = new GoogleInteraction.GoogleInteraction();
+            _codeGenerator = new CodeGenerator();
             _sheetsParsing = new SheetsParsing.SheetsParsing();
-            _configsSerialization = new ConfigsSerialization();
+            _configsSerializer = new ConfigsSerializer();
             _io = new IO.IO();
         }
 
@@ -32,50 +35,138 @@ namespace C4G.Core
             if (ct.IsCancellationRequested)
                 return Result<string>.FromError("C4G Error. Task cancelled");
 
-            if (_settings.SheetConfigurations == null || _settings.SheetConfigurations.Count == 0)
-                return Result<string>.FromError(
-                    "C4G Error. No sheet configurations defined. Please add at least one sheet with a parser in settings.");
+            Result<C4GSettings, string> settingsResult = _settingsProvider.GetSettings();
+            if (!settingsResult.IsOk)
+                return Result<string>.FromError(settingsResult.Error);
 
-            var firstSheet = _settings.SheetConfigurations.First();
-            string sheetName = firstSheet.Key;
-            SheetParserBase parser = firstSheet.Value;
+            C4GSettings settings = settingsResult.Value;
 
-            _googleInteraction =
-                new GoogleInteraction.GoogleInteraction(_settings.TableId, sheetName, _settings.ClientSecret);
+            var aliasesValidationResult = ValidateAliases(settings);
+            if (!aliasesValidationResult.IsOk)
+                return aliasesValidationResult;
 
-            var rawConfigsResult = await _googleInteraction.LoadRawConfigAsync(ct);
-            if (ct.IsCancellationRequested)
-                return Result<string>.FromError("C4G Error. Task cancelled");
-            if (!rawConfigsResult.IsOk)
-                return rawConfigsResult.WithoutValue();
+            int sheetsCount = settings.SheetParsersByName.Count;
 
-            var sheetParsingResult = _sheetsParsing.ParseSheet(sheetName, rawConfigsResult.Value, parser);
-            if (!sheetParsingResult.IsOk)
-                return sheetParsingResult.WithoutValue();
+            var sheets = new List<(KeyValuePair<string, SheetParserBase> sheetName, IList<IList<object>> sheet)>(sheetsCount);
 
-            var dtoClassGenerationResult = _codeGeneration.GenerateDTOClass(sheetParsingResult.Value);
-            if (!dtoClassGenerationResult.IsOk)
-                return dtoClassGenerationResult.WithoutValue();
+            foreach (KeyValuePair<string, SheetParserBase> parserByName in settings.SheetParsersByName)
+            {
+                Result<IList<IList<object>>, string> loadSheetResult = await _googleInteraction.LoadSheetAsync(parserByName.Key, settings.TableId, settings.ClientSecret, ct);
+                if (ct.IsCancellationRequested)
+                    return Result<string>.FromError("C4G Error. Task cancelled");
+                if (!loadSheetResult.IsOk)
+                    return loadSheetResult.WithoutValue();
+                sheets.Add((sheetName: parserByName, sheet: loadSheetResult.Value));
+            }
 
-            var wrapperClassGenerationResult = _codeGeneration.GenerateWrapperClass(sheetParsingResult.Value);
-            if (!wrapperClassGenerationResult.IsOk)
-                return wrapperClassGenerationResult.WithoutValue();
+            var parsedSheets = new List<ParsedSheet>(sheetsCount);
 
-            var jsonGenerationResult = _configsSerialization.Serialize(sheetParsingResult.Value);
-            if (!jsonGenerationResult.IsOk)
-                return jsonGenerationResult.WithoutValue();
+            foreach ((KeyValuePair<string, SheetParserBase> parserByName, IList<IList<object>> sheet) in sheets)
+            {
+                var sheetParsingResult = _sheetsParsing.ParseSheet(parserByName.Key, sheet, parserByName.Value);
+                if (!sheetParsingResult.IsOk)
+                    return sheetParsingResult.WithoutValue();
 
-            var writeToFilesResult = _io.WriteToFiles(
-                _settings.GeneratedCodeFolderFullPath,
-                $"{sheetParsingResult.Value.Name}.cs",
-                dtoClassGenerationResult.Value,
-                $"{sheetParsingResult.Value.Name}Wrapper.cs",
-                wrapperClassGenerationResult.Value,
-                _settings.SerializedConfigsFolderFullPath,
-                $"{sheetParsingResult.Value.Name}.json",
-                jsonGenerationResult.Value);
-            if (!writeToFilesResult.IsOk)
-                return writeToFilesResult;
+                parsedSheets.Add(sheetParsingResult.Value);
+
+                var dtoClassGenerationResult = _codeGenerator.GenerateDTOClass(sheetParsingResult.Value, settings.AliasParsersByName);
+                if (!dtoClassGenerationResult.IsOk)
+                    return dtoClassGenerationResult.WithoutValue();
+
+                var writeDtoClassToFileResult = _io.WriteToFile(
+                    settings.GeneratedCodeFolderFullPath,
+                    $"{sheetParsingResult.Value.Name}.cs",
+                    dtoClassGenerationResult.Value);
+                if (!writeDtoClassToFileResult.IsOk)
+                    return writeDtoClassToFileResult;
+            }
+
+            var rootConfigClassGenerationResult = _codeGenerator.GenerateRootConfigClass(settings.RootConfigName, parsedSheets);
+            if (!rootConfigClassGenerationResult.IsOk)
+                return rootConfigClassGenerationResult.WithoutValue();
+
+            var writeRootConfigClassToFileResult = _io.WriteToFile(
+                settings.GeneratedCodeFolderFullPath,
+                $"{settings.RootConfigName}.cs",
+                rootConfigClassGenerationResult.Value);
+            if (!writeRootConfigClassToFileResult.IsOk)
+                return writeRootConfigClassToFileResult;
+
+            var serializedConfigSerializationResult = _configsSerializer.SerializeMultipleSheetsAsJsonObject(parsedSheets, settings.AliasParsersByName);
+            if (!serializedConfigSerializationResult.IsOk)
+                return serializedConfigSerializationResult.WithoutValue();
+
+            var writeSerializedConfigToFileResult = _io.WriteToFile(
+                settings.SerializedConfigsFolderFullPath,
+                $"{settings.RootConfigName}.json",
+                serializedConfigSerializationResult.Value);
+            if (!writeSerializedConfigToFileResult.IsOk)
+                return writeSerializedConfigToFileResult;
+
+            return Result<string>.Ok;
+        }
+
+        private Result<string> ValidateAliases(in C4GSettings settings)
+        {
+            if (string.IsNullOrEmpty(settings.TableId))
+            {
+                return Result<string>.FromError("C4G Error. Table id is null or empty");
+            }
+
+            if (string.IsNullOrEmpty(settings.ClientSecret))
+            {
+                return Result<string>.FromError("C4G Error. Client secret is null or empty");
+            }
+
+            if (string.IsNullOrEmpty(settings.RootConfigName))
+            {
+                return Result<string>.FromError("C4G Error. Root config name is null or empty");
+            }
+
+            if (string.IsNullOrEmpty(settings.GeneratedCodeFolderFullPath))
+            {
+                return Result<string>.FromError("C4G Error. Generated code folder full path is null or empty");
+            }
+
+            if (!Directory.Exists(settings.GeneratedCodeFolderFullPath))
+            {
+                return Result<string>.FromError($"C4G Error. Generated code folder '{settings.GeneratedCodeFolderFullPath}' is not exist");
+            }
+
+            if (string.IsNullOrEmpty(settings.SerializedConfigsFolderFullPath))
+            {
+                return Result<string>.FromError("C4G Error. Serialized configs folder full path is null or empty");
+            }
+
+            if (!Directory.Exists(settings.SerializedConfigsFolderFullPath))
+            {
+                return Result<string>.FromError($"C4G Error. Serialized configs folder '{settings.SerializedConfigsFolderFullPath}' is not exist");
+            }
+
+            if (settings.SheetParsersByName == null)
+            {
+                return Result<string>.FromError("C4G Error. Sheet parsers by name is null or empty");
+            }
+
+            foreach (KeyValuePair<string, SheetParserBase> sheetParserByName in settings.SheetParsersByName)
+            {
+                if (string.IsNullOrEmpty(sheetParserByName.Key))
+                    return Result<string>.FromError($"C4G Error. Sheet name is null or empty");
+
+                if (sheetParserByName.Value == null)
+                    return Result<string>.FromError($"C4G Error. Sheet parser for sheet name '{sheetParserByName.Key}' is null");
+            }
+
+            if (settings.AliasParsersByName == null)
+            {
+                return Result<string>.FromError("C4G Error. Alias parser by name is null or empty");
+            }
+
+            foreach (KeyValuePair<string, IC4GTypeParser> parserByName in settings.AliasParsersByName)
+            {
+                if (parserByName.Value == null)
+                    return Result<string>.FromError($"C4G Error. Alias parser with name '{parserByName.Key}' is null or empty'");
+            }
 
             return Result<string>.Ok;
         }

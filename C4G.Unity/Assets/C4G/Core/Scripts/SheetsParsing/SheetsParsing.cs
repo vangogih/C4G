@@ -5,8 +5,8 @@ namespace C4G.Core.SheetsParsing
 {
     public sealed class SheetsParsing
     {
-        public static readonly string TypeHeader = "C4G_TYPE";
-        public static readonly string NameHeader = "C4G_NAME";
+        public const string TYPE_HEADER = "C4G_TYPE";
+        public const string NAME_HEADER = "C4G_NAME";
 
         public Result<ParsedSheet, string> ParseSheet(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase)
         {
@@ -16,7 +16,7 @@ namespace C4G.Core.SheetsParsing
             return parserBase.Parse(sheetName, sheetData);
         }
 
-        private bool ValidateParameters(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, out string error)
+        private static bool ValidateParameters(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, out string error)
         {
             error = string.Empty;
 
@@ -28,18 +28,17 @@ namespace C4G.Core.SheetsParsing
 
             if (parserBase == null)
             {
-                error = "Sheets parsing error. Parser must be provided";
+                error = $"Sheets parsing error '{sheetName}'. Parser must be provided";
                 return false;
             }
 
             if (sheetData == null)
             {
-                error = "Sheets parsing error. Sheet data must be not null";
+                error = $"Sheets parsing error '{sheetName}'. Sheet data must be not null";
                 return false;
             }
 
-            // Delegate detailed validation to the specific parser implementation
-            string parserError = parserBase.Validate(sheetData);
+            string parserError = parserBase.Validate(sheetName, sheetData);
             if (!string.IsNullOrEmpty(parserError))
             {
                 error = parserError;

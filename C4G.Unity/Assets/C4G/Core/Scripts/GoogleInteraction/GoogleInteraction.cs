@@ -14,23 +14,12 @@ namespace C4G.Core.GoogleInteraction
 {
     public sealed class GoogleInteraction
     {
-        private readonly string _tableId;
-        private readonly string _sheetName;
-        private readonly string _clientSecret;
-
-        public GoogleInteraction(string tableId, string sheetName, string clientSecret)
-        {
-            _tableId = tableId;
-            _sheetName = sheetName;
-            _clientSecret = clientSecret;
-        }
-
-        public async Task<Result<IList<IList<object>>, string>> LoadRawConfigAsync(CancellationToken ct)
+        public async Task<Result<IList<IList<object>>, string>> LoadSheetAsync(string sheetName, string tableId, string clientSecret, CancellationToken ct)
         {
             if (ct.IsCancellationRequested)
                 return Result<IList<IList<object>>, string>.FromError("Google interaction. Task cancelled");
 
-            byte[] clientSecretBytes = Encoding.UTF8.GetBytes(_clientSecret);
+            byte[] clientSecretBytes = Encoding.UTF8.GetBytes(clientSecret);
             MemoryStream clientSecretMemoryStream = new MemoryStream(clientSecretBytes);
             GoogleClientSecrets googleClientSecrets = await GoogleClientSecrets.FromStreamAsync(clientSecretMemoryStream, ct);
             UserCredential credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
@@ -46,7 +35,7 @@ namespace C4G.Core.GoogleInteraction
                 ApplicationName = "c4g-test-440907"
             });
 
-            SpreadsheetsResource.ValuesResource.GetRequest request = sheetsService.Spreadsheets.Values.Get(_tableId, _sheetName);
+            SpreadsheetsResource.ValuesResource.GetRequest request = sheetsService.Spreadsheets.Values.Get(tableId, sheetName);
             ValueRange response = await request.ExecuteAsync(ct);
 
             return Result<IList<IList<object>>, string>.FromValue(response.Values);

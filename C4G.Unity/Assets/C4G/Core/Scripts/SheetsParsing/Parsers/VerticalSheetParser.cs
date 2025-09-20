@@ -37,40 +37,41 @@ namespace C4G.Core.SheetsParsing
             return Result<ParsedSheet, string>.FromValue(parsedSheet);
         }
 
-        public override string Validate(IList<IList<object>> sheetData)
+        public override string Validate(string sheetName, IList<IList<object>> sheetData)
         {
             if (sheetData.Count < 3)
-                return
-                    "Sheets parsing error. Vertical format requires at least 3 rows (headers: C4G_NAME, C4G_TYPE, and data)";
+            {
+                return $"Sheets parsing error '{sheetName}'. Vertical format requires at least 3 rows (headers: C4G_NAME, C4G_TYPE, and data)";
+            }
 
             if (sheetData[0] == null || sheetData[0].Count < 1)
-                return "Sheets parsing error. First row must be not null and contain at least one column";
+                return $"Sheets parsing error '{sheetName}'. First row must be not null and contain at least one column";
 
-            if (!(sheetData[0][0] is string nameHeader) || nameHeader != SheetsParsing.NameHeader)
-                return $"Sheets parsing error. First cell (A1) must be equal to '{SheetsParsing.NameHeader}'";
+            if (!(sheetData[0][0] is string nameHeader) || nameHeader != SheetsParsing.NAME_HEADER)
+                return $"Sheets parsing error '{sheetName}'. First cell (A1) must be equal to '{SheetsParsing.NAME_HEADER}'";
 
             if (sheetData[1] == null || sheetData[1].Count < 1)
-                return "Sheets parsing error. Second row must be not null and contain at least one column";
+                return $"Sheets parsing error '{sheetName}'. Second row must be not null and contain at least one column";
 
-            if (!(sheetData[1][0] is string typeHeader) || typeHeader != SheetsParsing.TypeHeader)
-                return $"Sheets parsing error. Second row first cell (A2) must be equal to '{SheetsParsing.TypeHeader}'";
+            if (!(sheetData[1][0] is string typeHeader) || typeHeader != SheetsParsing.TYPE_HEADER)
+                return $"Sheets parsing error '{sheetName}'. Second row first cell (A2) must be equal to '{SheetsParsing.TYPE_HEADER}'";
 
             int firstRowLength = sheetData[0].Count;
 
             if (firstRowLength < 2)
                 return
-                    "Sheets parsing error. Each row must have at least 2 columns (C4G_NAME/C4G_TYPE + at least one property)";
+                    $"Sheets parsing error '{sheetName}'. Each row must have at least 2 columns (C4G_NAME/C4G_TYPE + at least one property)";
 
             for (int rowIndex = 1; rowIndex < sheetData.Count; rowIndex++)
             {
                 var row = sheetData[rowIndex];
 
                 if (row == null)
-                    return $"Sheets parsing error. Row '{rowIndex}' must be not null";
+                    return $"Sheets parsing error '{sheetName}'. Row '{rowIndex}' must be not null";
 
                 if (row.Count != firstRowLength)
                     return
-                        $"Sheets parsing error. Row '{rowIndex}' length '{row.Count}' must be equal to first row length '{firstRowLength}'";
+                        $"Sheets parsing error '{sheetName}'. Row '{rowIndex}' length '{row.Count}' must be equal to first row length '{firstRowLength}'";
             }
 
             return string.Empty;
