@@ -28,14 +28,14 @@ namespace C4G.Core
             _ioFacade = new IOFacade();
         }
 
-        public async Task<Result<EC4GError>> RunAsync(CancellationToken ct)
+        public async Task<Result<string>> RunAsync(CancellationToken ct)
         {
             if (ct.IsCancellationRequested)
-                return Result<EC4GError>.FromError(EC4GError.TaskCancelled);
+                return Result<string>.FromError("C4G Error. Task cancelled");
 
             var rawConfigsResult = await _googleInteractionFacade.LoadRawConfigAsync(ct);
             if (ct.IsCancellationRequested)
-                return Result<EC4GError>.FromError(EC4GError.TaskCancelled);
+                return Result<string>.FromError("C4G Error. Task cancelled");
             if (!rawConfigsResult.IsOk)
                 return rawConfigsResult.WithoutValue();
 
@@ -67,7 +67,7 @@ namespace C4G.Core
             if (!writeToFilesResult.IsOk)
                 return writeToFilesResult;
 
-            return Result<EC4GError>.Ok;
+            return Result<string>.Ok;
         }
     }
 }

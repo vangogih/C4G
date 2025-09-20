@@ -93,11 +93,13 @@ Secrets.meta
 
 CodeCoverage/
 
-#Generated files
+# Generated files
 Assets/Scripts/Generated
 Assets/Scripts/Generated.meta
+Assets/C4GGenerated
+Assets/C4GGenerated.meta
 
-#StreamingAssets folder
+# StreamingAssets folder
 Assets/StreamingAssets
 Assets/StreamingAssets.meta
 

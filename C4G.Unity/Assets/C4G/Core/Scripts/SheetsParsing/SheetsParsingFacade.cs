@@ -5,11 +5,14 @@ namespace C4G.Core.SheetsParsing
 {
     public class SheetsParsingFacade
     {
-        public Result<ParsedSheet, EC4GError> ParseSheet(string sheetName, IList<IList<object>> sheetData)
+        private const string TYPE_HEADER = "C4G_TYPE";
+        private const string NAME_HEADER = "C4G_NAME";
+
+        public Result<ParsedSheet, string> ParseSheet(string sheetName, IList<IList<object>> sheetData)
         {
-            EC4GError error = ValidateParameters(sheetName, sheetData);
-            if (error != EC4GError.None)
-                return Result<ParsedSheet, EC4GError>.FromError(error);
+            bool isValid = ValidateParameters(sheetName, sheetData, out string error);
+            if (!isValid)
+                return Result<ParsedSheet, string>.FromError(error);
 
             int dataRowLength = sheetData[1].Count;
 
@@ -33,60 +36,69 @@ namespace C4G.Core.SheetsParsing
             }
 
             var parsedSheet = new ParsedSheet(sheetName, properties, entities);
-            return Result<ParsedSheet, EC4GError>.FromValue(parsedSheet);
+            return Result<ParsedSheet, string>.FromValue(parsedSheet);
         }
 
-        private EC4GError ValidateParameters(string sheetName, IList<IList<object>> sheetData)
+        private bool ValidateParameters(string sheetName, IList<IList<object>> sheetData, out string error)
         {
+            error = string.Empty;
+
             if (string.IsNullOrEmpty(sheetName))
-                return EC4GError.SP_SheetNameNullOrEmpty;
-
-            if (sheetData == null)
-                return EC4GError.SP_SheetDataNull;
-
-            if (sheetData.Count < 2)
-                return EC4GError.SP_SheetDataCountLowerThanTwo;
-
-            IList<object> headersRow = sheetData[0];
-
-            if (headersRow == null)
-                return EC4GError.SP_HeadersRowNull;
-
-            if (headersRow.Count != 2)
-                return EC4GError.SP_HeadersRowElementsCountIsNotTwo;
-
-            if (!(headersRow[0] is string nameHeader) || nameHeader != "C4G_NAME")
-                return EC4GError.SP_FirstHeaderInvalid;
-
-            if (!(headersRow[1] is string typeHeader) || typeHeader != "C4G_TYPE")
-                return EC4GError.SP_SecondHeaderInvalid;
-
-            var firstDataRow = sheetData[1];
-
-            if (firstDataRow == null)
-                return EC4GError.SP_FirstDataRowNull;
-
-            int firstDataRowLength = firstDataRow.Count;
-
-            if (firstDataRowLength < 2)
-                return EC4GError.SP_FirstDataRowElementsCountLowerThanTwo;
-
-            for (int rowIndex = 2; rowIndex < sheetData.Count; rowIndex++)
+                error = "Sheets parsing error. Sheet name must be not null or empty";
+            else if (sheetData == null)
+                error = "Sheets parsing error. Sheet data must be not null";
+            else if (sheetData.Count < 2)
+                error = "Sheets parsing error. Sheet data length must be equal or greater than two";
+            else
             {
-                var dataRow = sheetData[rowIndex];
+                IList<object> headersRow = sheetData[0];
 
-                if (dataRow == null)
-                    return EC4GError.SP_DataRowNull;
-
-                int dataRowCount = dataRow.Count;
-
-                if (dataRowCount != firstDataRowLength)
+                if (headersRow == null)
+                    error = "Sheets parsing error. Headers row must be not null";
+                else if (headersRow.Count != 2)
+                    error = "Sheets parsing error. Headers row length must be equal to two";
+                else if (!(headersRow[0] is string nameHeader) || nameHeader != NAME_HEADER)
+                    error = $"Sheets parsing error. First header must be equal to '{NAME_HEADER}'";
+                else
                 {
-                    return EC4GError.SP_DataRowElementsCountInvalid;
+                    if (!(headersRow[1] is string typeHeader) || typeHeader != TYPE_HEADER)
+                        error = $"Sheets parsing error. Second header must be equal to '{TYPE_HEADER}'";
+                    else
+                    {
+                        var firstDataRow = sheetData[1];
+
+                        if (firstDataRow == null)
+                            error = "Sheets parsing error. First data row must be not null";
+                        else if (firstDataRow.Count < 2)
+                            error = "Sheets parsing error. First data row length must be equal or greater than two";
+                        else
+                        {
+                            int firstDataRowLength = firstDataRow.Count;
+
+                            for (int rowIndex = 2; rowIndex < sheetData.Count; rowIndex++)
+                            {
+                                var dataRow = sheetData[rowIndex];
+
+                                if (dataRow == null)
+                                {
+                                    error = $"Sheets parsing error. '{rowIndex}' data row must be not null";
+                                    break;
+                                }
+
+                                int dataRowLength = dataRow.Count;
+
+                                if (dataRowLength != firstDataRowLength)
+                                {
+                                    error = $"Sheets parsing error. '{rowIndex}' data row length '{dataRowLength}' must be equal to first data row length '{firstDataRowLength}'";
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
-            return EC4GError.None;
+            return string.IsNullOrEmpty(error);
         }
     }
 }

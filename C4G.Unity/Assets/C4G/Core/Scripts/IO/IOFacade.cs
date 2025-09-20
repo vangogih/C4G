@@ -6,7 +6,7 @@ namespace C4G.Core.IO
 {
     public class IOFacade
     {
-        public Result<EC4GError> WriteToFiles(
+        public Result<string> WriteToFiles(
             string codeFolderFullPath, string dtoClassFileName, string dtoClass, string wrapperClassFileName, string wrapperClass,
             string configsFolderFullPath, string configsFileName, string configs)
         {
@@ -29,12 +29,12 @@ namespace C4G.Core.IO
 
                 File.WriteAllText(jsonFilePath, configs);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return Result<EC4GError>.FromError(EC4GError.IOException);
+                return Result<string>.FromError($"IO error. {e}");
             }
 
-            return Result<EC4GError>.Ok;
+            return Result<string>.Ok;
         }
     }
 }

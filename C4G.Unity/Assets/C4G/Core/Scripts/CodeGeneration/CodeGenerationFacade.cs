@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using C4G.Core;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 
@@ -7,11 +6,11 @@ namespace C4G.Editor
 {
     public class CodeGenerationFacade
     {
-        public Result<string, EC4GError> GenerateDTOClass(ParsedSheet parsedSheet)
+        public Result<string, string> GenerateDTOClass(ParsedSheet parsedSheet)
         {
-            EC4GError error = ValidateParsedSheet(parsedSheet);
-            if (error != EC4GError.None)
-                return Result<string, EC4GError>.FromError(error);
+            bool isValid = ValidateParsedSheet(parsedSheet, out string error);
+            if (!isValid)
+                return Result<string, string>.FromError(error);
 
             var sb = new StringBuilder();
 
@@ -27,14 +26,14 @@ namespace C4G.Editor
 
             string generatedClass = sb.ToString();
 
-            return Result<string, EC4GError>.FromValue(generatedClass);
+            return Result<string, string>.FromValue(generatedClass);
         }
 
-        public Result<string, EC4GError> GenerateWrapperClass(ParsedSheet parsedSheet)
+        public Result<string, string> GenerateWrapperClass(ParsedSheet parsedSheet)
         {
-            EC4GError error = ValidateParsedSheet(parsedSheet);
-            if (error != EC4GError.None)
-                return Result<string, EC4GError>.FromError(error);
+            bool isValid = ValidateParsedSheet(parsedSheet, out string error);
+            if (!isValid)
+                return Result<string, string>.FromError(error);
 
             var sb = new StringBuilder();
 
@@ -50,21 +49,21 @@ namespace C4G.Editor
 
             string generatedClass = sb.ToString();
 
-            return Result<string, EC4GError>.FromValue(generatedClass);
+            return Result<string, string>.FromValue(generatedClass);
         }
 
-        private static EC4GError ValidateParsedSheet(ParsedSheet parsedSheet)
+        private static bool ValidateParsedSheet(ParsedSheet parsedSheet, out string error)
         {
+            error = string.Empty;
+
             if (string.IsNullOrEmpty(parsedSheet.Name))
-                return EC4GError.CG_ParsedSheetNameNullOrEmpty;
+                error = "Code generation error. ParsedSheet name is null or empty";
+            else if (parsedSheet.Properties == null)
+                error = "Code generation error. ParsedSheet properties are null";
+            else if (parsedSheet.Entities == null)
+                error = "Code generation error. ParsedSheet entities are null";
 
-            if (parsedSheet.Properties == null)
-                return EC4GError.CG_ParsedSheetPropertiesNull;
-
-            if (parsedSheet.Entities == null)
-                return EC4GError.CG_ParsedSheetEntitiesNull;
-
-            return EC4GError.None;
+            return string.IsNullOrEmpty(error);
         }
     }
 }
