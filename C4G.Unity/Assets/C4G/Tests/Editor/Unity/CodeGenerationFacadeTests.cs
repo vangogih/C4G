@@ -23,6 +23,8 @@ namespace C4G.Tests.Editor.Unity
             string expectedOutput =
 $@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
 
+using System.Collections.Generic;
+
 public partial class ClassName
 {{
     public int Id {{ get; set; }}
