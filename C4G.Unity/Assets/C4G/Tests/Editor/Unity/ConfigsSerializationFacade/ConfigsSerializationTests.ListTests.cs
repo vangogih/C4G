@@ -6,10 +6,10 @@ using NUnit.Framework;
 
 namespace C4G.Tests.Editor.Unity
 {
-    public partial class ConfigsSerializationFacadeTests
+    public partial class ConfigsSerializationTests
     {
         [TestFixture]
-        public sealed class ListTests : ConfigsSerializationFacadeTests
+        public sealed class ListTests : ConfigsSerializationTests
         {
             [Test]
             public void Serialize_ListOfIntegers()
@@ -51,7 +51,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = ConfigSerializationFacade.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -94,7 +94,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = ConfigSerializationFacade.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -133,7 +133,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = ConfigSerializationFacade.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -170,7 +170,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = ConfigSerializationFacade.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -194,7 +194,7 @@ namespace C4G.Tests.Editor.Unity
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
-                Result<string, string> output = ConfigSerializationFacade.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
 
                 // Assert
                 Assert.IsFalse(output.IsOk);
@@ -217,7 +217,7 @@ namespace C4G.Tests.Editor.Unity
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
-                Result<string, string> output = ConfigSerializationFacade.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
 
                 // Assert
                 Assert.IsFalse(output.IsOk);
@@ -241,7 +241,7 @@ namespace C4G.Tests.Editor.Unity
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
-                Result<string, string> output = ConfigSerializationFacade.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
 
                 // Assert
                 Assert.IsFalse(output.IsOk);
@@ -264,7 +264,7 @@ namespace C4G.Tests.Editor.Unity
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
-                Result<string, string> output = ConfigSerializationFacade.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
 
                 // Assert
                 Assert.IsFalse(output.IsOk);
@@ -288,7 +288,7 @@ namespace C4G.Tests.Editor.Unity
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
-                Result<string, string> output = ConfigSerializationFacade.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
 
                 // Assert
                 Assert.IsFalse(output.IsOk);
@@ -313,7 +313,7 @@ namespace C4G.Tests.Editor.Unity
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
-                Result<string, string> output = ConfigSerializationFacade.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
 
                 // Assert
                 Assert.IsFalse(output.IsOk);
@@ -338,7 +338,7 @@ namespace C4G.Tests.Editor.Unity
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
-                Result<string, string> output = ConfigSerializationFacade.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);

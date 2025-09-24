@@ -4,7 +4,7 @@ using C4G.Core.Utils;
 
 namespace C4G.Core.IO
 {
-    public class IOFacade
+    public class IO
     {
         public Result<string> WriteToFiles(
             string codeFolderFullPath, string dtoClassFileName, string dtoClass, string wrapperClassFileName, string wrapperClass,

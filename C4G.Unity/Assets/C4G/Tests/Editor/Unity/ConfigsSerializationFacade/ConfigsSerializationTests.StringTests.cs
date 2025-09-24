@@ -6,9 +6,9 @@ using NUnit.Framework;
 namespace C4G.Tests.Editor.Unity
 {
     [TestFixture]
-    public partial class ConfigsSerializationFacadeTests
+    public partial class ConfigsSerializationTests
     {
-        public sealed class StringTests : ConfigsSerializationFacadeTests
+        public sealed class StringTests : ConfigsSerializationTests
         {
             [Test]
             public void Serialize_StringWithSpecialCharacters()
@@ -30,7 +30,7 @@ namespace C4G.Tests.Editor.Unity
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
-                Result<string, string> output = ConfigSerializationFacade.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
 
                 //Assert
                 Assert.IsTrue(output.IsOk);
@@ -76,7 +76,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = ConfigSerializationFacade.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);

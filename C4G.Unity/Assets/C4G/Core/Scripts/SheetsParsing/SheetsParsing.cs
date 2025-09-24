@@ -3,7 +3,7 @@ using C4G.Core.Utils;
 
 namespace C4G.Core.SheetsParsing
 {
-    public class SheetsParsingFacade
+    public sealed class SheetsParsing
     {
         private const string TYPE_HEADER = "C4G_TYPE";
         private const string NAME_HEADER = "C4G_NAME";

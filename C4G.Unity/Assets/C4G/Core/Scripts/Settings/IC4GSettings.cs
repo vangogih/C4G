@@ -1,6 +1,6 @@
 namespace C4G.Core.Settings
 {
-    public interface IC4GSettingsFacade
+    public interface IC4GSettings
     {
         string TableId { get; }
         string SheetName { get; }

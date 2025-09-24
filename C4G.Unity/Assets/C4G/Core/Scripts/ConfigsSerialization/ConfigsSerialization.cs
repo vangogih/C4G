@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace C4G.Core
 {
-    public class ConfigsSerializationFacade
+    public sealed class ConfigsSerialization
     {
         public Result<string, string> Serialize(ParsedSheet parsedSheet)
         {

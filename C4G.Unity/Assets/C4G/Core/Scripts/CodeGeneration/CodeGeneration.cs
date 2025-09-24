@@ -3,7 +3,7 @@ using C4G.Core.Utils;
 
 namespace C4G.Editor
 {
-    public class CodeGenerationFacade
+    public sealed class CodeGeneration
     {
         private readonly CodeWriter _codeWriter = new CodeWriter("    ");
 
