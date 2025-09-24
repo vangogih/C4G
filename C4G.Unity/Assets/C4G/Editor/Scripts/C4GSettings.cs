@@ -5,7 +5,7 @@ using UnityEngine;
 namespace C4G.Editor
 {
     [CreateAssetMenu(menuName = "C4G/Settings")]
-    public class C4GSettings : ScriptableObject, IC4GSettingsFacade
+    public class C4GSettings : ScriptableObject, IC4GSettings
     {
         [SerializeField] private string _tableId;
         [SerializeField] private string _sheetName;

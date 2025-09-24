@@ -126,7 +126,8 @@ namespace C4G.Editor
                 if (c4gRunResult.IsOk)
                     Debug.Log($"{LOG_TAG} Successful Run");
                 else
-                    Debug.LogError($"{LOG_TAG} Error During Run {c4gRunResult.Error}");
+                    Debug.LogError($"{LOG_TAG} Error During Run\n" +
+                                   $"{c4gRunResult.Error}");
             }
             catch (TaskCanceledException) { }
             catch (Exception ex)

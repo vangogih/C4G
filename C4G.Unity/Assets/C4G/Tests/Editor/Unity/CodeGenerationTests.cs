@@ -6,14 +6,14 @@ using NUnit.Framework;
 
 namespace C4G.Tests.Editor.Unity
 {
-    public class CodeGenerationFacadeTests
+    public class CodeGenerationTests
     {
-        private CodeGenerationFacade _codeGenerationFacade;
+        private CodeGeneration _codeGeneration;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            _codeGenerationFacade = new CodeGenerationFacade();
+            _codeGeneration = new CodeGeneration();
         }
 
         [Test]
@@ -21,11 +21,15 @@ namespace C4G.Tests.Editor.Unity
         {
             // Arrange
             string expectedOutput =
-@"public partial class ClassName
-{
-    public int Id { get; set; }
-    public int BaseHp { get; set; }
-}
+$@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
+
+using System.Collections.Generic;
+
+public partial class ClassName
+{{
+    public int Id {{ get; set; }}
+    public int BaseHp {{ get; set; }}
+}}
 ";
             var className = "ClassName";
             var propertyInfos = new List<ParsedPropertyInfo>
@@ -37,7 +41,7 @@ namespace C4G.Tests.Editor.Unity
             var parsedSheet = new ParsedSheet(className, propertyInfos, entities);
 
             // Act
-            Result<string, string> output = _codeGenerationFacade.GenerateDTOClass(parsedSheet);
+            Result<string, string> output = _codeGeneration.GenerateDTOClass(parsedSheet);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -54,10 +58,10 @@ namespace C4G.Tests.Editor.Unity
             var parsedSheetWithNullEntities = new ParsedSheet("ClassName", new List<ParsedPropertyInfo>(), null);
 
             // Act
-            Result<string, string> nullNameOutput = _codeGenerationFacade.GenerateDTOClass(parsedSheetWithNullName);
-            Result<string, string> emptyNameOutput = _codeGenerationFacade.GenerateDTOClass(parsedSheetWithEmptyName);
-            Result<string, string> nullPropsOutput = _codeGenerationFacade.GenerateDTOClass(parsedSheetWithNullProps);
-            Result<string, string> nullEntitiesOutput = _codeGenerationFacade.GenerateDTOClass(parsedSheetWithNullEntities);
+            Result<string, string> nullNameOutput = _codeGeneration.GenerateDTOClass(parsedSheetWithNullName);
+            Result<string, string> emptyNameOutput = _codeGeneration.GenerateDTOClass(parsedSheetWithEmptyName);
+            Result<string, string> nullPropsOutput = _codeGeneration.GenerateDTOClass(parsedSheetWithNullProps);
+            Result<string, string> nullEntitiesOutput = _codeGeneration.GenerateDTOClass(parsedSheetWithNullEntities);
 
             // Assert
             Assert.IsFalse(nullNameOutput.IsOk);
@@ -71,13 +75,15 @@ namespace C4G.Tests.Editor.Unity
         {
             // Arrange
             string expectedOutput =
-@"using System.Collections.Generic;
+$@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
+
+using System.Collections.Generic;
 
 public partial class ClassNameWrapper
-{
-    public string Name { get; set; }
-    public List<ClassName> Entities { get; set; } = new List<ClassName>();
-}
+{{
+    public string Name {{ get; set; }}
+    public List<ClassName> Entities {{ get; set; }} = new List<ClassName>();
+}}
 ";
             var className = "ClassName";
             var propertyInfos = new List<ParsedPropertyInfo>();
@@ -85,7 +91,7 @@ public partial class ClassNameWrapper
             var parsedSheet = new ParsedSheet(className, propertyInfos, entities);
 
             // Act
-            Result<string, string> output = _codeGenerationFacade.GenerateWrapperClass(parsedSheet);
+            Result<string, string> output = _codeGeneration.GenerateWrapperClass(parsedSheet);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -102,10 +108,10 @@ public partial class ClassNameWrapper
             var parsedSheetWithNullEntities = new ParsedSheet("ClassName", new List<ParsedPropertyInfo>(), null);
 
             // Act
-            Result<string, string> nullNameOutput = _codeGenerationFacade.GenerateWrapperClass(parsedSheetWithNullName);
-            Result<string, string> emptyNameOutput = _codeGenerationFacade.GenerateWrapperClass(parsedSheetWithEmptyName);
-            Result<string, string> nullPropsOutput = _codeGenerationFacade.GenerateWrapperClass(parsedSheetWithNullProps);
-            Result<string, string> nullEntitiesOutput = _codeGenerationFacade.GenerateWrapperClass(parsedSheetWithNullEntities);
+            Result<string, string> nullNameOutput = _codeGeneration.GenerateWrapperClass(parsedSheetWithNullName);
+            Result<string, string> emptyNameOutput = _codeGeneration.GenerateWrapperClass(parsedSheetWithEmptyName);
+            Result<string, string> nullPropsOutput = _codeGeneration.GenerateWrapperClass(parsedSheetWithNullProps);
+            Result<string, string> nullEntitiesOutput = _codeGeneration.GenerateWrapperClass(parsedSheetWithNullEntities);
 
             // Assert
             Assert.IsFalse(nullNameOutput.IsOk);

@@ -12,13 +12,13 @@ using Google.Apis.Util.Store;
 
 namespace C4G.Core.GoogleInteraction
 {
-    public sealed class GoogleInteractionFacade
+    public sealed class GoogleInteraction
     {
         private readonly string _tableId;
         private readonly string _sheetName;
         private readonly string _clientSecret;
 
-        public GoogleInteractionFacade(string tableId, string sheetName, string clientSecret)
+        public GoogleInteraction(string tableId, string sheetName, string clientSecret)
         {
             _tableId = tableId;
             _sheetName = sheetName;
