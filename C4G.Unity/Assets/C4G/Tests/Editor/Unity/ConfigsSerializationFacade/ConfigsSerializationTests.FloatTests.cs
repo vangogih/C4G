@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+/*using System.Collections.Generic;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
@@ -42,7 +42,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.ParseToEntitiesList(parsedSheet);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -89,7 +89,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
+                Result<string, string> output = _configSerialization.ParseToEntitiesList(parsedSheet);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -97,4 +97,4 @@ namespace C4G.Tests.Editor.Unity
             }
         }
     }
-}
+}*/

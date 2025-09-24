@@ -6,33 +6,57 @@ using System.Text.RegularExpressions;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using Newtonsoft.Json;
+using Entity = System.Collections.Generic.IReadOnlyDictionary<string, object>;
+using EntitiesList = System.Collections.Generic.IReadOnlyList<System.Collections.Generic.IReadOnlyDictionary<string, object>>;
 
 namespace C4G.Core
 {
     public sealed class ConfigsSerialization
     {
-        public Result<string, string> Serialize(ParsedSheet parsedSheet)
+        public Result<EntitiesList, string> ParseToEntitiesList(ParsedSheet parsedSheet)
         {
             bool isValid = ValidateParsedSheet(parsedSheet, out string error);
             if (!isValid)
-                return Result<string, string>.FromError(error);
+                return Result<EntitiesList, string>.FromError(error);
 
-            var jsonDto = new JsonDto(parsedSheet.Name, new List<IReadOnlyDictionary<string, object>>());
+            var entities = new List<Entity>(parsedSheet.Entities.Count);
 
             foreach (IReadOnlyCollection<string> entityData in parsedSheet.Entities)
             {
-                Result<IReadOnlyDictionary<string, object>, string> entityDataDictResult = GetEntityDataDict(entityData, parsedSheet.Properties);
+                Result<Entity, string> entityDataDictResult = GetEntityDataDict(entityData, parsedSheet.Properties);
                 if (!entityDataDictResult.IsOk)
-                    return Result<string, string>.FromError(entityDataDictResult.Error);
-                jsonDto.Entities.Add(entityDataDictResult.Value);
+                    return Result<EntitiesList, string>.FromError(entityDataDictResult.Error);
+                entities.Add(entityDataDictResult.Value);
             }
 
-            string json = JsonConvert.SerializeObject(jsonDto, Formatting.Indented);
+            return Result<EntitiesList, string>.FromValue(entities);
+        }
+
+        public Result<string, string> SerializeMultipleSheetsAsJsonObject(List<ParsedSheet> parsedSheets)
+        {
+            if (parsedSheets == null)
+                return Result<string, string>.FromError("Parsed sheets cannot be null");
+
+            var result = new Dictionary<string, EntitiesList>(parsedSheets.Count);
+
+            foreach (ParsedSheet parsedSheet in parsedSheets)
+            {
+                Result<EntitiesList, string> sheetSerializationResult = ParseToEntitiesList(parsedSheet);
+                if (!sheetSerializationResult.IsOk)
+                    return Result<string, string>.FromError(sheetSerializationResult.Error);
+
+                if (result.ContainsKey(parsedSheet.Name))
+                    return Result<string, string>.FromError($"Duplicate sheet name '{parsedSheet.Name}'");
+
+                result.Add(parsedSheet.Name, sheetSerializationResult.Value);
+            }
+
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
 
             return Result<string, string>.FromValue(json);
         }
 
-        private static Result<IReadOnlyDictionary<string, object>, string> GetEntityDataDict(
+        private static Result<Entity, string> GetEntityDataDict(
             IReadOnlyCollection<string> entityData, IReadOnlyList<ParsedPropertyInfo> properties)
         {
             var entityDataDict = new Dictionary<string, object>();
@@ -44,13 +68,13 @@ namespace C4G.Core
                 string serializedPropertyValue = entityData.ElementAt(index);
                 Result<object, string> propertyValueResult = GetPropertyValue(property, serializedPropertyValue);
                 if (!propertyValueResult.IsOk)
-                    return Result<IReadOnlyDictionary<string, object>, string>.FromError(propertyValueResult.Error);
+                    return Result<Entity, string>.FromError(propertyValueResult.Error);
                     
                 entityDataDict[property.Name] = propertyValueResult.Value;
                 index++;
             }
 
-            return Result<IReadOnlyDictionary<string, object>, string>.FromValue(entityDataDict);
+            return Result<Entity, string>.FromValue(entityDataDict);
         }
 
         private static readonly Dictionary<string, Func<string, Result<object, string>>> SimpleTypeParsers
@@ -172,27 +196,6 @@ namespace C4G.Core
             }
 
             return string.IsNullOrEmpty(error);
-        }
-
-        [JsonObject]
-        private sealed class JsonDto
-        {
-            [JsonProperty("name")]
-            internal string Name { get; }
-
-            [JsonProperty("entities")]
-            internal List<IReadOnlyDictionary<string, object>> Entities { get; }
-
-            internal JsonDto(string name, List<IReadOnlyDictionary<string, object>> entities)
-            {
-                Name = name;
-                Entities = entities;
-            }
-
-            public override string ToString()
-            {
-                return $"{{ Name = {Name}, Entities = {Entities} }}";
-            }
         }
     }
 }

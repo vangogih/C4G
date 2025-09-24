@@ -58,23 +58,12 @@ namespace C4G.Core
                 if (!dtoClassGenerationResult.IsOk)
                     return dtoClassGenerationResult.WithoutValue();
 
-                var jsonGenerationResult = _configsSerialization.Serialize(sheetParsingResult.Value);
-                if (!jsonGenerationResult.IsOk)
-                    return jsonGenerationResult.WithoutValue();
-
                 var writeDtoClassToFileResult = _io.WriteToFile(
                     _settings.GeneratedCodeFolderFullPath,
                     $"{sheetParsingResult.Value.Name}.cs",
                     dtoClassGenerationResult.Value);
                 if (!writeDtoClassToFileResult.IsOk)
                     return writeDtoClassToFileResult;
-
-                var writeSerializedConfigToFileResult = _io.WriteToFile(
-                    _settings.SerializedConfigsFolderFullPath,
-                    $"{sheetParsingResult.Value.Name}.json",
-                    jsonGenerationResult.Value);
-                if (!writeSerializedConfigToFileResult.IsOk)
-                    return writeSerializedConfigToFileResult;
             }
 
             var rootConfigClassGenerationResult = _codeGeneration.GenerateRootConfigClass(_settings.RootConfigName, parsedSheets);
@@ -87,6 +76,17 @@ namespace C4G.Core
                 rootConfigClassGenerationResult.Value);
             if (!writeRootConfigClassToFileResult.IsOk)
                 return writeRootConfigClassToFileResult;
+
+            var serializedConfigSerializationResult = _configsSerialization.SerializeMultipleSheetsAsJsonObject(parsedSheets);
+            if (!serializedConfigSerializationResult.IsOk)
+                return serializedConfigSerializationResult.WithoutValue();
+
+            var writeSerializedConfigToFileResult = _io.WriteToFile(
+                _settings.SerializedConfigsFolderFullPath,
+                $"{_settings.RootConfigName}.json",
+                serializedConfigSerializationResult.Value);
+            if (!writeSerializedConfigToFileResult.IsOk)
+                return writeSerializedConfigToFileResult;
 
             return Result<string>.Ok;
         }
