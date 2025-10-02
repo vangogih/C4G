@@ -91,6 +91,18 @@ crashlytics-build.properties
 Secrets/
 Secrets.meta
 
+CodeCoverage/
+
+# Generated files
+Assets/Scripts/Generated
+Assets/Scripts/Generated.meta
+Assets/C4GGenerated
+Assets/C4GGenerated.meta
+
+# StreamingAssets folder
+Assets/StreamingAssets
+Assets/StreamingAssets.meta
+
 ##
 ## END OF C4G
 ##

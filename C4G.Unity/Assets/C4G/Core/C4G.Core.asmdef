@@ -1,11 +1,7 @@
 {
-    "name": "C4G.Editor",
-    "references": [
-        "C4G.Core"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "name": "C4G.Core",
+    "references": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
