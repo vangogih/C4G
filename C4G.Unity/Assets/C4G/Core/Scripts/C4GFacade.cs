@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using C4G.Core.ConfigsSerialization;
 using C4G.Core.Settings;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
@@ -8,22 +9,30 @@ using C4G.Editor;
 
 namespace C4G.Core
 {
+    public enum MyEnum
+    {
+        MyEnum0 = 0,
+        MyEnum1 = 1,
+        MyEnum2 = 2
+    }
+
     public sealed class C4GFacade
     {
         private readonly IC4GSettings _settings;
         private readonly GoogleInteraction.GoogleInteraction _googleInteraction;
         private readonly CodeGeneration _codeGeneration;
         private readonly SheetsParsing.SheetsParsing _sheetsParsing;
-        private readonly ConfigsSerialization.ConfigsSerializer _configsSerializer;
+        private readonly ConfigsSerializer _configsSerializer;
         private readonly IO.IO _io;
 
         public C4GFacade(IC4GSettings settings)
         {
             _settings = settings;
             _googleInteraction = new GoogleInteraction.GoogleInteraction(_settings.TableId, _settings.ClientSecret);
-            _codeGeneration = new CodeGeneration();
+            var aliasDefinitions = new List<AliasDefinition> { new AliasDefinition("MyEnum", typeof(MyEnum), null) };
+            _codeGeneration = new CodeGeneration(aliasDefinitions);
             _sheetsParsing = new SheetsParsing.SheetsParsing();
-            _configsSerializer = new ConfigsSerialization.ConfigsSerializer();
+            _configsSerializer = new ConfigsSerializer(aliasDefinitions);
             _io = new IO.IO();
         }
 

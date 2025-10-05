@@ -3,71 +3,71 @@ using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
 
-namespace C4G.Tests.Editor.Unity.ConfigsSerialization.ConfigsSerializer
+namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 {
     public partial class ConfigsSerializerTests
     {
-        public sealed class BooleanTests : ConfigsSerializerTests
+        public sealed class StringTests : ConfigsSerializerTests
         {
             [Test]
-            public void Serialize_BooleanVariations()
+            public void Serialize_StringWithSpecialCharacters()
             {
                 // Arrange
-                var name = "BoolVariationsSheet";
+                var name = "SpecialCharsSheet";
                 var properties = new List<ParsedPropertyInfo>
                 {
-                    new ParsedPropertyInfo("Bool1", "bool"),
-                    new ParsedPropertyInfo("Bool2", "bool"),
-                    new ParsedPropertyInfo("Bool3", "bool"),
-                    new ParsedPropertyInfo("Bool4", "bool")
+                    new ParsedPropertyInfo("EmptyString", "string"),
+                    new ParsedPropertyInfo("WithQuotes", "string"),
+                    new ParsedPropertyInfo("WithNewlines", "string"),
+                    new ParsedPropertyInfo("WithCommas", "string"),
+                    new ParsedPropertyInfo("Unicode", "string")
                 };
                 var entities = new List<List<string>>
                 {
-                    new List<string> { "True", "False", "TRUE", "FALSE" },
-                    new List<string> { "true", "false", "tRuE", "fAlSe" }
+                    new List<string> { "", "\"quoted\"", "line1\nline2", "has,comma", "emoji🎉测试" }
                 };
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
                 Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet });
 
-                // Assert
+                //Assert
                 Assert.IsTrue(output.IsOk);
             }
 
             [Test]
-            public void Serialize_ListOfBooleans()
+            public void Serialize_ListOfStrings()
             {
                 // Arrange
-                var name = "BoolListSheet";
+                var name = "StringListSheet";
                 var properties = new List<ParsedPropertyInfo>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("Flags", "List<bool>")
+                    new ParsedPropertyInfo("Name", "string"),
+                    new ParsedPropertyInfo("Tags", "List<string>")
                 };
                 var entities = new List<List<string>>
                 {
-                    new List<string> { "1", "true,false,true" },
-                    new List<string> { "2", "false,false" }
+                    new List<string> { "Alice", "tag1,tag2,tag3" },
+                    new List<string> { "Bob", "admin,user" }
                 };
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 string expectedOutput =
                     @"{
-  ""BoolListSheet"": [
+  ""StringListSheet"": [
     {
-      ""Id"": 1,
-      ""Flags"": [
-        true,
-        false,
-        true
+      ""Name"": ""Alice"",
+      ""Tags"": [
+        ""tag1"",
+        ""tag2"",
+        ""tag3""
       ]
     },
     {
-      ""Id"": 2,
-      ""Flags"": [
-        false,
-        false
+      ""Name"": ""Bob"",
+      ""Tags"": [
+        ""admin"",
+        ""user""
       ]
     }
   ]

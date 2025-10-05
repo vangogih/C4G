@@ -3,71 +3,83 @@ using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
 
-namespace C4G.Tests.Editor.Unity.ConfigsSerialization.ConfigsSerializer
+namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 {
     public partial class ConfigsSerializerTests
     {
-        public sealed class StringTests : ConfigsSerializerTests
+        public sealed class FloatTests : ConfigsSerializerTests
         {
             [Test]
-            public void Serialize_StringWithSpecialCharacters()
+            public void Serialize_FloatSpecialValues()
             {
                 // Arrange
-                var name = "SpecialCharsSheet";
+                var name = "SpecialFloatSheet";
                 var properties = new List<ParsedPropertyInfo>
                 {
-                    new ParsedPropertyInfo("EmptyString", "string"),
-                    new ParsedPropertyInfo("WithQuotes", "string"),
-                    new ParsedPropertyInfo("WithNewlines", "string"),
-                    new ParsedPropertyInfo("WithCommas", "string"),
-                    new ParsedPropertyInfo("Unicode", "string")
+                    new ParsedPropertyInfo("Infinity", "float"),
+                    new ParsedPropertyInfo("NegInfinity", "float"),
+                    new ParsedPropertyInfo("NaN", "float"),
+                    new ParsedPropertyInfo("Zero", "float")
                 };
                 var entities = new List<List<string>>
                 {
-                    new List<string> { "", "\"quoted\"", "line1\nline2", "has,comma", "emoji🎉测试" }
-                };
-                var parsedSheet = new ParsedSheet(name, properties, entities);
-
-                // Act
-                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet });
-
-                //Assert
-                Assert.IsTrue(output.IsOk);
-            }
-
-            [Test]
-            public void Serialize_ListOfStrings()
-            {
-                // Arrange
-                var name = "StringListSheet";
-                var properties = new List<ParsedPropertyInfo>
-                {
-                    new ParsedPropertyInfo("Name", "string"),
-                    new ParsedPropertyInfo("Tags", "List<string>")
-                };
-                var entities = new List<List<string>>
-                {
-                    new List<string> { "Alice", "tag1,tag2,tag3" },
-                    new List<string> { "Bob", "admin,user" }
+                    new List<string> { "Infinity", "-Infinity", "NaN", "0.0" }
                 };
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 string expectedOutput =
                     @"{
-  ""StringListSheet"": [
+  ""SpecialFloatSheet"": [
     {
-      ""Name"": ""Alice"",
-      ""Tags"": [
-        ""tag1"",
-        ""tag2"",
-        ""tag3""
+      ""Infinity"": ""Infinity"",
+      ""NegInfinity"": ""-Infinity"",
+      ""NaN"": ""NaN"",
+      ""Zero"": 0.0
+    }
+  ]
+}";
+
+                // Act
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet });
+
+                // Assert
+                Assert.IsTrue(output.IsOk);
+                Assert.AreEqual(expectedOutput, output.Value);
+            }
+
+            [Test]
+            public void Serialize_ListOfFloats()
+            {
+                // Arrange
+                var name = "FloatListSheet";
+                var properties = new List<ParsedPropertyInfo>
+                {
+                    new ParsedPropertyInfo("Name", "string"),
+                    new ParsedPropertyInfo("Scores", "List<float>")
+                };
+                var entities = new List<List<string>>
+                {
+                    new List<string> { "Player1", "1.5,2.7,3.9" },
+                    new List<string> { "Player2", "10.1,20.2" }
+                };
+                var parsedSheet = new ParsedSheet(name, properties, entities);
+
+                string expectedOutput =
+                    @"{
+  ""FloatListSheet"": [
+    {
+      ""Name"": ""Player1"",
+      ""Scores"": [
+        1.5,
+        2.7,
+        3.9
       ]
     },
     {
-      ""Name"": ""Bob"",
-      ""Tags"": [
-        ""admin"",
-        ""user""
+      ""Name"": ""Player2"",
+      ""Scores"": [
+        10.1,
+        20.2
       ]
     }
   ]

@@ -3,83 +3,71 @@ using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
 
-namespace C4G.Tests.Editor.Unity.ConfigsSerialization.ConfigsSerializer
+namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 {
     public partial class ConfigsSerializerTests
     {
-        public sealed class FloatTests : ConfigsSerializerTests
+        public sealed class BooleanTests : ConfigsSerializerTests
         {
             [Test]
-            public void Serialize_FloatSpecialValues()
+            public void Serialize_BooleanVariations()
             {
                 // Arrange
-                var name = "SpecialFloatSheet";
+                var name = "BoolVariationsSheet";
                 var properties = new List<ParsedPropertyInfo>
                 {
-                    new ParsedPropertyInfo("Infinity", "float"),
-                    new ParsedPropertyInfo("NegInfinity", "float"),
-                    new ParsedPropertyInfo("NaN", "float"),
-                    new ParsedPropertyInfo("Zero", "float")
+                    new ParsedPropertyInfo("Bool1", "bool"),
+                    new ParsedPropertyInfo("Bool2", "bool"),
+                    new ParsedPropertyInfo("Bool3", "bool"),
+                    new ParsedPropertyInfo("Bool4", "bool")
                 };
                 var entities = new List<List<string>>
                 {
-                    new List<string> { "Infinity", "-Infinity", "NaN", "0.0" }
+                    new List<string> { "True", "False", "TRUE", "FALSE" },
+                    new List<string> { "true", "false", "tRuE", "fAlSe" }
                 };
                 var parsedSheet = new ParsedSheet(name, properties, entities);
-
-                string expectedOutput =
-                    @"{
-  ""SpecialFloatSheet"": [
-    {
-      ""Infinity"": ""Infinity"",
-      ""NegInfinity"": ""-Infinity"",
-      ""NaN"": ""NaN"",
-      ""Zero"": 0.0
-    }
-  ]
-}";
 
                 // Act
                 Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet });
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
-                Assert.AreEqual(expectedOutput, output.Value);
             }
 
             [Test]
-            public void Serialize_ListOfFloats()
+            public void Serialize_ListOfBooleans()
             {
                 // Arrange
-                var name = "FloatListSheet";
+                var name = "BoolListSheet";
                 var properties = new List<ParsedPropertyInfo>
                 {
-                    new ParsedPropertyInfo("Name", "string"),
-                    new ParsedPropertyInfo("Scores", "List<float>")
+                    new ParsedPropertyInfo("Id", "int"),
+                    new ParsedPropertyInfo("Flags", "List<bool>")
                 };
                 var entities = new List<List<string>>
                 {
-                    new List<string> { "Player1", "1.5,2.7,3.9" },
-                    new List<string> { "Player2", "10.1,20.2" }
+                    new List<string> { "1", "true,false,true" },
+                    new List<string> { "2", "false,false" }
                 };
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 string expectedOutput =
                     @"{
-  ""FloatListSheet"": [
+  ""BoolListSheet"": [
     {
-      ""Name"": ""Player1"",
-      ""Scores"": [
-        1.5,
-        2.7,
-        3.9
+      ""Id"": 1,
+      ""Flags"": [
+        true,
+        false,
+        true
       ]
     },
     {
-      ""Name"": ""Player2"",
-      ""Scores"": [
-        10.1,
-        20.2
+      ""Id"": 2,
+      ""Flags"": [
+        false,
+        false
       ]
     }
   ]

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using C4G.Core.ConfigsSerialization;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using C4G.Editor;
@@ -13,7 +14,7 @@ namespace C4G.Tests.Editor.Unity
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            _codeGeneration = new CodeGeneration();
+            _codeGeneration = new CodeGeneration(new List<AliasDefinition>());
         }
 
         [Test]

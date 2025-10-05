@@ -7,12 +7,20 @@ using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using Newtonsoft.Json;
 using Entity = System.Collections.Generic.IReadOnlyDictionary<string, object>;
-using EntitiesList = System.Collections.Generic.IReadOnlyList<System.Collections.Generic.IReadOnlyDictionary<string, object>>;
+using EntitiesList =
+    System.Collections.Generic.IReadOnlyList<System.Collections.Generic.IReadOnlyDictionary<string, object>>;
 
 namespace C4G.Core.ConfigsSerialization
 {
     public sealed class ConfigsSerializer
     {
+        private readonly IReadOnlyList<AliasDefinition> _aliasDefinitions;
+
+        public ConfigsSerializer(IReadOnlyList<AliasDefinition> aliasDefinitions)
+        {
+            _aliasDefinitions = aliasDefinitions;
+        }
+
         public Result<EntitiesList, string> ParseToEntitiesList(ParsedSheet parsedSheet)
         {
             bool isValid = ValidateParsedSheet(parsedSheet, out string error);
@@ -56,7 +64,7 @@ namespace C4G.Core.ConfigsSerialization
             return Result<string, string>.FromValue(json);
         }
 
-        private static Result<Entity, string> GetEntityDataDict(
+        private Result<Entity, string> GetEntityDataDict(
             IReadOnlyCollection<string> entityData, IReadOnlyList<ParsedPropertyInfo> properties)
         {
             var entityDataDict = new Dictionary<string, object>();
@@ -69,7 +77,7 @@ namespace C4G.Core.ConfigsSerialization
                 Result<object, string> propertyValueResult = GetPropertyValue(property, serializedPropertyValue);
                 if (!propertyValueResult.IsOk)
                     return Result<Entity, string>.FromError(propertyValueResult.Error);
-                    
+
                 entityDataDict[property.Name] = propertyValueResult.Value;
                 index++;
             }
@@ -79,32 +87,21 @@ namespace C4G.Core.ConfigsSerialization
 
         private static readonly Dictionary<string, IC4GTypeParser> SimpleTypeParsers
             = new Dictionary<string, IC4GTypeParser>
-        {
-            { "int", new IntParser() },
-            { "float", new FloatParser() },
-            { "double", new DoubleParser() },
-            { "bool", new BoolParser() },
-            { "string", new StringParser() }
-        };
+            {
+                { "int", new IntParser() },
+                { "float", new FloatParser() },
+                { "double", new DoubleParser() },
+                { "bool", new BoolParser() },
+                { "string", new StringParser() }
+            };
 
-        private static readonly List<(Regex typePattern, char separator)> CollectionParsers = new List<(Regex typePattern, char separator)> 
-        {
-            (new Regex("^List<(.+)>$", RegexOptions.Compiled | RegexOptions.IgnoreCase), ',') 
-        };
+        private static readonly List<(Regex typePattern, char separator)> CollectionParsers =
+            new List<(Regex typePattern, char separator)>
+            {
+                (new Regex("^List<(.+)>$", RegexOptions.Compiled | RegexOptions.IgnoreCase), ',')
+            };
 
-        private delegate bool TryParseFunc<T>(string serializedValue, out T value);
-
-        private static Func<string, Result<object, string>> TryParseFuncResultDecorator<T>(TryParseFunc<T> tryParseFunc)
-        {
-            return serializedValue => tryParseFunc(serializedValue, out T value)
-                ? Result<object, string>.FromValue(value)
-                : Result<object, string>.FromError($"Could not parse property '{serializedValue}' as {typeof(T).Name}");
-        }
-
-        private static Dictionary<string, System.Type> Aliases = new Dictionary<string, System.Type>();
-        private static Dictionary<string, IC4GTypeParser> AliasParsers = new Dictionary<string, IC4GTypeParser>();
-
-        private static Result<object, string> GetPropertyValue(ParsedPropertyInfo property, string serializedPropertyValue)
+        private Result<object, string> GetPropertyValue(ParsedPropertyInfo property, string serializedPropertyValue)
         {
             if (SimpleTypeParsers.TryGetValue(property.Type, out IC4GTypeParser simpleTypeParser))
             {
@@ -118,10 +115,12 @@ namespace C4G.Core.ConfigsSerialization
                 if (match.Success)
                 {
                     if (match.Length != property.Type.Length)
-                        return Result<object, string>.FromError($"Collection parser regex pattern '{typePattern}' matches only part '{match.Value}' of property type '{property.Type}', but should only match whole type");
+                        return Result<object, string>.FromError(
+                            $"Collection parser regex pattern '{typePattern}' matches only part '{match.Value}' of property type '{property.Type}', but should only match whole type");
 
                     if (match.Groups.Count != 2)
-                        return Result<object, string>.FromError($"Collection parser regex pattern '{typePattern}' captures '{match.Groups.Count}' groups but should capture only 2 - Collection pattern itself and collection type");
+                        return Result<object, string>.FromError(
+                            $"Collection parser regex pattern '{typePattern}' captures '{match.Groups.Count}' groups but should capture only 2 - Collection pattern itself and collection type");
 
                     string elementType = match.Groups[1].Value;
 
@@ -129,21 +128,9 @@ namespace C4G.Core.ConfigsSerialization
                 }
             }
 
-            if (Aliases.TryGetValue(property.Type, out System.Type aliasType))
+            if (TryGetAliasDefinition(property.Type, out AliasDefinition aliasDefinition))
             {
-                if (aliasType.IsEnum)
-                {
-                    // enum logic
-                }
-                else if (AliasParsers.ContainsKey(property.Type))
-                {
-                    // parsable logic
-                    // dont forget to check if returned instance has the SAME type as returned value
-                }
-                else
-                {
-                    // return alias parse error
-                }
+                return ParseAlias(aliasDefinition, serializedPropertyValue);
             }
 
             return Result<object, string>.FromError($"Cannot parse property with type '{property.Type}'");
@@ -164,20 +151,77 @@ namespace C4G.Core.ConfigsSerialization
             {
                 string trimmedSerializedElement = serializedElement.Trim();
                 if (string.IsNullOrEmpty(trimmedSerializedElement))
-                    return Result<object, string>.FromError($"Cannot parse empty element in list '{serializedList}' with type '{elementType}'");
+                    return Result<object, string>.FromError(
+                        $"Cannot parse empty element in list '{serializedList}' with type '{elementType}'");
 
                 Result<object, string> elementParseResult = simpleTypeParser.Parse(trimmedSerializedElement);
 
                 if (!elementParseResult.IsOk)
                 {
-                    return Result<object, string>.FromError($"Cannot parse collection element '{serializedElement}' as {elementType}\n" +
-                                                            $"Inner error: {elementParseResult.Error}");
+                    return Result<object, string>.FromError(
+                        $"Cannot parse collection element '{serializedElement}' as {elementType}\n" +
+                        $"Inner error: {elementParseResult.Error}");
                 }
 
                 result.Add(elementParseResult.Value);
             }
 
             return Result<object, string>.FromValue(result);
+        }
+
+        private bool TryGetAliasDefinition(string alias, out AliasDefinition definition)
+        {
+            foreach (AliasDefinition aliasDefinition in _aliasDefinitions)
+            {
+                if (aliasDefinition.Alias.Equals(alias, StringComparison.Ordinal))
+                {
+                    definition = aliasDefinition;
+                    return true;
+                }
+            }
+
+            definition = default;
+            return false;
+        }
+
+        private static Result<object, string> ParseAlias(AliasDefinition aliasDefinition, string serializedValue)
+        {
+            if (aliasDefinition.UnderlyingType.IsEnum)
+            {
+                if (!EnumHelper.TryParse(aliasDefinition.UnderlyingType, serializedValue, out object enumValue))
+                {
+                    return Result<object, string>.FromError(
+                        $"Cannot parse '{serializedValue}' as enum '{aliasDefinition.UnderlyingType.Name}'");
+                }
+
+                if (!Enum.IsDefined(aliasDefinition.UnderlyingType, enumValue))
+                {
+                    return Result<object, string>.FromError(
+                        $"Value '{serializedValue}' is not defined in enum '{aliasDefinition.UnderlyingType.Name}'");
+                }
+
+                return Result<object, string>.FromValue(enumValue);
+            }
+
+            if (aliasDefinition.Parser != null)
+            {
+                Result<object, string> parseResult = aliasDefinition.Parser.Parse(serializedValue);
+
+                if (!parseResult.IsOk)
+                    return parseResult;
+
+                if (aliasDefinition.UnderlyingType.IsInstanceOfType(parseResult.Value))
+                {
+                    return Result<object, string>.FromError(
+                        $"Parser for alias '{aliasDefinition.Alias}' returned object of type '{parseResult.Value.GetType().Name}', " +
+                        $"but expected type is '{aliasDefinition.UnderlyingType.Name}'");
+                }
+
+                return parseResult;
+            }
+
+            return Result<object, string>.FromError(
+                $"Alias '{aliasDefinition.Alias}' for type '{aliasDefinition.UnderlyingType.Name}' has no parser defined and type is not an enum");
         }
 
         private static bool ValidateParsedSheet(ParsedSheet parsedSheet, out string error)

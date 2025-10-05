@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using C4G.Core.ConfigsSerialization;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 
@@ -7,6 +8,12 @@ namespace C4G.Editor
     public sealed class CodeGeneration
     {
         private readonly CodeWriter _codeWriter = new CodeWriter("    ");
+        private readonly IReadOnlyList<AliasDefinition> _aliasDefinitions;
+
+        public CodeGeneration(IReadOnlyList<AliasDefinition> aliasDefinitions)
+        {
+            _aliasDefinitions = aliasDefinitions;
+        }
 
         public Result<string, string> GenerateDTOClass(ParsedSheet parsedSheet)
         {
@@ -23,7 +30,8 @@ namespace C4G.Editor
                     for (int propertyIndex = 0; propertyIndex < parsedSheet.Properties.Count; propertyIndex++)
                     {
                         ParsedPropertyInfo property = parsedSheet.Properties[propertyIndex];
-                        w.WritePublicProperty(property.Name, property.Type);
+                        string actualType = ResolveType(property.Type);
+                        w.WritePublicProperty(property.Name, actualType);
                     }
                 });
 
@@ -50,6 +58,32 @@ namespace C4G.Editor
             string generatedClass = _codeWriter.Build();
 
             return Result<string, string>.FromValue(generatedClass);
+        }
+
+        private bool TryGetAliasDefinition(string alias, out AliasDefinition definition)
+        {
+            foreach (var aliasDef in _aliasDefinitions)
+            {
+                if (aliasDef.Alias.Equals(alias, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    definition = aliasDef;
+                    return true;
+                }
+            }
+            
+            definition = default;
+            return false;
+        }
+
+        private string ResolveType(string type)
+        {
+            if (TryGetAliasDefinition(type, out AliasDefinition aliasDefinition))
+            {
+                // TODO handle cases when null being returned
+                return aliasDefinition.UnderlyingType.FullName;
+            }
+
+            return type;
         }
 
         private static bool ValidateParsedSheet(ParsedSheet parsedSheet, out string error)

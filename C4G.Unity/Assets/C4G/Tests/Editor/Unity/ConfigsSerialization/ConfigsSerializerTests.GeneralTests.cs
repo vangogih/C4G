@@ -3,7 +3,7 @@ using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
 
-namespace C4G.Tests.Editor.Unity.ConfigsSerialization.ConfigsSerializer
+namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 {
     public partial class ConfigsSerializerTests
     {
