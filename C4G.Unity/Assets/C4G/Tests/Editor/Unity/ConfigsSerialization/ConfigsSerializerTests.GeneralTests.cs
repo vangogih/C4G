@@ -1,4 +1,4 @@
-/*using System.Collections.Generic;
+using System.Collections.Generic;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
@@ -6,9 +6,9 @@ using NUnit.Framework;
 namespace C4G.Tests.Editor.Unity
 {
     [TestFixture]
-    public partial class ConfigsSerializationTests
+    public partial class ConfigsSerializerTests
     {
-        public sealed class GeneralTests : ConfigsSerializationTests
+        public sealed class GeneralTests : ConfigsSerializerTests
         {
             [Test]
             public void Serialize_UsualCase()
@@ -43,7 +43,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.ParseToEntitiesList(parsedSheet);
+                Result<string, string> output = _configsSerialization.ParseToEntitiesList(parsedSheet);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -70,7 +70,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.ParseToEntitiesList(parsedSheet);
+                Result<string, string> output = _configsSerialization.ParseToEntitiesList(parsedSheet);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -96,7 +96,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.ParseToEntitiesList(parsedSheet);
+                Result<string, string> output = _configsSerialization.ParseToEntitiesList(parsedSheet);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -125,13 +125,13 @@ namespace C4G.Tests.Editor.Unity
                     });
 
                 // Act
-                Result<string, string> nullNameResult = _configSerialization.ParseToEntitiesList(parsedSheetWithNullName);
+                Result<string, string> nullNameResult = _configsSerialization.ParseToEntitiesList(parsedSheetWithNullName);
                 Result<string, string> nullPropertiesResult =
-                    _configSerialization.ParseToEntitiesList(parsedSheetWithNullProperties);
+                    _configsSerialization.ParseToEntitiesList(parsedSheetWithNullProperties);
                 Result<string, string> nullEntitiesResult =
-                    _configSerialization.ParseToEntitiesList(parsedSheetWithNullEntities);
+                    _configsSerialization.ParseToEntitiesList(parsedSheetWithNullEntities);
                 Result<string, string> mismatchedDataResult =
-                    _configSerialization.ParseToEntitiesList(parsedSheetWithMismatchedData);
+                    _configsSerialization.ParseToEntitiesList(parsedSheetWithMismatchedData);
 
                 // Assert
                 Assert.IsFalse(nullNameResult.IsOk);
@@ -157,7 +157,7 @@ namespace C4G.Tests.Editor.Unity
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
-                Result<string, string> output = _configSerialization.ParseToEntitiesList(parsedSheet);
+                Result<string, string> output = _configsSerialization.ParseToEntitiesList(parsedSheet);
 
                 // Assert
                 Assert.IsFalse(output.IsOk);
@@ -218,7 +218,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.ParseToEntitiesList(parsedSheet);
+                Result<string, string> output = _configsSerialization.ParseToEntitiesList(parsedSheet);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -226,4 +226,4 @@ namespace C4G.Tests.Editor.Unity
             }
         }
     }
-}*/
+}

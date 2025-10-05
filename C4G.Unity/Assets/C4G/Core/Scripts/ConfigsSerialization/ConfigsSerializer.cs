@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using C4G.Core.ConfigsSerialization.SimpleTypeParsers;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using Newtonsoft.Json;
 using Entity = System.Collections.Generic.IReadOnlyDictionary<string, object>;
 using EntitiesList = System.Collections.Generic.IReadOnlyList<System.Collections.Generic.IReadOnlyDictionary<string, object>>;
 
-namespace C4G.Core
+namespace C4G.Core.ConfigsSerialization
 {
-    public sealed class ConfigsSerialization
+    public sealed class ConfigsSerializer
     {
         public Result<EntitiesList, string> ParseToEntitiesList(ParsedSheet parsedSheet)
         {
@@ -77,14 +77,14 @@ namespace C4G.Core
             return Result<Entity, string>.FromValue(entityDataDict);
         }
 
-        private static readonly Dictionary<string, Func<string, Result<object, string>>> SimpleTypeParsers
-            = new Dictionary<string, Func<string, Result<object, string>>>
+        private static readonly Dictionary<string, IC4GTypeParser> SimpleTypeParsers
+            = new Dictionary<string, IC4GTypeParser>
         {
-            { "int", TryParseFuncResultDecorator<int>(int.TryParse) },
-            { "float", TryParseFuncResultDecorator((string s, out float f) => float.TryParse(s, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out f)) },
-            { "double", TryParseFuncResultDecorator((string s, out double d) => double.TryParse(s, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out d)) },
-            { "bool", TryParseFuncResultDecorator<bool>(bool.TryParse) },
-            { "string", Result<object, string>.FromValue }
+            { "int", new IntParser() },
+            { "float", new FloatParser() },
+            { "double", new DoubleParser() },
+            { "bool", new BoolParser() },
+            { "string", new StringParser() }
         };
 
         private static readonly List<(Regex typePattern, char separator)> CollectionParsers = new List<(Regex typePattern, char separator)> 
@@ -101,11 +101,14 @@ namespace C4G.Core
                 : Result<object, string>.FromError($"Could not parse property '{serializedValue}' as {typeof(T).Name}");
         }
 
+        private static Dictionary<string, System.Type> Aliases = new Dictionary<string, System.Type>();
+        private static Dictionary<string, IC4GTypeParser> AliasParsers = new Dictionary<string, IC4GTypeParser>();
+
         private static Result<object, string> GetPropertyValue(ParsedPropertyInfo property, string serializedPropertyValue)
         {
-            if (SimpleTypeParsers.TryGetValue(property.Type, out Func<string, Result<object, string>> simpleTypeParser))
+            if (SimpleTypeParsers.TryGetValue(property.Type, out IC4GTypeParser simpleTypeParser))
             {
-                return simpleTypeParser(serializedPropertyValue);
+                return simpleTypeParser.Parse(serializedPropertyValue);
             }
 
             foreach ((Regex typePattern, char separator) in CollectionParsers)
@@ -126,6 +129,23 @@ namespace C4G.Core
                 }
             }
 
+            if (Aliases.TryGetValue(property.Type, out System.Type aliasType))
+            {
+                if (aliasType.IsEnum)
+                {
+                    // enum logic
+                }
+                else if (AliasParsers.ContainsKey(property.Type))
+                {
+                    // parsable logic
+                    // dont forget to check if returned instance has the SAME type as returned value
+                }
+                else
+                {
+                    // return alias parse error
+                }
+            }
+
             return Result<object, string>.FromError($"Cannot parse property with type '{property.Type}'");
         }
 
@@ -134,7 +154,7 @@ namespace C4G.Core
             if (string.IsNullOrWhiteSpace(serializedList))
                 return Result<object, string>.FromValue(new List<object>());
 
-            if (!SimpleTypeParsers.TryGetValue(elementType, out Func<string, Result<object, string>> simpleTypeParser))
+            if (!SimpleTypeParsers.TryGetValue(elementType, out IC4GTypeParser simpleTypeParser))
                 return Result<object, string>.FromError($"Cannot parse list elements type '{elementType}'");
 
             var result = new List<object>();
@@ -146,7 +166,7 @@ namespace C4G.Core
                 if (string.IsNullOrEmpty(trimmedSerializedElement))
                     return Result<object, string>.FromError($"Cannot parse empty element in list '{serializedList}' with type '{elementType}'");
 
-                Result<object, string> elementParseResult = simpleTypeParser(trimmedSerializedElement);
+                Result<object, string> elementParseResult = simpleTypeParser.Parse(trimmedSerializedElement);
 
                 if (!elementParseResult.IsOk)
                 {

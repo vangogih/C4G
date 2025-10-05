@@ -14,7 +14,7 @@ namespace C4G.Core
         private readonly GoogleInteraction.GoogleInteraction _googleInteraction;
         private readonly CodeGeneration _codeGeneration;
         private readonly SheetsParsing.SheetsParsing _sheetsParsing;
-        private readonly ConfigsSerialization _configsSerialization;
+        private readonly ConfigsSerialization.ConfigsSerializer _configsSerializer;
         private readonly IO.IO _io;
 
         public C4GFacade(IC4GSettings settings)
@@ -23,7 +23,7 @@ namespace C4G.Core
             _googleInteraction = new GoogleInteraction.GoogleInteraction(_settings.TableId, _settings.ClientSecret);
             _codeGeneration = new CodeGeneration();
             _sheetsParsing = new SheetsParsing.SheetsParsing();
-            _configsSerialization = new ConfigsSerialization();
+            _configsSerializer = new ConfigsSerialization.ConfigsSerializer();
             _io = new IO.IO();
         }
 
@@ -77,7 +77,7 @@ namespace C4G.Core
             if (!writeRootConfigClassToFileResult.IsOk)
                 return writeRootConfigClassToFileResult;
 
-            var serializedConfigSerializationResult = _configsSerialization.SerializeMultipleSheetsAsJsonObject(parsedSheets);
+            var serializedConfigSerializationResult = _configsSerializer.SerializeMultipleSheetsAsJsonObject(parsedSheets);
             if (!serializedConfigSerializationResult.IsOk)
                 return serializedConfigSerializationResult.WithoutValue();
 
