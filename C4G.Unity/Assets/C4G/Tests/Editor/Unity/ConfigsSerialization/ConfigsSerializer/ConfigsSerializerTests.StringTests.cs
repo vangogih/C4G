@@ -1,14 +1,13 @@
-/*using System.Collections.Generic;
+using System.Collections.Generic;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
 
-namespace C4G.Tests.Editor.Unity
+namespace C4G.Tests.Editor.Unity.ConfigsSerialization.ConfigsSerializer
 {
-    [TestFixture]
-    public partial class ConfigsSerializationTests
+    public partial class ConfigsSerializerTests
     {
-        public sealed class StringTests : ConfigsSerializationTests
+        public sealed class StringTests : ConfigsSerializerTests
         {
             [Test]
             public void Serialize_StringWithSpecialCharacters()
@@ -30,7 +29,7 @@ namespace C4G.Tests.Editor.Unity
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
-                Result<string, string> output = _configSerialization.ParseToEntitiesList(parsedSheet);
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet });
 
                 //Assert
                 Assert.IsTrue(output.IsOk);
@@ -55,8 +54,7 @@ namespace C4G.Tests.Editor.Unity
 
                 string expectedOutput =
                     @"{
-  ""name"": ""StringListSheet"",
-  ""entities"": [
+  ""StringListSheet"": [
     {
       ""Name"": ""Alice"",
       ""Tags"": [
@@ -76,7 +74,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.ParseToEntitiesList(parsedSheet);
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet });
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -84,4 +82,4 @@ namespace C4G.Tests.Editor.Unity
             }
         }
     }
-}*/
+}

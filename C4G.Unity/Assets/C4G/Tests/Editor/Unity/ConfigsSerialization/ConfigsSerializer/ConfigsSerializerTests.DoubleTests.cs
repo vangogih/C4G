@@ -1,14 +1,13 @@
-/*using System.Collections.Generic;
+using System.Collections.Generic;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
 
-namespace C4G.Tests.Editor.Unity
+namespace C4G.Tests.Editor.Unity.ConfigsSerialization.ConfigsSerializer
 {
-    [TestFixture]
-    public partial class ConfigsSerializationTests
+    public partial class ConfigsSerializerTests
     {
-        public sealed class DoubleTests : ConfigsSerializationTests
+        public sealed class DoubleTests : ConfigsSerializerTests
         {
             [Test]
             public void Serialize_ListOfDoubles()
@@ -29,8 +28,7 @@ namespace C4G.Tests.Editor.Unity
 
                 string expectedOutput =
                     @"{
-  ""name"": ""DoubleListSheet"",
-  ""entities"": [
+  ""DoubleListSheet"": [
     {
       ""Name"": ""Player1"",
       ""Scores"": [
@@ -50,7 +48,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.ParseToEntitiesList(parsedSheet);
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet });
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -58,4 +56,4 @@ namespace C4G.Tests.Editor.Unity
             }
         }
     }
-}*/
+}
