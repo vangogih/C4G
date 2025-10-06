@@ -70,10 +70,10 @@ namespace C4G.Editor
                 GUI.enabled = false;
             }
 
-            if (string.IsNullOrEmpty(_settings.SheetName))
+            if (string.IsNullOrEmpty(_settings.RootConfigName))
             {
                 GUI.enabled = true;
-                EditorGUILayout.HelpBox("Please, setup sheet name", MessageType.Warning);
+                EditorGUILayout.HelpBox("Please, setup root config", MessageType.Warning);
                 GUI.enabled = false;
             }
 

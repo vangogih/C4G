@@ -3,12 +3,11 @@ using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
 
-namespace C4G.Tests.Editor.Unity
+namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 {
-    [TestFixture]
-    public partial class ConfigsSerializationTests
+    public partial class ConfigsSerializerTests
     {
-        public sealed class GeneralTests : ConfigsSerializationTests
+        public sealed class GeneralTests : ConfigsSerializerTests
         {
             [Test]
             public void Serialize_UsualCase()
@@ -29,8 +28,7 @@ namespace C4G.Tests.Editor.Unity
 
                 string expectedOutput =
                     @"{
-  ""name"": ""TestSheet"",
-  ""entities"": [
+  ""TestSheet"": [
     {
       ""Id"": 1,
       ""Name"": ""Alice""
@@ -43,7 +41,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet });
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -65,12 +63,11 @@ namespace C4G.Tests.Editor.Unity
 
                 string expectedOutput =
                     @"{
-  ""name"": ""EmptyEntitiesSheet"",
-  ""entities"": []
+  ""EmptyEntitiesSheet"": []
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet });
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -88,15 +85,14 @@ namespace C4G.Tests.Editor.Unity
 
                 string expectedJson =
                     @"{
-  ""name"": ""EmptyPropertiesSheet"",
-  ""entities"": [
+  ""EmptyPropertiesSheet"": [
     {},
     {}
   ]
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet });
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -125,13 +121,13 @@ namespace C4G.Tests.Editor.Unity
                     });
 
                 // Act
-                Result<string, string> nullNameResult = _configSerialization.Serialize(parsedSheetWithNullName);
+                Result<string, string> nullNameResult = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheetWithNullName });
                 Result<string, string> nullPropertiesResult =
-                    _configSerialization.Serialize(parsedSheetWithNullProperties);
+                    _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheetWithNullProperties });
                 Result<string, string> nullEntitiesResult =
-                    _configSerialization.Serialize(parsedSheetWithNullEntities);
+                    _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheetWithNullEntities });
                 Result<string, string> mismatchedDataResult =
-                    _configSerialization.Serialize(parsedSheetWithMismatchedData);
+                    _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheetWithMismatchedData });
 
                 // Assert
                 Assert.IsFalse(nullNameResult.IsOk);
@@ -157,7 +153,7 @@ namespace C4G.Tests.Editor.Unity
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
-                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet });
 
                 // Assert
                 Assert.IsFalse(output.IsOk);
@@ -185,8 +181,7 @@ namespace C4G.Tests.Editor.Unity
 
                 string expectedOutput =
                     @"{
-  ""name"": ""MixedTypesSheet"",
-  ""entities"": [
+  ""MixedTypesSheet"": [
     {
       ""Id"": 1,
       ""Name"": ""Alice"",
@@ -218,7 +213,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet });
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
