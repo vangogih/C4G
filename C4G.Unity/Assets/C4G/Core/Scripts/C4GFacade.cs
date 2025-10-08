@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using C4G.Core.Settings;
@@ -18,7 +19,7 @@ namespace C4G.Core
         public C4GFacade(IC4GSettings settings)
         {
             _settings = settings;
-            _googleInteraction = new GoogleInteraction.GoogleInteraction(_settings.TableId, _settings.SheetName, _settings.ClientSecret);
+            _googleInteraction = new GoogleInteraction.GoogleInteraction(_settings.TableId, _settings.SheetInfos.FirstOrDefault()?.sheetName, _settings.ClientSecret);
             _codeGeneration = new CodeGeneration();
             _sheetsParsing = new SheetsParsing.SheetsParsing();
             _configsSerialization = new ConfigsSerialization();
@@ -36,7 +37,7 @@ namespace C4G.Core
             if (!rawConfigsResult.IsOk)
                 return rawConfigsResult.WithoutValue();
 
-            var sheetParsingResult = _sheetsParsing.ParseSheet(_settings.SheetName, rawConfigsResult.Value);
+            var sheetParsingResult = _sheetsParsing.ParseSheet(_settings.SheetInfos.FirstOrDefault(), rawConfigsResult.Value);
             if (!sheetParsingResult.IsOk)
                 return sheetParsingResult.WithoutValue();
 
