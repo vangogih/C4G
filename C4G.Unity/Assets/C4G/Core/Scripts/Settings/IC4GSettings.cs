@@ -9,6 +9,6 @@ namespace C4G.Core.Settings
         string ClientSecret { get; }
         string GeneratedCodeFolderFullPath { get; }
         string SerializedConfigsFolderFullPath { get; }
-        IReadOnlyList<string> SheetNames { get; }
+        IReadOnlyList<SheetInfo> SheetInfos { get; }
     }
 }

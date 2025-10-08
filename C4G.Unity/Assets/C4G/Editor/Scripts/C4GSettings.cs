@@ -13,7 +13,7 @@ namespace C4G.Editor
         [SerializeField] private string _clientSecret;
         [SerializeField, FolderReference] private string _generatedCodeFolderPath;
         [SerializeField, FolderReference] private string _serializedConfigsFolderPath;
-        [SerializeField] private List<string> _sheetNames = new List<string>();
+        [SerializeField] private List<SheetInfo> _sheetInfos = new List<SheetInfo>();
 
         public string TableId => _tableId;
         public string RootConfigName => _rootConfigName;
@@ -45,6 +45,6 @@ namespace C4G.Editor
         public bool IsSerializedConfigsFolderValid => !string.IsNullOrEmpty(_generatedCodeFolderPath) &&
                                                       Directory.Exists(SerializedConfigsFolderFullPath);
 
-        public IReadOnlyList<string> SheetNames => _sheetNames;
+        public IReadOnlyList<SheetInfo> SheetInfos => _sheetInfos;
     }
 }

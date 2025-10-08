@@ -41,23 +41,23 @@ namespace C4G.Core
             if (ct.IsCancellationRequested)
                 return Result<string>.FromError("C4G Error. Task cancelled");
 
-            var sheets = new List<(string sheetName, IList<IList<object>> sheet)>(_settings.SheetNames.Count);
+            var sheets = new List<(SheetInfo sheetName, IList<IList<object>> sheet)>(_settings.SheetInfos.Count);
 
-            foreach (string sheetName in _settings.SheetNames)
+            foreach (var sheetInfo in _settings.SheetInfos)
             {
-                Result<IList<IList<object>>, string> loadSheetResult = await _googleInteraction.LoadSheetAsync(sheetName, ct);
+                Result<IList<IList<object>>, string> loadSheetResult = await _googleInteraction.LoadSheetAsync(sheetInfo.sheetName, ct);
                 if (ct.IsCancellationRequested)
                     return Result<string>.FromError("C4G Error. Task cancelled");
                 if (!loadSheetResult.IsOk)
                     return loadSheetResult.WithoutValue();
-                sheets.Add((sheetName: sheetName, sheet: loadSheetResult.Value));
+                sheets.Add((sheetInfo, loadSheetResult.Value));
             }
 
-            var parsedSheets = new List<ParsedSheet>(_settings.SheetNames.Count);
+            var parsedSheets = new List<ParsedSheet>(_settings.SheetInfos.Count);
 
-            foreach ((string sheetName, IList<IList<object>> sheet) in sheets)
+            foreach ((SheetInfo sheetInfo, IList<IList<object>> sheet) in sheets)
             {
-                var sheetParsingResult = _sheetsParsing.ParseSheet(sheetName, sheet);
+                var sheetParsingResult = _sheetsParsing.ParseSheet(sheetInfo, sheet);
                 if (!sheetParsingResult.IsOk)
                     return sheetParsingResult.WithoutValue();
 
