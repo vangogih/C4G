@@ -19,10 +19,16 @@ MonoBehaviour:
   _serializedConfigsFolderPath: C4GGenerated
   _sheets:
   - sheetInfo:
-      sheetName: VerticalSheet
+      sheetName: Sheet4
     parserBase:
       id: 0
+  - sheetInfo:
+      sheetName: Sheet4
+    parserBase:
+      id: 1
   references:
     version: 1
     00000000:
-      type: {class: , ns: , asm: }
+      type: {class: HorizontalSheetParserBase, ns: C4G.Core.SheetsParsing, asm: C4G.Core}
+    00000001:
+      type: {class: HorizontalSheetParserBase, ns: C4G.Core.SheetsParsing, asm: C4G.Core}
