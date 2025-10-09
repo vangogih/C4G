@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using C4G.Core.SheetsParsing;
 
 namespace C4G.Core.Settings
 {
@@ -10,5 +11,6 @@ namespace C4G.Core.Settings
         string GeneratedCodeFolderFullPath { get; }
         string SerializedConfigsFolderFullPath { get; }
         IReadOnlyList<SheetInfo> SheetInfos { get; }
+        SheetParserBase GetParserFor(SheetInfo sheetInfo);
     }
 }

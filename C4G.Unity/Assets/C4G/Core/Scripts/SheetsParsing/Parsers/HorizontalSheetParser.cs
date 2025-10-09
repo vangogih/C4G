@@ -3,9 +3,9 @@ using C4G.Core.Utils;
 
 namespace C4G.Core.SheetsParsing
 {
-    internal sealed class HorizontalSheetParser : ISheetParser
+    public sealed class HorizontalSheetParserBase : SheetParserBase
     {
-        public Result<ParsedSheet, string> Parse(string sheetName, IList<IList<object>> sheetData)
+        public override Result<ParsedSheet, string> Parse(string sheetName, IList<IList<object>> sheetData)
         {
             int dataRowLength = sheetData[1].Count;
 

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using C4G.Core.Settings;
+using C4G.Core.SheetsParsing;
 using UnityEngine;
 
 namespace C4G.Editor
@@ -13,7 +15,7 @@ namespace C4G.Editor
         [SerializeField] private string _clientSecret;
         [SerializeField, FolderReference] private string _generatedCodeFolderPath;
         [SerializeField, FolderReference] private string _serializedConfigsFolderPath;
-        [SerializeField] private List<SheetInfo> _sheetInfos = new List<SheetInfo>();
+        [SerializeField] private List<SheetEntry> _sheets = new List<SheetEntry>();
 
         public string TableId => _tableId;
         public string RootConfigName => _rootConfigName;
@@ -45,6 +47,13 @@ namespace C4G.Editor
         public bool IsSerializedConfigsFolderValid => !string.IsNullOrEmpty(_generatedCodeFolderPath) &&
                                                       Directory.Exists(SerializedConfigsFolderFullPath);
 
-        public IReadOnlyList<SheetInfo> SheetInfos => _sheetInfos;
+        public IReadOnlyList<SheetInfo> SheetInfos => _sheets.Select(e => e.sheetInfo).ToList();
+
+        public SheetParserBase GetParserFor(SheetInfo sheetInfo)
+        {
+            if (sheetInfo == null) return null;
+            var entry = _sheets.FirstOrDefault(e => e != null && e.sheetInfo != null && e.sheetInfo.sheetName == sheetInfo.sheetName);
+            return entry?.parserBase;
+        }
     }
 }

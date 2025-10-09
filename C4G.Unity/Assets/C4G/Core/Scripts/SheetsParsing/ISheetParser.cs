@@ -3,8 +3,8 @@ using C4G.Core.Utils;
 
 namespace C4G.Core.SheetsParsing
 {
-    public interface ISheetParser
+    public abstract class SheetParserBase
     {
-        Result<ParsedSheet, string> Parse(string sheetName, IList<IList<object>> sheetData);
+        public abstract Result<ParsedSheet, string> Parse(string sheetName, IList<IList<object>> sheetData);
     }
 }

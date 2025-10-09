@@ -37,7 +37,9 @@ namespace C4G.Core
             if (!rawConfigsResult.IsOk)
                 return rawConfigsResult.WithoutValue();
 
-            var sheetParsingResult = _sheetsParsing.ParseSheet(_settings.SheetInfos.FirstOrDefault(), rawConfigsResult.Value);
+            var sheetInfo = _settings.SheetInfos.FirstOrDefault();
+            var parser = _settings.GetParserFor(sheetInfo);
+            var sheetParsingResult = _sheetsParsing.ParseSheet(sheetInfo, rawConfigsResult.Value, parser);
             if (!sheetParsingResult.IsOk)
                 return sheetParsingResult.WithoutValue();
 

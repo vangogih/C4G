@@ -4,12 +4,10 @@
     public class SheetInfo
     {
         public string sheetName;
-        public ParsingType parsingType;
         
-        public SheetInfo(string sheetName, ParsingType parsingType)
+        public SheetInfo(string sheetName)
         {
             this.sheetName = sheetName;
-            this.parsingType = parsingType;
         }
     }
 }

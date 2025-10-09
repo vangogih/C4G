@@ -20,7 +20,7 @@ namespace C4G.Tests.Editor.Unity
         public void ParseSheet_UsualCase()
         {
             // Arrange
-            SheetInfo sheetInfo = new SheetInfo("TestSheet", ParsingType.Horizontal);
+            SheetInfo sheetInfo = new SheetInfo("TestSheet");
             var sheetData = new List<IList<object>>
             {
                 new List<object> { "C4G_NAME", "C4G_TYPE" },
@@ -46,7 +46,7 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(sheetInfo, sheetData);
+            var result = _sheetsParsing.ParseSheet(sheetInfo, sheetData, new HorizontalSheetParserBase());
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -60,7 +60,7 @@ namespace C4G.Tests.Editor.Unity
         public void ParseSheet_WrongInputLeadsToError()
         {
             // Arrange
-            var validSheetInfo = new SheetInfo("TestSheet", ParsingType.Horizontal);
+            var validSheetInfo = new SheetInfo("TestSheet");
             var invalidHeaderData = new List<IList<object>>
             {
                 new List<object> { "INVALID_NAME", "C4G_TYPE" },
@@ -80,11 +80,11 @@ namespace C4G.Tests.Editor.Unity
             var emptySheetData = new List<IList<object>>();
 
             // Act
-            var invalidHeaderResult = _sheetsParsing.ParseSheet(validSheetInfo, invalidHeaderData);
-            var invalidDataLengthResult = _sheetsParsing.ParseSheet(validSheetInfo, invalidDataLengthData);
-            var nullSheetNameResult = _sheetsParsing.ParseSheet(null, validSheetData);
-            var nullSheetDataResult = _sheetsParsing.ParseSheet(validSheetInfo, null);
-            var emptySheetResult = _sheetsParsing.ParseSheet(validSheetInfo, emptySheetData);
+            var invalidHeaderResult = _sheetsParsing.ParseSheet(validSheetInfo, invalidHeaderData, new HorizontalSheetParserBase());
+            var invalidDataLengthResult = _sheetsParsing.ParseSheet(validSheetInfo, invalidDataLengthData, new HorizontalSheetParserBase());
+            var nullSheetNameResult = _sheetsParsing.ParseSheet(null, validSheetData, new HorizontalSheetParserBase());
+            var nullSheetDataResult = _sheetsParsing.ParseSheet(validSheetInfo, null, new HorizontalSheetParserBase());
+            var emptySheetResult = _sheetsParsing.ParseSheet(validSheetInfo, emptySheetData, new HorizontalSheetParserBase());
 
             // Assert
             Assert.IsFalse(invalidHeaderResult.IsOk);
@@ -101,7 +101,7 @@ namespace C4G.Tests.Editor.Unity
 public void ParseSheet_VerticalFormat_UsualCase()
 {
     // Arrange
-    SheetInfo sheetInfo = new SheetInfo(sheetName: "TestSheet", parsingType: ParsingType.Vertical);
+    SheetInfo sheetInfo = new SheetInfo("TestSheet");
     var sheetData = new List<IList<object>>
     {
         new List<object> { "C4G_NAME", "Id", "Name", "Rank", "Range", "Slots" },
@@ -126,7 +126,7 @@ public void ParseSheet_VerticalFormat_UsualCase()
     };
 
     // Act
-    var result = _sheetsParsing.ParseSheet(sheetInfo, sheetData);
+    var result = _sheetsParsing.ParseSheet(sheetInfo, sheetData, new VerticalSheetParserBase());
 
     // Assert
     Assert.IsTrue(result.IsOk);
@@ -140,7 +140,7 @@ public void ParseSheet_VerticalFormat_UsualCase()
 public void ParseSheet_VerticalFormat_SingleEntity()
 {
     // Arrange
-    SheetInfo sheetInfo = new SheetInfo(sheetName: "SingleEntity", parsingType: ParsingType.Vertical);
+    SheetInfo sheetInfo = new SheetInfo("SingleEntity");
     var sheetData = new List<IList<object>>
     {
         new List<object> { "C4G_NAME", "Id", "Name" },
@@ -158,7 +158,7 @@ public void ParseSheet_VerticalFormat_SingleEntity()
     };
 
     // Act
-    var result = _sheetsParsing.ParseSheet(sheetInfo, sheetData);
+    var result = _sheetsParsing.ParseSheet(sheetInfo, sheetData, new VerticalSheetParserBase());
 
     // Assert
     Assert.IsTrue(result.IsOk);
@@ -172,7 +172,7 @@ public void ParseSheet_VerticalFormat_SingleEntity()
 public void ParseSheet_VerticalFormat_SingleProperty()
 {
     // Arrange
-    SheetInfo sheetInfo = new SheetInfo(sheetName: "SingleProperty", parsingType: ParsingType.Vertical);
+    SheetInfo sheetInfo = new SheetInfo("SingleProperty");
     var sheetData = new List<IList<object>>
     {
         new List<object> { "C4G_NAME", "Id" },
@@ -193,7 +193,7 @@ public void ParseSheet_VerticalFormat_SingleProperty()
     };
 
     // Act
-    var result = _sheetsParsing.ParseSheet(sheetInfo, sheetData);
+    var result = _sheetsParsing.ParseSheet(sheetInfo, sheetData, new VerticalSheetParserBase());
 
     // Assert
     Assert.IsTrue(result.IsOk);
@@ -207,7 +207,7 @@ public void ParseSheet_VerticalFormat_SingleProperty()
 public void ParseSheet_VerticalFormat_InvalidHeaders()
 {
     // Arrange
-    var validSheetInfo = new SheetInfo(sheetName: "TestSheet", parsingType: ParsingType.Vertical);
+    var validSheetInfo = new SheetInfo("TestSheet");
 
     var invalidFirstHeader = new List<IList<object>>
     {
@@ -224,8 +224,8 @@ public void ParseSheet_VerticalFormat_InvalidHeaders()
     };
 
     // Act
-    var invalidFirstResult = _sheetsParsing.ParseSheet(validSheetInfo, invalidFirstHeader);
-    var invalidSecondResult = _sheetsParsing.ParseSheet(validSheetInfo, invalidSecondHeader);
+    var invalidFirstResult = _sheetsParsing.ParseSheet(validSheetInfo, invalidFirstHeader, new VerticalSheetParserBase());
+    var invalidSecondResult = _sheetsParsing.ParseSheet(validSheetInfo, invalidSecondHeader, new VerticalSheetParserBase());
 
     // Assert
     Assert.IsFalse(invalidFirstResult.IsOk);
@@ -238,7 +238,7 @@ public void ParseSheet_VerticalFormat_InvalidHeaders()
 public void ParseSheet_VerticalFormat_InsufficientRows()
 {
     // Arrange
-    var validSheetInfo = new SheetInfo(sheetName: "TestSheet", parsingType: ParsingType.Vertical);
+    var validSheetInfo = new SheetInfo("TestSheet");
 
     var twoRowsOnly = new List<IList<object>>
     {
@@ -247,7 +247,7 @@ public void ParseSheet_VerticalFormat_InsufficientRows()
     };
 
     // Act
-    var result = _sheetsParsing.ParseSheet(validSheetInfo, twoRowsOnly);
+    var result = _sheetsParsing.ParseSheet(validSheetInfo, twoRowsOnly, new VerticalSheetParserBase());
 
     // Assert
     Assert.IsFalse(result.IsOk);
@@ -258,7 +258,7 @@ public void ParseSheet_VerticalFormat_InsufficientRows()
 public void ParseSheet_VerticalFormat_InsufficientColumns()
 {
     // Arrange
-    var validSheetInfo = new SheetInfo(sheetName: "TestSheet", parsingType: ParsingType.Vertical);
+    var validSheetInfo = new SheetInfo(sheetName: "TestSheet");
 
     var oneColumnOnly = new List<IList<object>>
     {
@@ -268,7 +268,7 @@ public void ParseSheet_VerticalFormat_InsufficientColumns()
     };
 
     // Act
-    var result = _sheetsParsing.ParseSheet(validSheetInfo, oneColumnOnly);
+    var result = _sheetsParsing.ParseSheet(validSheetInfo, oneColumnOnly, new VerticalSheetParserBase());
 
     // Assert
     Assert.IsFalse(result.IsOk);
@@ -279,7 +279,7 @@ public void ParseSheet_VerticalFormat_InsufficientColumns()
 public void ParseSheet_VerticalFormat_InconsistentRowLengths()
 {
     // Arrange
-    var validSheetInfo = new SheetInfo(sheetName: "TestSheet", parsingType: ParsingType.Vertical);
+    var validSheetInfo = new SheetInfo(sheetName: "TestSheet");
 
     var inconsistentData = new List<IList<object>>
     {
@@ -289,7 +289,7 @@ public void ParseSheet_VerticalFormat_InconsistentRowLengths()
     };
 
     // Act
-    var result = _sheetsParsing.ParseSheet(validSheetInfo, inconsistentData);
+    var result = _sheetsParsing.ParseSheet(validSheetInfo, inconsistentData, new VerticalSheetParserBase());
 
     // Assert
     Assert.IsFalse(result.IsOk);
@@ -300,7 +300,7 @@ public void ParseSheet_VerticalFormat_InconsistentRowLengths()
 public void ParseSheet_VerticalFormat_ManyProperties()
 {
     // Arrange
-    SheetInfo sheetInfo = new SheetInfo(sheetName: "ManyProperties", parsingType: ParsingType.Vertical);
+    SheetInfo sheetInfo = new SheetInfo(sheetName: "ManyProperties");
     var sheetData = new List<IList<object>>
     {
         new List<object>
@@ -312,7 +312,7 @@ public void ParseSheet_VerticalFormat_ManyProperties()
     };
 
     // Act
-    var result = _sheetsParsing.ParseSheet(sheetInfo, sheetData);
+    var result = _sheetsParsing.ParseSheet(sheetInfo, sheetData, new VerticalSheetParserBase());
 
     // Assert
     Assert.IsTrue(result.IsOk);
@@ -327,7 +327,7 @@ public void ParseSheet_VerticalFormat_ManyProperties()
 public void ParseSheet_VerticalFormat_ManyEntities()
 {
     // Arrange
-    SheetInfo sheetInfo = new SheetInfo("ManyEntities", ParsingType.Vertical);
+    SheetInfo sheetInfo = new SheetInfo("ManyEntities");
     var sheetData = new List<IList<object>>
     {
         new List<object> { "C4G_NAME", "Id", "Name" },
@@ -341,7 +341,7 @@ public void ParseSheet_VerticalFormat_ManyEntities()
     }
 
     // Act
-    var result = _sheetsParsing.ParseSheet(sheetInfo, sheetData);
+    var result = _sheetsParsing.ParseSheet(sheetInfo, sheetData, new VerticalSheetParserBase());
 
     // Assert
     Assert.IsTrue(result.IsOk);

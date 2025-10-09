@@ -3,9 +3,9 @@ using C4G.Core.Utils;
 
 namespace C4G.Core.SheetsParsing
 {
-    internal sealed class VerticalSheetParser : ISheetParser
+    public sealed class VerticalSheetParserBase : SheetParserBase
     {
-        public Result<ParsedSheet, string> Parse(string sheetName, IList<IList<object>> sheetData)
+        public override Result<ParsedSheet, string> Parse(string sheetName, IList<IList<object>> sheetData)
         {
             IList<object> headersRow = sheetData[0];
             IList<object> typesRow = sheetData[1];

@@ -9,30 +9,16 @@ namespace C4G.Core.SheetsParsing
         private const string TYPE_HEADER = "C4G_TYPE";
         private const string NAME_HEADER = "C4G_NAME";
 
-        private readonly Dictionary<ParsingType, ISheetParser> _parsers;
-
-        public SheetsParsing()
+        public Result<ParsedSheet, string> ParseSheet(SheetInfo sheetInfo, IList<IList<object>> sheetData, SheetParserBase parserBase)
         {
-            _parsers = new Dictionary<ParsingType, ISheetParser>
-            {
-                { ParsingType.Horizontal, new HorizontalSheetParser() },
-                { ParsingType.Vertical, new VerticalSheetParser() }
-            };
-        }
-
-        public Result<ParsedSheet, string> ParseSheet(SheetInfo sheetInfo, IList<IList<object>> sheetData)
-        {
-            bool isValid = ValidateParameters(sheetInfo, sheetData, out string error);
+            bool isValid = ValidateParameters(sheetInfo, sheetData, parserBase, out string error);
             if (!isValid)
                 return Result<ParsedSheet, string>.FromError(error);
 
-            if (!_parsers.TryGetValue(sheetInfo.parsingType, out ISheetParser parser))
-                return Result<ParsedSheet, string>.FromError($"Sheets parsing error. Unsupported parsing type: {sheetInfo.parsingType}");
-
-            return parser.Parse(sheetInfo.sheetName, sheetData);
+            return parserBase.Parse(sheetInfo.sheetName, sheetData);
         }
 
-        private bool ValidateParameters(SheetInfo sheetInfo, IList<IList<object>> sheetData, out string error)
+        private bool ValidateParameters(SheetInfo sheetInfo, IList<IList<object>> sheetData, SheetParserBase parserBase, out string error)
         {
             error = string.Empty;
 
@@ -44,14 +30,14 @@ namespace C4G.Core.SheetsParsing
                 error = "Sheets parsing error. Sheet data must be not null";
             else if (sheetData.Count < 2)
                 error = "Sheets parsing error. Sheet data length must be equal or greater than two";
+            else if (parserBase == null)
+                error = "Sheets parsing error. Parser must be provided";
             else
             {
-                if (sheetInfo.parsingType == ParsingType.Horizontal)
+                if (parserBase is HorizontalSheetParserBase)
                     error = ValidateHorizontalFormat(sheetData);
-                else if (sheetInfo.parsingType == ParsingType.Vertical)
+                else if (parserBase is VerticalSheetParserBase)
                     error = ValidateVerticalFormat(sheetData);
-                else
-                    error = $"Sheets parsing error. Unknown parsing type: {sheetInfo.parsingType}";
             }
 
             return string.IsNullOrEmpty(error);
