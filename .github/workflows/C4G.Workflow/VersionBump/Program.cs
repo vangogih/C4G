@@ -6,7 +6,7 @@ if (args.Length != 1)
 if (!Version.TryParse(args[0], out Version? version))
     Fail($"Incorrect version format '{args[0]}. Should be, semVer: \'1.2.3\'");
 
-var rootPath = Environment.GetEnvironmentVariable("C4G_ROOT");
+var rootPath = Environment.GetEnvironmentVariable("GITHUB_WORKSPACE");
 
 if (!Directory.Exists(rootPath))
     Fail($"Incorrect root path: {rootPath}");
@@ -16,7 +16,7 @@ var unityPackageJsonPath = Path.Combine(rootPath!, "C4G.Unity", "Assets", "C4G",
 if (!File.Exists(unityPackageJsonPath))
     Fail($"Incorrect package.json path: {unityPackageJsonPath}");
 
-var from = "";
+var from = string.Empty;
 // package.json patch
 {
     try

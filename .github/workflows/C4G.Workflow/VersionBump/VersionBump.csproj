@@ -11,6 +11,12 @@
       <Content Include="..\..\..\..\C4G.Unity\Assets\C4G\package.json">
         <Link>package.json</Link>
       </Content>
+      <Content Include="..\..\patch-versions.yaml">
+        <Link>patch-versions.yaml</Link>
+      </Content>
+      <Content Include="..\..\release.yaml">
+        <Link>release.yaml</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

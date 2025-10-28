@@ -1,0 +1,79 @@
+name: Update Version Number
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "git tag you want create. (sample 1.0.0)"
+        required: true
+        type: string
+      push-tag:
+        description: "true = push tag. false = no push tag."
+        required: false
+        type: boolean
+        default: true
+
+  workflow_call:
+    inputs:
+      tag:
+        description: "git tag you want create. (sample 1.0.0)"
+        required: true
+        type: string
+      push-tag:
+        description: "true = push tag. false = no push tag."
+        required: false
+        type: boolean
+        default: true
+    outputs:
+      sha:
+        description: "Git commit sha has changed."
+        value: ${{ jobs.update-version-number.outputs.sha }}
+
+jobs:
+  update-version-number:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      sha: ${{ steps.commit.outputs.sha }}
+    steps:
+      - name: Configure Output variables
+        id: configure
+        run: |
+          echo "git-tag=${{ inputs.tag }}" | tee -a "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Update version number ${{ steps.configure.outputs.git-tag }}
+        working-directory: ./workflows/C4G.Workflow/VersionBump
+        run: dotnet run --no-restore
+
+      - name: Check update on git
+        id: check_update
+        run: git diff --exit-code || echo "changed=1" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Commit files
+        id: commit
+        if: ${{ steps.check_update.outputs.changed == '1' }}
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "${{ steps.configure.outputs.git-tag }}" -a
+          echo "sha=$(git rev-parse HEAD)" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Create Tag
+        if: ${{ steps.check_update.outputs.changed == '1' && inputs.push-tag }}
+        run: git tag ${{ steps.configure.outputs.git-tag }}
+
+      - name: Push changes
+        if: ${{ steps.check_update.outputs.changed == '1' }}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # branch: ${{ github.ref }}
+          branch: 50-release-workflow
+          tags: ${{ inputs.push-tag }}
