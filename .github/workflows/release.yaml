@@ -28,5 +28,5 @@ jobs:
         tag_name: ${{ github.event.inputs.tag }}
         name: v${{ github.event.inputs.tag }}
         draft: true
-        prerelease: false
+        prerelease: true
         generate_release_notes: true
