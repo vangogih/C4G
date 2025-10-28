@@ -1,7 +1,11 @@
-﻿using System.Text.Json.Nodes;
+﻿#!/usr/bin/env dotnet run
+
+// https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/tutorials/file-based-programs
+
+using System.Text.Json.Nodes;
 
 if (args.Length != 1)
-    Fail("Incorrect args amount. Should be 2: rootPath, semVer \'1.2.3\'");
+    Fail("Incorrect args amount. Should be 1: semVer \'1.2.3\'");
 
 if (!Version.TryParse(args[0], out Version? version))
     Fail($"Incorrect version format '{args[0]}. Should be, semVer: \'1.2.3\'");
@@ -9,7 +13,7 @@ if (!Version.TryParse(args[0], out Version? version))
 var rootPath = Environment.GetEnvironmentVariable("GITHUB_WORKSPACE");
 
 if (!Directory.Exists(rootPath))
-    Fail($"Incorrect root path: {rootPath}");
+    Fail($"Incorrect root path: {(string.IsNullOrEmpty(rootPath) ? "EMPTY" : rootPath)}");
 
 var unityPackageJsonPath = Path.Combine(rootPath!, "C4G.Unity", "Assets", "C4G", "package.json");
 

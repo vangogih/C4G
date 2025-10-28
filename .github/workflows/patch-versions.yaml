@@ -46,11 +46,11 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '10.0.100'
 
       - name: Update version number ${{ steps.configure.outputs.git-tag }}
-        working-directory: .github/workflows/C4G.Workflow/VersionBump
-        run: dotnet run --no-restore
+        working-directory: .github/workflows/scripts
+        run: dotnet run --file ./BumpVersion.cs ${{ inputs.tag }}
 
       - name: Check update on git
         id: check_update
