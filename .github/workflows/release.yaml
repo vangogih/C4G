@@ -12,3 +12,21 @@ jobs:
     uses: ./.github/workflows/patch-versions.yaml
     with:
       tag: ${{ github.event.inputs.tag }}
+
+  create-release:
+    needs: [update-version-number]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: softprops/action-gh-release@v1
+      id: create_release
+      with:
+        tag_name: ${{ github.event.inputs.tag }}
+        name: v${{ github.event.inputs.tag }}
+        draft: true
+        prerelease: false
+        generate_release_notes: true
