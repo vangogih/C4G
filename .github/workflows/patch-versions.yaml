@@ -49,7 +49,7 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Update version number ${{ steps.configure.outputs.git-tag }}
-        working-directory: ./workflows/C4G.Workflow/VersionBump
+        working-directory: .github/workflows/C4G.Workflow/VersionBump
         run: dotnet run --no-restore
 
       - name: Check update on git
