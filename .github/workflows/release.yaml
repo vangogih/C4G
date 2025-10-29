@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "tag: git tag you want create. (sample 1.0.0)"
+        required: true
+
+jobs:
+  update-version-number:
+    uses: ./.github/workflows/patch-versions.yaml
+    with:
+      tag: ${{ github.event.inputs.tag }}
+
+  create-release:
+    needs: [update-version-number]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: softprops/action-gh-release@v1
+      id: create_release
+      with:
+        tag_name: ${{ github.event.inputs.tag }}
+        name: v${{ github.event.inputs.tag }}
+        draft: true
+        prerelease: true
+        generate_release_notes: true
