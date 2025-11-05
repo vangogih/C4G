@@ -33,5 +33,47 @@ namespace C4G.Core.SheetsParsing
             var parsedSheet = new ParsedSheet(sheetName, properties, entities);
             return Result<ParsedSheet, string>.FromValue(parsedSheet);
         }
+
+        public override string Validate(IList<IList<object>> sheetData)
+        {
+            IList<object> headersRow = sheetData[0];
+
+            if (headersRow == null)
+                return "Sheets parsing error. Headers row must be not null";
+            
+            if (headersRow.Count != 2)
+                return "Sheets parsing error. Headers row length must be equal to two";
+            
+            if (!(headersRow[0] is string nameHeader) || nameHeader != SheetsParsing.TypeHeader)
+                return $"Sheets parsing error. First header must be equal to '{SheetsParsing.NameHeader}'";
+            
+            if (!(headersRow[1] is string typeHeader) || typeHeader != SheetsParsing.TypeHeader)
+                return $"Sheets parsing error. Second header must be equal to '{SheetsParsing.TypeHeader}'";
+
+            var firstDataRow = sheetData[1];
+
+            if (firstDataRow == null)
+                return "Sheets parsing error. First data row must be not null";
+            
+            if (firstDataRow.Count < 2)
+                return "Sheets parsing error. First data row length must be equal or greater than two";
+
+            int firstDataRowLength = firstDataRow.Count;
+
+            for (int rowIndex = 2; rowIndex < sheetData.Count; rowIndex++)
+            {
+                var dataRow = sheetData[rowIndex];
+
+                if (dataRow == null)
+                    return $"Sheets parsing error. '{rowIndex}' data row must be not null";
+
+                int dataRowLength = dataRow.Count;
+
+                if (dataRowLength != firstDataRowLength)
+                    return $"Sheets parsing error. '{rowIndex}' data row length '{dataRowLength}' must be equal to first data row length '{firstDataRowLength}'";
+            }
+
+            return string.Empty;
+        }
     }
 }

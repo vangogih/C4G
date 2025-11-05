@@ -71,10 +71,10 @@ namespace C4G.Editor
                 GUI.enabled = false;
             }
 
-            if (string.IsNullOrEmpty(_settings.SheetInfos.FirstOrDefault()?.sheetName))
+            if (_settings.SheetConfigurations == null || _settings.SheetConfigurations.Count == 0)
             {
                 GUI.enabled = true;
-                EditorGUILayout.HelpBox("Please, setup sheet name", MessageType.Warning);
+                EditorGUILayout.HelpBox("Please, add at least one sheet with a parser", MessageType.Warning);
                 GUI.enabled = false;
             }
 

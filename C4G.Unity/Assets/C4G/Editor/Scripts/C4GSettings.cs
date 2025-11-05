@@ -47,13 +47,14 @@ namespace C4G.Editor
         public bool IsSerializedConfigsFolderValid => !string.IsNullOrEmpty(_generatedCodeFolderPath) &&
                                                       Directory.Exists(SerializedConfigsFolderFullPath);
 
-        public IReadOnlyList<SheetInfo> SheetInfos => _sheets.Select(e => e.sheetInfo).ToList();
-
-        public SheetParserBase GetParserFor(SheetInfo sheetInfo)
+        public IReadOnlyDictionary<string, SheetParserBase> SheetConfigurations
         {
-            if (sheetInfo == null) return null;
-            var entry = _sheets.FirstOrDefault(e => e != null && e.sheetInfo != null && e.sheetInfo.sheetName == sheetInfo.sheetName);
-            return entry?.parserBase;
+            get
+            {
+                return _sheets
+                    .Where(e => e != null && !string.IsNullOrEmpty(e.sheetName) && e.parserBase != null)
+                    .ToDictionary(e => e.sheetName, e => e.parserBase);
+            }
         }
     }
 }
