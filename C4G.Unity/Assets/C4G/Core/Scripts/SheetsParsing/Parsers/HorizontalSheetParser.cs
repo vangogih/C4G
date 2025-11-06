@@ -36,6 +36,9 @@ namespace C4G.Core.SheetsParsing
 
         public override string Validate(IList<IList<object>> sheetData)
         {
+            if (sheetData.Count < 2)
+                return "Sheets parsing error. Horizontal format requires at least 2 rows (headers and first data row)";
+
             IList<object> headersRow = sheetData[0];
 
             if (headersRow == null)
@@ -44,7 +47,7 @@ namespace C4G.Core.SheetsParsing
             if (headersRow.Count != 2)
                 return "Sheets parsing error. Headers row length must be equal to two";
             
-            if (!(headersRow[0] is string nameHeader) || nameHeader != SheetsParsing.TypeHeader)
+            if (!(headersRow[0] is string nameHeader) || nameHeader != SheetsParsing.NameHeader)
                 return $"Sheets parsing error. First header must be equal to '{SheetsParsing.NameHeader}'";
             
             if (!(headersRow[1] is string typeHeader) || typeHeader != SheetsParsing.TypeHeader)

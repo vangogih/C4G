@@ -19,26 +19,34 @@ namespace C4G.Core.SheetsParsing
         private bool ValidateParameters(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, out string error)
         {
             error = string.Empty;
+
             if (string.IsNullOrEmpty(sheetName))
             {
-                error = "Sheet name is null or empty";
+                error = "Sheets parsing error. Sheet name must be not null or empty";
                 return false;
             }
 
-            else if (string.IsNullOrEmpty(sheetName))
-                error = "Sheets parsing error. Sheet name must be not null or empty";
-            else if (sheetData == null)
-                error = "Sheets parsing error. Sheet data must be not null";
-            else if (sheetData.Count < 2)
-                error = "Sheets parsing error. Sheet data length must be equal or greater than two";
-            else if (parserBase == null)
-                error = "Sheets parsing error. Parser must be provided";
-            else
+            if (parserBase == null)
             {
-                parserBase.Validate(sheetData);
+                error = "Sheets parsing error. Parser must be provided";
+                return false;
             }
 
-            return string.IsNullOrEmpty(error);
+            if (sheetData == null)
+            {
+                error = "Sheets parsing error. Sheet data must be not null";
+                return false;
+            }
+
+            // Delegate detailed validation to the specific parser implementation
+            string parserError = parserBase.Validate(sheetData);
+            if (!string.IsNullOrEmpty(parserError))
+            {
+                error = parserError;
+                return false;
+            }
+
+            return true;
         }
     }
 }
