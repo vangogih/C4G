@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         unityVersion:
-          - 2019.4.40f1
+          - 2019.4.41f2
     steps:
       - name: Checkout
         uses: actions/checkout@v3
