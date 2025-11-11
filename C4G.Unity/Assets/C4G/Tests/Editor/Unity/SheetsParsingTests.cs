@@ -46,7 +46,7 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new HorizontalSheetParserBase());
+            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new HorizontalSheetParser());
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -81,7 +81,7 @@ namespace C4G.Tests.Editor.Unity
 
             // Act
 
-            var parser = new HorizontalSheetParserBase();
+            var parser = new HorizontalSheetParser();
 
             var invalidHeaderResult = _sheetsParsing.ParseSheet(validSheetName, invalidHeaderData, parser);
             var invalidDataLengthResult = _sheetsParsing.ParseSheet(validSheetName, invalidDataLengthData, parser);
@@ -130,7 +130,7 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParserBase());
+            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParser());
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -162,7 +162,7 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParserBase());
+            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParser());
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -197,7 +197,7 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParserBase());
+            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParser());
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -229,9 +229,9 @@ namespace C4G.Tests.Editor.Unity
 
             // Act
             var invalidFirstResult =
-                _sheetsParsing.ParseSheet(validSheetName, invalidFirstHeader, new VerticalSheetParserBase());
+                _sheetsParsing.ParseSheet(validSheetName, invalidFirstHeader, new VerticalSheetParser());
             var invalidSecondResult =
-                _sheetsParsing.ParseSheet(validSheetName, invalidSecondHeader, new VerticalSheetParserBase());
+                _sheetsParsing.ParseSheet(validSheetName, invalidSecondHeader, new VerticalSheetParser());
 
             // Assert
             Assert.IsFalse(invalidFirstResult.IsOk);
@@ -253,7 +253,7 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(validSheetName, twoRowsOnly, new VerticalSheetParserBase());
+            var result = _sheetsParsing.ParseSheet(validSheetName, twoRowsOnly, new VerticalSheetParser());
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -274,7 +274,7 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(validSheetName, oneColumnOnly, new VerticalSheetParserBase());
+            var result = _sheetsParsing.ParseSheet(validSheetName, oneColumnOnly, new VerticalSheetParser());
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -295,7 +295,7 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(validSheetName, inconsistentData, new VerticalSheetParserBase());
+            var result = _sheetsParsing.ParseSheet(validSheetName, inconsistentData, new VerticalSheetParser());
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -323,7 +323,7 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParserBase());
+            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParser());
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -352,7 +352,7 @@ namespace C4G.Tests.Editor.Unity
             }
 
             // Act
-            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParserBase());
+            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParser());
 
             // Assert
             Assert.IsTrue(result.IsOk);

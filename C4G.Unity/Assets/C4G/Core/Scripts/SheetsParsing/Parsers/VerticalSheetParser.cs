@@ -4,7 +4,7 @@ using C4G.Core.Utils;
 namespace C4G.Core.SheetsParsing
 {
     [System.Serializable]
-    public sealed class VerticalSheetParserBase : SheetParserBase
+    public sealed class VerticalSheetParser : SheetParserBase
     {
         public override Result<ParsedSheet, string> Parse(string sheetName, IList<IList<object>> sheetData)
         {
