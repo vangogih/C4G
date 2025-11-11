@@ -76,10 +76,9 @@ namespace C4G.Editor
                 .Where(e => e != null && !string.IsNullOrEmpty(e.sheetName))
                 .GroupBy(e => e.sheetName)
                 .Where(g => g.Count() > 1)
-                .Select(g => g.Key)
-                .ToList();
+                .Select(g => g.Key);
 
-            if (duplicates.Count > 0)
+            if (duplicates.Any())
             {
                 Debug.LogWarning($"C4GSettings contains duplicate sheet names: {string.Join(", ", duplicates)}. " +
                                  "Only the first occurrence will be used.", this);
