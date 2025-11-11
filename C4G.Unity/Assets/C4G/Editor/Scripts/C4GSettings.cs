@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using C4G.Core.Settings;
+using C4G.Core.SheetsParsing;
 using UnityEngine;
 
 namespace C4G.Editor
@@ -8,14 +11,18 @@ namespace C4G.Editor
     public class C4GSettings : ScriptableObject, IC4GSettings
     {
         [SerializeField] private string _tableId;
-        [SerializeField] private string _sheetName;
+        [SerializeField] private string _rootConfigName;
         [SerializeField] private string _clientSecret;
         [SerializeField, FolderReference] private string _generatedCodeFolderPath;
         [SerializeField, FolderReference] private string _serializedConfigsFolderPath;
+        [SerializeField] private List<SheetEntry> _sheets = new List<SheetEntry>();
+
+        private IReadOnlyDictionary<string, SheetParserBase> _cachedSheetConfigurations;
 
         public string TableId => _tableId;
-        public string SheetName => _sheetName;
+        public string RootConfigName => _rootConfigName;
         public string ClientSecret => _clientSecret;
+
         public string GeneratedCodeFolderFullPath
         {
             get
@@ -38,7 +45,44 @@ namespace C4G.Editor
 
         public bool IsGeneratedCodeFolderValid => !string.IsNullOrEmpty(_generatedCodeFolderPath) &&
                                                   Directory.Exists(GeneratedCodeFolderFullPath);
+
         public bool IsSerializedConfigsFolderValid => !string.IsNullOrEmpty(_generatedCodeFolderPath) &&
-                                                  Directory.Exists(SerializedConfigsFolderFullPath);
+                                                      Directory.Exists(SerializedConfigsFolderFullPath);
+
+        public IReadOnlyDictionary<string, SheetParserBase> SheetConfigurations
+        {
+            get
+            {
+                if (_cachedSheetConfigurations == null)
+                {
+                    _cachedSheetConfigurations = _sheets
+                        .Where(e => e != null && !string.IsNullOrEmpty(e.sheetName) && e.parserBase != null)
+                        .GroupBy(e => e.sheetName)
+                        .ToDictionary(g => g.Key, g => g.First().parserBase);
+                }
+                return _cachedSheetConfigurations;
+            }
+        }
+
+        private void OnValidate()
+        {
+            _cachedSheetConfigurations = null;
+            ValidateUniqueSheetNames();
+        }
+
+        private void ValidateUniqueSheetNames()
+        {
+            var duplicates = _sheets
+                .Where(e => e != null && !string.IsNullOrEmpty(e.sheetName))
+                .GroupBy(e => e.sheetName)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key);
+
+            if (duplicates.Any())
+            {
+                Debug.LogWarning($"C4GSettings contains duplicate sheet names: {string.Join(", ", duplicates)}. " +
+                                 "Only the first occurrence will be used.", this);
+            }
+        }
     }
 }
