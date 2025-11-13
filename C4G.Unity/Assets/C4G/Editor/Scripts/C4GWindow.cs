@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using C4G.Core;
@@ -14,7 +13,7 @@ namespace C4G.Editor
         private const string LOG_TAG = "[C4G]";
 
         private bool _isConfigsUpdateInProgress;
-        private C4GSettings _settings;
+        private C4GSettingsProvider _settingsProvider;
         private UnityEditor.Editor _settingsEditor;
 
         [MenuItem("Tools/C4G/Open C4G Window")]
@@ -31,9 +30,9 @@ namespace C4G.Editor
                 GUI.enabled = false;
             }
 
-            if (_settings == null)
+            if (_settingsProvider == null)
             {
-                string[] configGuids = AssetDatabase.FindAssets($"t:{nameof(C4GSettings)}");
+                string[] configGuids = AssetDatabase.FindAssets($"t:{nameof(C4GSettingsProvider)}");
 
                 if (configGuids.Length == 0)
                 {
@@ -48,8 +47,8 @@ namespace C4G.Editor
                 }
 
                 string configPath = AssetDatabase.GUIDToAssetPath(configGuids[0]);
-                _settings = AssetDatabase.LoadAssetAtPath<C4GSettings>(configPath);
-                _settingsEditor = UnityEditor.Editor.CreateEditor(_settings);
+                _settingsProvider = AssetDatabase.LoadAssetAtPath<C4GSettingsProvider>(configPath);
+                _settingsEditor = UnityEditor.Editor.CreateEditor(_settingsProvider);
             }
 
             _settingsEditor.OnInspectorGUI();
@@ -64,35 +63,35 @@ namespace C4G.Editor
 
         private void DrawSettingValidationGUI()
         {
-            if (string.IsNullOrEmpty(_settings.TableId))
+            if (string.IsNullOrEmpty(_settingsProvider.TableId))
             {
                 GUI.enabled = true;
                 EditorGUILayout.HelpBox("Please, setup client table id", MessageType.Warning);
                 GUI.enabled = false;
             }
 
-            if (_settings.SheetConfigurations == null || _settings.SheetConfigurations.Count == 0)
+            if (string.IsNullOrEmpty(_settingsProvider.RootConfigName))
             {
                 GUI.enabled = true;
-                EditorGUILayout.HelpBox("Please, add at least one sheet with a parser", MessageType.Warning);
+                EditorGUILayout.HelpBox("Please, setup root config", MessageType.Warning);
                 GUI.enabled = false;
             }
 
-            if (string.IsNullOrEmpty(_settings.ClientSecret))
+            if (string.IsNullOrEmpty(_settingsProvider.ClientSecret))
             {
                 GUI.enabled = true;
                 EditorGUILayout.HelpBox("Please, setup client secret", MessageType.Warning);
                 GUI.enabled = false;
             }
 
-            if (!_settings.IsGeneratedCodeFolderValid)
+            if (!_settingsProvider.IsGeneratedCodeFolderValid)
             {
                 GUI.enabled = true;
                 EditorGUILayout.HelpBox("Please, browse valid generated code folder", MessageType.Warning);
                 GUI.enabled = false;
             }
 
-            if (!_settings.IsSerializedConfigsFolderValid)
+            if (!_settingsProvider.IsSerializedConfigsFolderValid)
             {
                 GUI.enabled = true;
                 EditorGUILayout.HelpBox("Please, browse valid generated data folder", MessageType.Warning);
@@ -111,7 +110,7 @@ namespace C4G.Editor
 
             try
             {
-                C4GFacade c4gFacade = new C4GFacade(_settings);
+                C4GFacade c4gFacade = new C4GFacade(_settingsProvider);
 
                 Task<Result<string>> c4gRunTask = c4gFacade.RunAsync(cts.Token);
                 while (!c4gRunTask.IsCompleted && !c4gRunTask.IsCanceled && !c4gRunTask.IsFaulted)
@@ -128,13 +127,13 @@ namespace C4G.Editor
                     Debug.Log($"{LOG_TAG} Successful Run");
                 else
                     Debug.LogError($"{LOG_TAG} Error During Run\n" +
-                                   $"{c4gRunResult.Error}");
+                                   $"{c4gRunResult}");
             }
             catch (TaskCanceledException) { }
             catch (Exception ex)
             {
                 Debug.LogError($"{LOG_TAG} Error during configs update\n" +
-                               $"{ex}\n");
+                               $"{ex.Message}\n");
             }
             finally
             {
