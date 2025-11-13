@@ -3,12 +3,11 @@ using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
 
-namespace C4G.Tests.Editor.Unity
+namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 {
-    [TestFixture]
-    public partial class ConfigsSerializationTests
+    public partial class ConfigsSerializerTests
     {
-        public sealed class FloatTests : ConfigsSerializationTests
+        public sealed class FloatTests : ConfigsSerializerTests
         {
             [Test]
             public void Serialize_FloatSpecialValues()
@@ -30,8 +29,7 @@ namespace C4G.Tests.Editor.Unity
 
                 string expectedOutput =
                     @"{
-  ""name"": ""SpecialFloatSheet"",
-  ""entities"": [
+  ""SpecialFloatSheet"": [
     {
       ""Infinity"": ""Infinity"",
       ""NegInfinity"": ""-Infinity"",
@@ -42,7 +40,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet }, _parsersByName);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -68,8 +66,7 @@ namespace C4G.Tests.Editor.Unity
 
                 string expectedOutput =
                     @"{
-  ""name"": ""FloatListSheet"",
-  ""entities"": [
+  ""FloatListSheet"": [
     {
       ""Name"": ""Player1"",
       ""Scores"": [
@@ -89,7 +86,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet }, _parsersByName);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);

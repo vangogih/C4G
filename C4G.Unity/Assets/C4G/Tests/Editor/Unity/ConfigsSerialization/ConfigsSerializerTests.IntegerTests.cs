@@ -3,12 +3,11 @@ using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
 
-namespace C4G.Tests.Editor.Unity
+namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 {
-    [TestFixture]
-    public partial class ConfigsSerializationTests
+    public partial class ConfigsSerializerTests
     {
-        public sealed class IntegerTests : ConfigsSerializationTests
+        public sealed class IntegerTests : ConfigsSerializerTests
         {
             [Test]
             public void Serialize_ExtremeIntegerValues()
@@ -29,8 +28,7 @@ namespace C4G.Tests.Editor.Unity
 
                 string expectedOutput =
                     @"{
-  ""name"": ""ExtremeValuesSheet"",
-  ""entities"": [
+  ""ExtremeValuesSheet"": [
     {
       ""MaxInt"": 2147483647,
       ""MinInt"": -2147483648,
@@ -40,7 +38,7 @@ namespace C4G.Tests.Editor.Unity
 }";
 
                 // Act
-                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet }, _parsersByName);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -63,7 +61,7 @@ namespace C4G.Tests.Editor.Unity
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
-                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet }, _parsersByName);
 
                 // Assert
                 Assert.IsFalse(output.IsOk);
@@ -87,7 +85,7 @@ namespace C4G.Tests.Editor.Unity
                 var parsedSheet = new ParsedSheet(name, properties, entities);
 
                 // Act
-                Result<string, string> output = _configSerialization.Serialize(parsedSheet);
+                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet }, _parsersByName);
 
                 // Assert
                 Assert.IsFalse(output.IsOk);
