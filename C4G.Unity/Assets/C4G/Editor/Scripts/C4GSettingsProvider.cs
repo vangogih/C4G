@@ -82,7 +82,9 @@ namespace C4G.Editor
             {
                 if (string.IsNullOrEmpty(_generatedCodeFolderPath))
                     return null;
-                return Path.GetFullPath(Path.Combine(Application.dataPath, _generatedCodeFolderPath));
+                string assetsFolder = Application.dataPath;
+                string projectFolder = Directory.GetParent(assetsFolder).FullName;
+                return Path.GetFullPath(Path.Combine(projectFolder, _generatedCodeFolderPath));
             }
         }
 
@@ -92,7 +94,9 @@ namespace C4G.Editor
             {
                 if (string.IsNullOrEmpty(_serializedConfigsFolderPath))
                     return null;
-                return Path.GetFullPath(Path.Combine(Application.dataPath, _serializedConfigsFolderPath));
+                string assetsFolder = Application.dataPath;
+                string projectFolder = Directory.GetParent(assetsFolder).FullName;
+                return Path.GetFullPath(Path.Combine(projectFolder, _serializedConfigsFolderPath));
             }
         }
 
