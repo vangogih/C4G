@@ -60,8 +60,8 @@ jobs:
         id: commit
         if: ${{ steps.check_update.outputs.changed == '1' }}
         run: |
-          git config --local user.email "${{ secrets.ADMIN_EMAIL }}"
-          git config --local user.name "${{ secrets.ADMIN_NAME }}"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           git commit -m "${{ steps.configure.outputs.git-tag }}" -a
           echo "sha=$(git rev-parse HEAD)" | tee -a "$GITHUB_OUTPUT"
 
