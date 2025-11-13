@@ -58,10 +58,13 @@ jobs:
 
       - name: Commit files
         id: commit
+        env:
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_NAME: ${{ secrets.ADMIN_NAME }}
         if: ${{ steps.check_update.outputs.changed == '1' }}
         run: |
-          git config --local user.email "${{ secrets.ADMIN_EMAIL }}"
-          git config --local user.name "${{ secrets.ADMIN_NAME }}"
+          git config --local user.email "$ADMIN_EMAIL"
+          git config --local user.name "$ADMIN_NAME"
           git commit -m "${{ steps.configure.outputs.git-tag }}" -a
           echo "sha=$(git rev-parse HEAD)" | tee -a "$GITHUB_OUTPUT"
 
