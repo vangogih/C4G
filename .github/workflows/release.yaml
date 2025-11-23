@@ -12,6 +12,7 @@ jobs:
     uses: ./.github/workflows/patch-versions.yaml
     with:
       tag: ${{ github.event.inputs.tag }}
+    secrets: inherit
 
   create-release:
     needs: [update-version-number]
