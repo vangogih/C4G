@@ -42,6 +42,8 @@ jobs:
           echo "git-tag=${{ inputs.tag }}" | tee -a "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ADMIN_TOKEN }}
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
@@ -71,8 +73,6 @@ jobs:
 
       - name: Push changes
         if: ${{ steps.check_update.outputs.changed == '1' }}
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.ADMIN_TOKEN }}
-          branch: ${{ github.ref }}
-          tags: ${{ inputs.push-tag }}
+        run: |
+          git push
+          git push --tags
