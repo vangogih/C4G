@@ -114,7 +114,7 @@ namespace C4G.Editor
         private void ValidateUniqueSheetNames()
         {
             var duplicates = _sheetDefinitions
-                .Where(e => string.IsNullOrEmpty(e.Name))
+                .Where(e => !string.IsNullOrEmpty(e.Name))
                 .GroupBy(e => e.Name)
                 .Where(g => g.Count() > 1)
                 .Select(g => g.Key);
