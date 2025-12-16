@@ -6,7 +6,7 @@ namespace C4G.Core.SheetsParsing
     [System.Serializable]
     public sealed class HorizontalSheetParser : SheetParserBase
     {
-        public override Result<ParsedSheet, string> Parse(string sheetName, IList<IList<object>> sheetData)
+        public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<ParsedSheet> parsedSheets)
         {
             int dataRowLength = sheetData[1].Count;
 
@@ -31,7 +31,9 @@ namespace C4G.Core.SheetsParsing
             }
 
             var parsedSheet = new ParsedSheet(sheetName, properties, entities);
-            return Result<ParsedSheet, string>.FromValue(parsedSheet);
+            parsedSheets.Add(parsedSheet);
+
+            return Result<string>.Ok;
         }
 
         public override string Validate(string sheetName, IList<IList<object>> sheetData)
