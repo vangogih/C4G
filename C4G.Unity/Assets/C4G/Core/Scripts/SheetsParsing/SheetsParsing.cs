@@ -8,15 +8,20 @@ namespace C4G.Core.SheetsParsing
         public const string TYPE_HEADER = "C4G_TYPE";
         public const string NAME_HEADER = "C4G_NAME";
 
-        public Result<ParsedSheet, string> ParseSheet(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase)
+        public Result<string> ParseSheetNonAlloc(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, List<ParsedSheet> parsedSheets)
         {
-            if (!ValidateParameters(sheetName, sheetData, parserBase, out string error))
-                return Result<ParsedSheet, string>.FromError(error);
+            if (!ValidateParameters(sheetName, sheetData, parserBase, parsedSheets, out string error))
+                return Result<string>.FromError(error);
 
-            return parserBase.Parse(sheetName, sheetData);
+            return parserBase.ParseNonAlloc(sheetName, sheetData, parsedSheets);
         }
 
-        private static bool ValidateParameters(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, out string error)
+        private static bool ValidateParameters(
+            string sheetName,
+            IList<IList<object>> sheetData,
+            SheetParserBase parserBase,
+            List<ParsedSheet> parsedSheets,
+            out string error)
         {
             error = string.Empty;
 
@@ -42,6 +47,12 @@ namespace C4G.Core.SheetsParsing
             if (!string.IsNullOrEmpty(parserError))
             {
                 error = parserError;
+                return false;
+            }
+
+            if (parsedSheets == null)
+            {
+                error = $"Sheets parsing error '{sheetName}'. Parsed sheets list must not be null";
                 return false;
             }
 

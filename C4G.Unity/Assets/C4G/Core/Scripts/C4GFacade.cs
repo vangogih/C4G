@@ -60,23 +60,30 @@ namespace C4G.Core
             }
 
             var parsedSheets = new List<ParsedSheet>(sheetsCount);
+            var cycleParsedSheetsBuffer = new List<ParsedSheet>(sheetsCount);
 
             foreach ((KeyValuePair<string, SheetParserBase> parserByName, IList<IList<object>> sheet) in sheets)
             {
-                var sheetParsingResult = _sheetsParsing.ParseSheet(parserByName.Key, sheet, parserByName.Value);
+                cycleParsedSheetsBuffer.Clear();
+
+                var sheetParsingResult = _sheetsParsing.ParseSheetNonAlloc(parserByName.Key, sheet, parserByName.Value, cycleParsedSheetsBuffer);
                 if (!sheetParsingResult.IsOk)
-                    return sheetParsingResult.WithoutValue();
+                    return sheetParsingResult;
 
-                parsedSheets.Add(sheetParsingResult.Value);
+                parsedSheets.AddRange(cycleParsedSheetsBuffer);
+            }
 
-                var dtoClassGenerationResult = _codeGenerator.GenerateDTOClass(sheetParsingResult.Value, settings.AliasParsersByName);
+            foreach (ParsedSheet parsedSheet in parsedSheets)
+            {
+                var dtoClassGenerationResult = _codeGenerator.GenerateDTOClass(parsedSheet, settings.AliasParsersByName);
                 if (!dtoClassGenerationResult.IsOk)
                     return dtoClassGenerationResult.WithoutValue();
 
                 var writeDtoClassToFileResult = _io.WriteToFile(
                     settings.GeneratedCodeFolderFullPath,
-                    $"{sheetParsingResult.Value.Name}.cs",
+                    $"{parsedSheet.Name}.cs",
                     dtoClassGenerationResult.Value);
+
                 if (!writeDtoClassToFileResult.IsOk)
                     return writeDtoClassToFileResult;
             }

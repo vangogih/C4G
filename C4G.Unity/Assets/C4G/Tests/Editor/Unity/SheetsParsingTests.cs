@@ -46,11 +46,13 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new HorizontalSheetParser());
+            var parsedSheets = new List<ParsedSheet>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalSheetParser(), parsedSheets);
 
             // Assert
             Assert.IsTrue(result.IsOk);
-            var parsedSheet = result.Value;
+            Assert.AreEqual(1, parsedSheets.Count);
+            var parsedSheet = parsedSheets[0];
             Assert.AreEqual(sheetName, parsedSheet.Name);
             CollectionAssert.AreEqual(expectedProperties, parsedSheet.Properties);
             CollectionAssert.AreEqual(expectedEntities, parsedSheet.Entities);
@@ -80,14 +82,22 @@ namespace C4G.Tests.Editor.Unity
             var emptySheetData = new List<IList<object>>();
 
             // Act
-
             var parser = new HorizontalSheetParser();
 
-            var invalidHeaderResult = _sheetsParsing.ParseSheet(validSheetName, invalidHeaderData, parser);
-            var invalidDataLengthResult = _sheetsParsing.ParseSheet(validSheetName, invalidDataLengthData, parser);
-            var nullSheetNameResult = _sheetsParsing.ParseSheet(null, validSheetData, parser);
-            var nullSheetDataResult = _sheetsParsing.ParseSheet(validSheetName, null, parser);
-            var emptySheetResult = _sheetsParsing.ParseSheet(validSheetName, emptySheetData, parser);
+            var parsedSheets1 = new List<ParsedSheet>();
+            var invalidHeaderResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, invalidHeaderData, parser, parsedSheets1);
+            
+            var parsedSheets2 = new List<ParsedSheet>();
+            var invalidDataLengthResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, invalidDataLengthData, parser, parsedSheets2);
+            
+            var parsedSheets3 = new List<ParsedSheet>();
+            var nullSheetNameResult = _sheetsParsing.ParseSheetNonAlloc(null, validSheetData, parser, parsedSheets3);
+            
+            var parsedSheets4 = new List<ParsedSheet>();
+            var nullSheetDataResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, null, parser, parsedSheets4);
+            
+            var parsedSheets5 = new List<ParsedSheet>();
+            var emptySheetResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, emptySheetData, parser, parsedSheets5);
 
             // Assert
             Assert.IsFalse(invalidHeaderResult.IsOk);
@@ -130,11 +140,13 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParser());
+            var parsedSheets = new List<ParsedSheet>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedSheets);
 
             // Assert
             Assert.IsTrue(result.IsOk);
-            var parsedSheet = result.Value;
+            Assert.AreEqual(1, parsedSheets.Count);
+            var parsedSheet = parsedSheets[0];
             Assert.AreEqual(sheetName, parsedSheet.Name);
             CollectionAssert.AreEqual(expectedProperties, parsedSheet.Properties);
             CollectionAssert.AreEqual(expectedEntities, parsedSheet.Entities);
@@ -162,11 +174,13 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParser());
+            var parsedSheets = new List<ParsedSheet>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedSheets);
 
             // Assert
             Assert.IsTrue(result.IsOk);
-            var parsedSheet = result.Value;
+            Assert.AreEqual(1, parsedSheets.Count);
+            var parsedSheet = parsedSheets[0];
             Assert.AreEqual(sheetName, parsedSheet.Name);
             CollectionAssert.AreEqual(expectedProperties, parsedSheet.Properties);
             CollectionAssert.AreEqual(expectedEntities, parsedSheet.Entities);
@@ -197,11 +211,13 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParser());
+            var parsedSheets = new List<ParsedSheet>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedSheets);
 
             // Assert
             Assert.IsTrue(result.IsOk);
-            var parsedSheet = result.Value;
+            Assert.AreEqual(1, parsedSheets.Count);
+            var parsedSheet = parsedSheets[0];
             Assert.AreEqual(sheetName, parsedSheet.Name);
             CollectionAssert.AreEqual(expectedProperties, parsedSheet.Properties);
             CollectionAssert.AreEqual(expectedEntities, parsedSheet.Entities);
@@ -228,10 +244,13 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
+            var parsedSheets1 = new List<ParsedSheet>();
             var invalidFirstResult =
-                _sheetsParsing.ParseSheet(validSheetName, invalidFirstHeader, new VerticalSheetParser());
+                _sheetsParsing.ParseSheetNonAlloc(validSheetName, invalidFirstHeader, new VerticalSheetParser(), parsedSheets1);
+            
+            var parsedSheets2 = new List<ParsedSheet>();
             var invalidSecondResult =
-                _sheetsParsing.ParseSheet(validSheetName, invalidSecondHeader, new VerticalSheetParser());
+                _sheetsParsing.ParseSheetNonAlloc(validSheetName, invalidSecondHeader, new VerticalSheetParser(), parsedSheets2);
 
             // Assert
             Assert.IsFalse(invalidFirstResult.IsOk);
@@ -253,7 +272,8 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(validSheetName, twoRowsOnly, new VerticalSheetParser());
+            var parsedSheets = new List<ParsedSheet>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, twoRowsOnly, new VerticalSheetParser(), parsedSheets);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -274,7 +294,8 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(validSheetName, oneColumnOnly, new VerticalSheetParser());
+            var parsedSheets = new List<ParsedSheet>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, oneColumnOnly, new VerticalSheetParser(), parsedSheets);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -295,7 +316,8 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(validSheetName, inconsistentData, new VerticalSheetParser());
+            var parsedSheets = new List<ParsedSheet>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, inconsistentData, new VerticalSheetParser(), parsedSheets);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -323,11 +345,13 @@ namespace C4G.Tests.Editor.Unity
             };
 
             // Act
-            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParser());
+            var parsedSheets = new List<ParsedSheet>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedSheets);
 
             // Assert
             Assert.IsTrue(result.IsOk);
-            var parsedSheet = result.Value;
+            Assert.AreEqual(1, parsedSheets.Count);
+            var parsedSheet = parsedSheets[0];
             Assert.AreEqual(10, parsedSheet.Properties.Count);
             Assert.AreEqual(2, parsedSheet.Entities.Count);
             Assert.AreEqual(10, parsedSheet.Entities[0].Count);
@@ -352,11 +376,13 @@ namespace C4G.Tests.Editor.Unity
             }
 
             // Act
-            var result = _sheetsParsing.ParseSheet(sheetName, sheetData, new VerticalSheetParser());
+            var parsedSheets = new List<ParsedSheet>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedSheets);
 
             // Assert
             Assert.IsTrue(result.IsOk);
-            var parsedSheet = result.Value;
+            Assert.AreEqual(1, parsedSheets.Count);
+            var parsedSheet = parsedSheets[0];
             Assert.AreEqual(2, parsedSheet.Properties.Count);
             Assert.AreEqual(100, parsedSheet.Entities.Count);
         }
