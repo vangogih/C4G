@@ -132,8 +132,8 @@ namespace C4G.Editor
             catch (TaskCanceledException) { }
             catch (Exception ex)
             {
-                Debug.LogError($"{LOG_TAG} Error during configs update\n" +
-                               $"{ex.Message}\n");
+                Debug.LogError($"{LOG_TAG} Exception during configs update");
+                Debug.LogException(ex);
             }
             finally
             {
