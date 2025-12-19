@@ -1,115 +1,19 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using C4G.Core.SheetsParsing;
 using NUnit.Framework;
 
-namespace C4G.Tests.Editor.Unity
+namespace C4G.Tests.Editor.Unity.SheetsParsing
 {
-    public class SheetsParsingTests
+    [TestFixture]
+    public class VerticalSheetParserTests
     {
-        private SheetsParsing _sheetsParsing;
+        private Core.SheetsParsing.SheetsParsing _sheetsParsing;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            _sheetsParsing = new SheetsParsing();
+            _sheetsParsing = new Core.SheetsParsing.SheetsParsing();
         }
-
-        #region HorizontalParsingTests
-
-        [Test]
-        public void ParseSheet_UsualCase()
-        {
-            // Arrange
-            string sheetName = "TestSheet";
-            var sheetData = new List<IList<object>>
-            {
-                new List<object> { "C4G_NAME", "C4G_TYPE" },
-                new List<object> { "Id", "int", "1", "2", "3" },
-                new List<object> { "Name", "string", "Alice", "Bob", "Charlie" },
-                new List<object> { "Rank", "float", "5.3", "6.6", "3.5" },
-                new List<object> { "Range", "double", "8.5", "35.1", "33" },
-                new List<object> { "Slots", "List<int>", "1,2,3", "5,6,8", "3,5" }
-            };
-            var expectedProperties = new List<ParsedPropertyInfo>
-            {
-                new ParsedPropertyInfo("Id", "int"),
-                new ParsedPropertyInfo("Name", "string"),
-                new ParsedPropertyInfo("Rank", "float"),
-                new ParsedPropertyInfo("Range", "double"),
-                new ParsedPropertyInfo("Slots", "List<int>")
-            };
-            var expectedEntities = new List<IReadOnlyCollection<string>>
-            {
-                new List<string> { "1", "Alice", "5.3", "8.5", "1,2,3" },
-                new List<string> { "2", "Bob", "6.6", "35.1", "5,6,8" },
-                new List<string> { "3", "Charlie", "3.5", "33", "3,5" }
-            };
-
-            // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalSheetParser(), parsedSheets);
-
-            // Assert
-            Assert.IsTrue(result.IsOk);
-            Assert.AreEqual(1, parsedSheets.Count);
-            var parsedSheet = parsedSheets[0];
-            Assert.AreEqual(sheetName, parsedSheet.Name);
-            CollectionAssert.AreEqual(expectedProperties, parsedSheet.Properties);
-            CollectionAssert.AreEqual(expectedEntities, parsedSheet.Entities);
-        }
-
-        [Test]
-        public void ParseSheet_WrongInputLeadsToError()
-        {
-            // Arrange
-            string validSheetName = "TestSheet";
-            var invalidHeaderData = new List<IList<object>>
-            {
-                new List<object> { "INVALID_NAME", "C4G_TYPE" },
-                new List<object> { "Id", "int", "1" }
-            };
-            var invalidDataLengthData = new List<IList<object>>
-            {
-                new List<object> { "C4G_NAME", "C4G_TYPE" },
-                new List<object> { "Id", "int", "1" },
-                new List<object> { "Name", "string" } // Data row length mismatch
-            };
-            var validSheetData = new List<IList<object>>
-            {
-                new List<object> { "C4G_NAME", "C4G_TYPE" },
-                new List<object> { "Id", "int", "1" }
-            };
-            var emptySheetData = new List<IList<object>>();
-
-            // Act
-            var parser = new HorizontalSheetParser();
-
-            var parsedSheets1 = new List<ParsedSheet>();
-            var invalidHeaderResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, invalidHeaderData, parser, parsedSheets1);
-            
-            var parsedSheets2 = new List<ParsedSheet>();
-            var invalidDataLengthResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, invalidDataLengthData, parser, parsedSheets2);
-            
-            var parsedSheets3 = new List<ParsedSheet>();
-            var nullSheetNameResult = _sheetsParsing.ParseSheetNonAlloc(null, validSheetData, parser, parsedSheets3);
-            
-            var parsedSheets4 = new List<ParsedSheet>();
-            var nullSheetDataResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, null, parser, parsedSheets4);
-            
-            var parsedSheets5 = new List<ParsedSheet>();
-            var emptySheetResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, emptySheetData, parser, parsedSheets5);
-
-            // Assert
-            Assert.IsFalse(invalidHeaderResult.IsOk);
-            Assert.IsFalse(invalidDataLengthResult.IsOk);
-            Assert.IsFalse(nullSheetNameResult.IsOk);
-            Assert.IsFalse(nullSheetDataResult.IsOk);
-            Assert.IsFalse(emptySheetResult.IsOk);
-        }
-
-        #endregion
-
-        #region VerticalParsingTests
 
         [Test]
         public void ParseSheet_VerticalFormat_UsualCase()
@@ -221,42 +125,6 @@ namespace C4G.Tests.Editor.Unity
             Assert.AreEqual(sheetName, parsedSheet.Name);
             CollectionAssert.AreEqual(expectedProperties, parsedSheet.Properties);
             CollectionAssert.AreEqual(expectedEntities, parsedSheet.Entities);
-        }
-
-        [Test]
-        public void ParseSheet_VerticalFormat_InvalidHeaders()
-        {
-            // Arrange
-            string validSheetName = "TestSheet";
-
-            var invalidFirstHeader = new List<IList<object>>
-            {
-                new List<object> { "INVALID_NAME", "Id", "Name" },
-                new List<object> { "C4G_TYPE", "int", "string" },
-                new List<object> { "Entity1", "1", "Alice" }
-            };
-
-            var invalidSecondHeader = new List<IList<object>>
-            {
-                new List<object> { "C4G_NAME", "Id", "Name" },
-                new List<object> { "INVALID_TYPE", "int", "string" },
-                new List<object> { "Entity1", "1", "Alice" }
-            };
-
-            // Act
-            var parsedSheets1 = new List<ParsedSheet>();
-            var invalidFirstResult =
-                _sheetsParsing.ParseSheetNonAlloc(validSheetName, invalidFirstHeader, new VerticalSheetParser(), parsedSheets1);
-            
-            var parsedSheets2 = new List<ParsedSheet>();
-            var invalidSecondResult =
-                _sheetsParsing.ParseSheetNonAlloc(validSheetName, invalidSecondHeader, new VerticalSheetParser(), parsedSheets2);
-
-            // Assert
-            Assert.IsFalse(invalidFirstResult.IsOk);
-            Assert.IsTrue(invalidFirstResult.Error.Contains("C4G_NAME"));
-            Assert.IsFalse(invalidSecondResult.IsOk);
-            Assert.IsTrue(invalidSecondResult.Error.Contains("C4G_TYPE"));
         }
 
         [Test]
@@ -386,7 +254,5 @@ namespace C4G.Tests.Editor.Unity
             Assert.AreEqual(2, parsedSheet.Properties.Count);
             Assert.AreEqual(100, parsedSheet.Entities.Count);
         }
-
-        #endregion
     }
 }
