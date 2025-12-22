@@ -15,18 +15,20 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             _sheetsParsing = new Core.SheetsParsing.SheetsParsing();
         }
 
+        #region Positive Cases
+
         [Test]
-        public void ParseSheet_VerticalFormat_UsualCase()
+        public void ParseSheet_Positive_UsualCase()
         {
             // Arrange
             string sheetName = "TestSheet";
             var sheetData = new List<IList<object>>
             {
-                new List<object> { "C4G_NAME", "Id", "Name", "Rank", "Range", "Slots" },
-                new List<object> { "C4G_TYPE", "int", "string", "float", "double", "List<int>" },
-                new List<object> { "Entity1", "1", "Alice", "5.3", "8.5", "1,2,3" },
-                new List<object> { "Entity2", "2", "Bob", "6.6", "35.1", "5,6,8" },
-                new List<object> { "Entity3", "3", "Charlie", "3.5", "33", "3,5" }
+                new List<object> { "Id", "Name", "Rank", "Range", "Slots" },
+                new List<object> { "int", "string", "float", "double", "List<int>" },
+                new List<object> { "1", "Alice", "5.3", "8.5", "1,2,3" },
+                new List<object> { "2", "Bob", "6.6", "35.1", "5,6,8" },
+                new List<object> { "3", "Charlie", "3.5", "33", "3,5" }
             };
             var expectedProperties = new List<ParsedPropertyInfo>
             {
@@ -57,15 +59,15 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
         }
 
         [Test]
-        public void ParseSheet_VerticalFormat_SingleEntity()
+        public void ParseSheet_Positive_SingleEntity()
         {
             // Arrange
             string sheetName = "SingleEntity";
             var sheetData = new List<IList<object>>
             {
-                new List<object> { "C4G_NAME", "Id", "Name" },
-                new List<object> { "C4G_TYPE", "int", "string" },
-                new List<object> { "Entity1", "100", "Test" }
+                new List<object> { "Id", "Name" },
+                new List<object> { "int", "string" },
+                new List<object> { "100", "Test" }
             };
             var expectedProperties = new List<ParsedPropertyInfo>
             {
@@ -91,17 +93,17 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
         }
 
         [Test]
-        public void ParseSheet_VerticalFormat_SingleProperty()
+        public void ParseSheet_Positive_SingleProperty()
         {
             // Arrange
             string sheetName = "SingleProperty";
             var sheetData = new List<IList<object>>
             {
-                new List<object> { "C4G_NAME", "Id" },
-                new List<object> { "C4G_TYPE", "int" },
-                new List<object> { "Entity1", "1" },
-                new List<object> { "Entity2", "2" },
-                new List<object> { "Entity3", "3" }
+                new List<object> { "Id" },
+                new List<object> { "int" },
+                new List<object> { "1" },
+                new List<object> { "2" },
+                new List<object> { "3" }
             };
             var expectedProperties = new List<ParsedPropertyInfo>
             {
@@ -128,72 +130,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
         }
 
         [Test]
-        public void ParseSheet_VerticalFormat_InsufficientRows()
-        {
-            // Arrange
-            string validSheetName = "TestSheet";
-
-            var twoRowsOnly = new List<IList<object>>
-            {
-                new List<object> { "C4G_NAME", "Id" },
-                new List<object> { "C4G_TYPE", "int" }
-            };
-
-            // Act
-            var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, twoRowsOnly, new VerticalSheetParser(), parsedConfigs);
-
-            // Assert
-            Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("at least 3 rows"));
-        }
-
-        [Test]
-        public void ParseSheet_VerticalFormat_InsufficientColumns()
-        {
-            // Arrange
-            string validSheetName = "TestSheet";
-
-            var oneColumnOnly = new List<IList<object>>
-            {
-                new List<object> { "C4G_NAME" },
-                new List<object> { "C4G_TYPE" },
-                new List<object> { "Entity1" }
-            };
-
-            // Act
-            var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, oneColumnOnly, new VerticalSheetParser(), parsedConfigs);
-
-            // Assert
-            Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("at least 2 columns"));
-        }
-
-        [Test]
-        public void ParseSheet_VerticalFormat_InconsistentRowLengths()
-        {
-            // Arrange
-            string validSheetName = "TestSheet";
-
-            var inconsistentData = new List<IList<object>>
-            {
-                new List<object> { "C4G_NAME", "Id", "Name", "Rank" },
-                new List<object> { "C4G_TYPE", "int", "string", "float" },
-                new List<object> { "Entity1", "1", "Alice" } // Missing column
-            };
-
-            // Act
-            var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, inconsistentData, new VerticalSheetParser(), parsedConfigs);
-
-            // Assert
-            Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("must be equal to first row length"));
-        }
-
-        [Test]
-        public void ParseSheet_VerticalFormat_ManyProperties()
+        public void ParseSheet_Positive_ManyProperties()
         {
             // Arrange
             string sheetName = "ManyProperties";
@@ -201,15 +138,14 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             {
                 new List<object>
                 {
-                    "C4G_NAME", "Prop1", "Prop2", "Prop3", "Prop4", "Prop5", "Prop6", "Prop7", "Prop8", "Prop9",
-                    "Prop10"
+                    "Prop1", "Prop2", "Prop3", "Prop4", "Prop5", "Prop6", "Prop7", "Prop8", "Prop9", "Prop10"
                 },
                 new List<object>
                 {
-                    "C4G_TYPE", "int", "string", "float", "double", "bool", "int", "string", "float", "double", "bool"
+                    "int", "string", "float", "double", "bool", "int", "string", "float", "double", "bool"
                 },
-                new List<object> { "Entity1", "1", "a", "1.1", "2.2", "true", "10", "aa", "11.1", "22.2", "false" },
-                new List<object> { "Entity2", "2", "b", "3.3", "4.4", "false", "20", "bb", "33.3", "44.4", "true" }
+                new List<object> { "1", "a", "1.1", "2.2", "true", "10", "aa", "11.1", "22.2", "false" },
+                new List<object> { "2", "b", "3.3", "4.4", "false", "20", "bb", "33.3", "44.4", "true" }
             };
 
             // Act
@@ -227,20 +163,20 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
         }
 
         [Test]
-        public void ParseSheet_VerticalFormat_ManyEntities()
+        public void ParseSheet_Positive_ManyEntities()
         {
             // Arrange
             string sheetName = "ManyEntities";
             var sheetData = new List<IList<object>>
             {
-                new List<object> { "C4G_NAME", "Id", "Name" },
-                new List<object> { "C4G_TYPE", "int", "string" }
+                new List<object> { "Id", "Name" },
+                new List<object> { "int", "string" }
             };
 
             // Add 100 entities
             for (int i = 0; i < 100; i++)
             {
-                sheetData.Add(new List<object> { $"Entity{i}", i.ToString(), $"Name{i}" });
+                sheetData.Add(new List<object> { i.ToString(), $"Name{i}" });
             }
 
             // Act
@@ -254,5 +190,164 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             Assert.AreEqual(2, parsedConfig.Properties.Count);
             Assert.AreEqual(100, parsedConfig.Entities.Count);
         }
+
+        #endregion
+
+        #region Negative Cases
+
+        [Test]
+        public void ParseSheet_Negative_InsufficientRows()
+        {
+            // Arrange
+            string validSheetName = "TestSheet";
+
+            var twoRowsOnly = new List<IList<object>>
+            {
+                new List<object> { "Id" },
+                new List<object> { "int" }
+            };
+
+            // Act
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, twoRowsOnly, new VerticalSheetParser(), parsedConfigs);
+
+            // Assert
+            Assert.IsFalse(result.IsOk);
+            Assert.IsTrue(result.Error.Contains("< 3"));
+        }
+
+        [Test]
+        public void ParseSheet_Negative_InsufficientColumns()
+        {
+            // Arrange
+            string validSheetName = "TestSheet";
+
+            var emptyColumns = new List<IList<object>>
+            {
+                new List<object> { },
+                new List<object> { },
+                new List<object> { }
+            };
+
+            // Act
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, emptyColumns, new VerticalSheetParser(), parsedConfigs);
+
+            // Assert
+            Assert.IsFalse(result.IsOk);
+            Assert.IsTrue(result.Error.Contains("< 1"));
+        }
+
+        [Test]
+        public void ParseSheet_Negative_InconsistentRowLengths()
+        {
+            // Arrange
+            string validSheetName = "TestSheet";
+
+            var inconsistentData = new List<IList<object>>
+            {
+                new List<object> { "Id", "Name", "Rank" },
+                new List<object> { "int", "string", "float" },
+                new List<object> { "1", "Alice" } // Missing column
+            };
+
+            // Act
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, inconsistentData, new VerticalSheetParser(), parsedConfigs);
+
+            // Assert
+            Assert.IsFalse(result.IsOk);
+            Assert.IsTrue(result.Error.Contains("< expected"));
+        }
+
+        [Test]
+        public void ParseSheet_Negative_EmptyPropertyName()
+        {
+            // Arrange
+            string sheetName = "TestSheet";
+            var sheetData = new List<IList<object>>
+            {
+                new List<object> { "", "Name" },
+                new List<object> { "int", "string" },
+                new List<object> { "1", "Alice" }
+            };
+
+            // Act
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+
+            // Assert
+            Assert.IsFalse(result.IsOk);
+            Assert.IsTrue(result.Error.Contains("must contain property name"));
+        }
+
+        [Test]
+        public void ParseSheet_Negative_EmptyPropertyType()
+        {
+            // Arrange
+            string sheetName = "TestSheet";
+            var sheetData = new List<IList<object>>
+            {
+                new List<object> { "Id", "Name" },
+                new List<object> { "", "string" },
+                new List<object> { "1", "Alice" }
+            };
+
+            // Act
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+
+            // Assert
+            Assert.IsFalse(result.IsOk);
+            Assert.IsTrue(result.Error.Contains("must contain property type"));
+        }
+
+        #endregion
+
+        #region Destructive Cases
+
+        [Test]
+        public void ParseSheet_Destructive_NullPropertyName()
+        {
+            // Arrange
+            string sheetName = "TestSheet";
+            var sheetData = new List<IList<object>>
+            {
+                new List<object> { null, "Name" },
+                new List<object> { "int", "string" },
+                new List<object> { "1", "Alice" }
+            };
+
+            // Act
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+
+            // Assert
+            Assert.IsFalse(result.IsOk);
+            Assert.IsTrue(result.Error.Contains("must contain property name"));
+        }
+
+        [Test]
+        public void ParseSheet_Destructive_NullPropertyType()
+        {
+            // Arrange
+            string sheetName = "TestSheet";
+            var sheetData = new List<IList<object>>
+            {
+                new List<object> { "Id", "Name" },
+                new List<object> { null, "string" },
+                new List<object> { "1", "Alice" }
+            };
+
+            // Act
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+
+            // Assert
+            Assert.IsFalse(result.IsOk);
+            Assert.IsTrue(result.Error.Contains("must contain property type"));
+        }
+
+        #endregion
     }
 }
