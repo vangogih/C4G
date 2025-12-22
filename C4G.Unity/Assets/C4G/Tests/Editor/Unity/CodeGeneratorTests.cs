@@ -49,10 +49,10 @@ public partial class ClassName
                 new ParsedPropertyInfo("BaseHp", "int")
             };
             var entities = new List<List<string>>();
-            var parsedSheet = new ParsedSheet(className, propertyInfos, entities);
+            var parsedConfig = new ParsedConfig(className, propertyInfos, entities);
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedSheet, _parsersByName);
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -63,16 +63,16 @@ public partial class ClassName
         public void GenerateDTOClass_WrongInputLeadsToError()
         {
             // Arrange
-            var parsedSheetWithNullName = new ParsedSheet(null, new List<ParsedPropertyInfo>(), new List<List<string>>());
-            var parsedSheetWithEmptyName = new ParsedSheet(string.Empty, new List<ParsedPropertyInfo>(), new List<List<string>>());
-            var parsedSheetWithNullProps = new ParsedSheet("ClassName", null, new List<List<string>>());
-            var parsedSheetWithNullEntities = new ParsedSheet("ClassName", new List<ParsedPropertyInfo>(), null);
+            var parsedConfigWithNullName = new ParsedConfig(null, new List<ParsedPropertyInfo>(), new List<List<string>>());
+            var parsedConfigWithEmptyName = new ParsedConfig(string.Empty, new List<ParsedPropertyInfo>(), new List<List<string>>());
+            var parsedConfigWithNullProps = new ParsedConfig("ClassName", null, new List<List<string>>());
+            var parsedConfigWithNullEntities = new ParsedConfig("ClassName", new List<ParsedPropertyInfo>(), null);
 
             // Act
-            Result<string, string> nullNameOutput = _codeGenerator.GenerateDTOClass(parsedSheetWithNullName, _parsersByName);
-            Result<string, string> emptyNameOutput = _codeGenerator.GenerateDTOClass(parsedSheetWithEmptyName, _parsersByName);
-            Result<string, string> nullPropsOutput = _codeGenerator.GenerateDTOClass(parsedSheetWithNullProps, _parsersByName);
-            Result<string, string> nullEntitiesOutput = _codeGenerator.GenerateDTOClass(parsedSheetWithNullEntities, _parsersByName);
+            Result<string, string> nullNameOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithNullName, _parsersByName);
+            Result<string, string> emptyNameOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithEmptyName, _parsersByName);
+            Result<string, string> nullPropsOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithNullProps, _parsersByName);
+            Result<string, string> nullEntitiesOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithNullEntities, _parsersByName);
 
             // Assert
             Assert.IsFalse(nullNameOutput.IsOk);
@@ -103,10 +103,10 @@ public partial class Character
             {
                 new ParsedPropertyInfo("Health", "Health")
             };
-            var parsedSheet = new ParsedSheet("Character", propertyInfos, new List<List<string>>());
+            var parsedConfig = new ParsedConfig("Character", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedSheet, _parsersByName);
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -134,10 +134,10 @@ public partial class Item
             {
                 new ParsedPropertyInfo("TestEnum", "TestEnum")
             };
-            var parsedSheet = new ParsedSheet("Item", propertyInfos, new List<List<string>>());
+            var parsedConfig = new ParsedConfig("Item", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedSheet, _parsersByName);
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -166,10 +166,10 @@ public partial class Container
             {
                 new ParsedPropertyInfo("Items", "IntList")
             };
-            var parsedSheet = new ParsedSheet("Container", propertyInfos, new List<List<string>>());
+            var parsedConfig = new ParsedConfig("Container", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedSheet, _parsersByName);
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -197,10 +197,10 @@ public partial class Data
             {
                 new ParsedPropertyInfo("Values", "IntArray")
             };
-            var parsedSheet = new ParsedSheet("Data", propertyInfos, new List<List<string>>());
+            var parsedConfig = new ParsedConfig("Data", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedSheet, _parsersByName);
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -229,10 +229,10 @@ public partial class Grid
             {
                 new ParsedPropertyInfo("Matrix", "IntMatrix")
             };
-            var parsedSheet = new ParsedSheet("Grid", propertyInfos, new List<List<string>>());
+            var parsedConfig = new ParsedConfig("Grid", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedSheet, _parsersByName);
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -261,10 +261,10 @@ public partial class Mapping
             {
                 new ParsedPropertyInfo("IntToStringMap", "IntToStringMap")
             };
-            var parsedSheet = new ParsedSheet("Mapping", propertyInfos, new List<List<string>>());
+            var parsedConfig = new ParsedConfig("Mapping", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedSheet, _parsersByName);
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -292,10 +292,10 @@ public partial class ComplexData
             {
                 new ParsedPropertyInfo("ComplexMap", "ComplexMap")
             };
-            var parsedSheet = new ParsedSheet("ComplexData", propertyInfos, new List<List<string>>());
+            var parsedConfig = new ParsedConfig("ComplexData", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedSheet, _parsersByName);
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -330,10 +330,10 @@ public partial class MixedClass
                 new ParsedPropertyInfo("Level", "int"),
                 new ParsedPropertyInfo("Scores", "IntArray")
             };
-            var parsedSheet = new ParsedSheet("MixedClass", propertyInfos, new List<List<string>>());
+            var parsedConfig = new ParsedConfig("MixedClass", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedSheet, _parsersByName);
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -359,10 +359,10 @@ public partial class TestClass
             {
                 new ParsedPropertyInfo("Value", "UnknownType")
             };
-            var parsedSheet = new ParsedSheet("TestClass", propertyInfos, new List<List<string>>());
+            var parsedConfig = new ParsedConfig("TestClass", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedSheet, _parsersByName);
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -390,10 +390,10 @@ public partial class TestClass
                 new ParsedPropertyInfo("Hp", "Health"),
                 new ParsedPropertyInfo("Items", "IntList")
             };
-            var parsedSheet = new ParsedSheet("TestClass", propertyInfos, new List<List<string>>());
+            var parsedConfig = new ParsedConfig("TestClass", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedSheet, _parsersByName);
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);

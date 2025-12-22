@@ -16,7 +16,7 @@ namespace C4G.Core.SheetsParsing
             public int EndColumnIndex;
         }
 
-        public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<ParsedSheet> parsedSheets)
+        public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
         {
             const string logTag = "HorizontalManySheetsOnOneParser. ParseNonAlloc";
 
@@ -105,7 +105,7 @@ namespace C4G.Core.SheetsParsing
                 if (!parseHorizontalResult.IsOk)
                     return Result<string>.FromError(parseHorizontalResult.Error);
 
-                parsedSheets.Add(parseHorizontalResult.Value);
+                parsedConfigs.Add(parseHorizontalResult.Value);
             }
 
             return Result<string>.Ok;

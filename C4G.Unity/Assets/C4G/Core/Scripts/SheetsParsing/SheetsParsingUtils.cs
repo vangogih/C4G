@@ -5,14 +5,14 @@ namespace C4G.Core.SheetsParsing
 {
     internal static class SheetsParsingUtils
     {
-        internal static Result<ParsedSheet, string> ParseHorizontal(string sheetName, IList<IList<object>> sheetData, int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
+        internal static Result<ParsedConfig, string> ParseHorizontal(string sheetName, IList<IList<object>> sheetData, int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
         {
             string validationError = ValidateIndices(sheetName, startRowIndex, startColumnIndex, endRowIndex, endColumnIndex);
             if (!string.IsNullOrEmpty(validationError))
-                return Result<ParsedSheet, string>.FromError(validationError);
+                return Result<ParsedConfig, string>.FromError(validationError);
 
             if (sheetData.Count <= endRowIndex)
-                return Result<ParsedSheet, string>.FromError($"C4G Error. Sheet name '{sheetName}'. Rows amount '{sheetData.Count}' < expected '{endRowIndex + 1}'");
+                return Result<ParsedConfig, string>.FromError($"C4G Error. Sheet name '{sheetName}'. Rows amount '{sheetData.Count}' < expected '{endRowIndex + 1}'");
 
             int propertiesAmount = endRowIndex - startRowIndex + 1;
             ParsedPropertyInfo[] properties = new ParsedPropertyInfo[propertiesAmount];
@@ -31,15 +31,15 @@ namespace C4G.Core.SheetsParsing
                 IList<object> row = sheetData[rowIndex];
 
                 if (row.Count <= endColumnIndex)
-                    return Result<ParsedSheet, string>.FromError($"C4G Error. Sheet name '{sheetName}'. Row '{rowIndex + 1}' length '{row.Count}' < expected '{endColumnIndex + 1}'");
+                    return Result<ParsedConfig, string>.FromError($"C4G Error. Sheet name '{sheetName}'. Row '{rowIndex + 1}' length '{row.Count}' < expected '{endColumnIndex + 1}'");
 
                 string propertyName = (string)row[startColumnIndex];
                 if (string.IsNullOrEmpty(propertyName))
-                    return Result<ParsedSheet, string>.FromError($"C4G Error. Sheet name '{sheetName}'. Cell [{rowIndex + 1}][{startColumnIndex + 1}] must contain property name, but has null or empty value instead");
+                    return Result<ParsedConfig, string>.FromError($"C4G Error. Sheet name '{sheetName}'. Cell [{rowIndex + 1}][{startColumnIndex + 1}] must contain property name, but has null or empty value instead");
 
                 string propertyType = (string)row[startColumnIndex + 1];
                 if (string.IsNullOrEmpty(propertyType))
-                    return Result<ParsedSheet, string>.FromError($"C4G Error. Sheet name '{sheetName}'. Cell [{rowIndex + 1}][{startColumnIndex + 2}] must contain property type, but has null or empty value instead");
+                    return Result<ParsedConfig, string>.FromError($"C4G Error. Sheet name '{sheetName}'. Cell [{rowIndex + 1}][{startColumnIndex + 2}] must contain property type, but has null or empty value instead");
 
                 var parsedPropertyInfo = new ParsedPropertyInfo(propertyName, propertyType);
                 properties[rowIndex - startRowIndex] = parsedPropertyInfo;
@@ -50,8 +50,8 @@ namespace C4G.Core.SheetsParsing
                 }
             }
 
-            var parsedSheet = new ParsedSheet(sheetName, properties, entities);
-            return Result<ParsedSheet, string>.FromValue(parsedSheet);
+            var parsedConfig = new ParsedConfig(sheetName, properties, entities);
+            return Result<ParsedConfig, string>.FromValue(parsedConfig);
         }
 
         private static string ValidateIndices(string sheetName, int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)

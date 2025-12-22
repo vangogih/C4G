@@ -11,9 +11,9 @@ namespace C4G.Core.CodeGeneration
     {
         private readonly CodeWriter _codeWriter = new CodeWriter("    ");
 
-        public Result<string, string> GenerateDTOClass(ParsedSheet parsedSheet, IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
+        public Result<string, string> GenerateDTOClass(ParsedConfig parsedConfig, IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
         {
-            bool isValid = ValidateParsedSheet(parsedSheet, out string error);
+            bool isValid = ValidateParsedConfig(parsedConfig, out string error);
             if (!isValid)
                 return Result<string, string>.FromError(error);
 
@@ -21,11 +21,11 @@ namespace C4G.Core.CodeGeneration
 
             _codeWriter
                 .AddUsing("System.Collections.Generic")
-                .WritePublicClass(name: parsedSheet.Name, isPartial: true, baseClass: string.Empty, w =>
+                .WritePublicClass(name: parsedConfig.Name, isPartial: true, baseClass: string.Empty, w =>
                 {
-                    for (int propertyIndex = 0; propertyIndex < parsedSheet.Properties.Count; propertyIndex++)
+                    for (int propertyIndex = 0; propertyIndex < parsedConfig.Properties.Count; propertyIndex++)
                     {
-                        ParsedPropertyInfo property = parsedSheet.Properties[propertyIndex];
+                        ParsedPropertyInfo property = parsedConfig.Properties[propertyIndex];
                         string actualType = ResolveType(property.Type, aliasParsersByName);
                         w.WritePublicProperty(property.Name, actualType);
                     }
@@ -36,7 +36,7 @@ namespace C4G.Core.CodeGeneration
             return Result<string, string>.FromValue(generatedClass);
         }
 
-        public Result<string, string> GenerateRootConfigClass(string name, List<ParsedSheet> parsedSheets)
+        public Result<string, string> GenerateRootConfigClass(string name, List<ParsedConfig> parsedConfigs)
         {
             _codeWriter.Clear();
 
@@ -44,10 +44,10 @@ namespace C4G.Core.CodeGeneration
                 .AddUsing("System.Collections.Generic")
                 .WritePublicClass(name: name, isPartial: true, baseClass: string.Empty, w =>
                 {
-                    for (int sheetIndex = 0; sheetIndex < parsedSheets.Count; sheetIndex++)
+                    for (int configIndex = 0; configIndex < parsedConfigs.Count; configIndex++)
                     {
-                        ParsedSheet parsedSheet = parsedSheets[sheetIndex];
-                        w.WritePublicProperty(parsedSheet.Name, $"List<{parsedSheet.Name}>", $"new List<{parsedSheet.Name}>()");
+                        ParsedConfig parsedConfig = parsedConfigs[configIndex];
+                        w.WritePublicProperty(parsedConfig.Name, $"List<{parsedConfig.Name}>", $"new List<{parsedConfig.Name}>()");
                     }
                 });
 
@@ -119,16 +119,16 @@ namespace C4G.Core.CodeGeneration
             return type;
         }
 
-        private static bool ValidateParsedSheet(ParsedSheet parsedSheet, out string error)
+        private static bool ValidateParsedConfig(ParsedConfig parsedConfig, out string error)
         {
             error = string.Empty;
 
-            if (string.IsNullOrEmpty(parsedSheet.Name))
-                error = "Code generation error. ParsedSheet name is null or empty";
-            else if (parsedSheet.Properties == null)
-                error = "Code generation error. ParsedSheet properties are null";
-            else if (parsedSheet.Entities == null)
-                error = "Code generation error. ParsedSheet entities are null";
+            if (string.IsNullOrEmpty(parsedConfig.Name))
+                error = "Code generation error. ParsedConfig name is null or empty";
+            else if (parsedConfig.Properties == null)
+                error = "Code generation error. ParsedConfig properties are null";
+            else if (parsedConfig.Entities == null)
+                error = "Code generation error. ParsedConfig entities are null";
 
             return string.IsNullOrEmpty(error);
         }

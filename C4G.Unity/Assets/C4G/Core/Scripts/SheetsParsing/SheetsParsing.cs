@@ -5,19 +5,19 @@ namespace C4G.Core.SheetsParsing
 {
     public sealed class SheetsParsing
     {
-        public Result<string> ParseSheetNonAlloc(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, List<ParsedSheet> parsedSheets)
+        public Result<string> ParseSheetNonAlloc(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, List<ParsedConfig> parsedConfigs)
         {
-            if (!ValidateParameters(sheetName, sheetData, parserBase, parsedSheets, out string error))
+            if (!ValidateParameters(sheetName, sheetData, parserBase, parsedConfigs, out string error))
                 return Result<string>.FromError(error);
 
-            return parserBase.ParseNonAlloc(sheetName, sheetData, parsedSheets);
+            return parserBase.ParseNonAlloc(sheetName, sheetData, parsedConfigs);
         }
 
         private static bool ValidateParameters(
             string sheetName,
             IList<IList<object>> sheetData,
             SheetParserBase parserBase,
-            List<ParsedSheet> parsedSheets,
+            List<ParsedConfig> parsedConfigs,
             out string error)
         {
             error = string.Empty;
@@ -40,9 +40,9 @@ namespace C4G.Core.SheetsParsing
                 return false;
             }
 
-            if (parsedSheets == null)
+            if (parsedConfigs == null)
             {
-                error = $"Sheets parsing error '{sheetName}'. Parsed sheets list must not be null";
+                error = $"Sheets parsing error '{sheetName}'. Parsed configs list must not be null";
                 return false;
             }
 
