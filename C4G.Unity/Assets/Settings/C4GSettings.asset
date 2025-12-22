@@ -30,6 +30,9 @@ MonoBehaviour:
   - _name: HorizontalManySheetsOnOne
     _parser:
       id: 3
+  - _name: VerticalManySheetsOnOne
+    _parser:
+      id: 4
   _aliasDefinitions:
   - _name: MyEnum
     _parser:
@@ -48,4 +51,8 @@ MonoBehaviour:
     00000002:
       type: {class: VerticalSheetParser, ns: C4G.Core.SheetsParsing, asm: C4G.Core}
     00000003:
-      type: {class: HorizontalManySheetsOnOneParser, ns: C4G.Core.SheetsParsing, asm: C4G.Core}
+      type: {class: HorizontalManyConfigsOnOneSheetParser, ns: C4G.Core.SheetsParsing,
+        asm: C4G.Core}
+    00000004:
+      type: {class: VerticalManyConfigsOnOneSheetParser, ns: C4G.Core.SheetsParsing,
+        asm: C4G.Core}

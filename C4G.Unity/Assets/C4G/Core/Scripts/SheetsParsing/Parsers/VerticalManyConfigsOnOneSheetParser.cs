@@ -5,9 +5,9 @@ using C4G.Core.Utils;
 namespace C4G.Core.SheetsParsing
 {
     [Serializable]
-    public sealed class HorizontalManySheetsOnOneParser : SheetParserBase
+    public sealed class VerticalManyConfigsOnOneSheetParser : SheetParserBase
     {
-        public struct SheetOnSheet
+        public struct ConfigFrame
         {
             public int StartRowIndex;
             public int StartColumnIndex;
@@ -18,10 +18,10 @@ namespace C4G.Core.SheetsParsing
 
         public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
         {
-            const string logTag = "HorizontalManySheetsOnOneParser. ParseNonAlloc";
+            const string logTag = "VerticalManySheetsOnOneParser. ParseNonAlloc";
 
-            var sheetStartsList = new List<SheetOnSheet>();
-            var sheetsList = new List<SheetOnSheet>();
+            var configFrameStarts = new List<ConfigFrame>();
+            var configFrames = new List<ConfigFrame>();
 
             for (int rowIndex = 0; rowIndex < sheetData.Count; rowIndex++)
             {
@@ -42,41 +42,41 @@ namespace C4G.Core.SheetsParsing
                     if (cellTextSplitByPoint[0] == "start")
                     {
                         string name = cellTextSplitByPoint[1];
-                        bool nameValid = IsSheetOnSheetNameValid(name);
+                        bool nameValid = IsConfigFrameNameValid(name);
                         if (!nameValid)
                             return Result<string>.FromError($"{logTag}. Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has invalid name");
 
-                        var sheetOnSheet = new SheetOnSheet
+                        var configFrame = new ConfigFrame
                         {
                             StartRowIndex = rowIndex,
                             StartColumnIndex = columnIndex,
                             Name = name
                         };
-                        sheetStartsList.Add(sheetOnSheet);
+                        configFrameStarts.Add(configFrame);
                     }
                     else if (cellTextSplitByPoint[0] == "end")
                     {
                         string name = cellTextSplitByPoint[1];
-                        bool nameValid = IsSheetOnSheetNameValid(name);
+                        bool nameValid = IsConfigFrameNameValid(name);
                         if (!nameValid)
                             return Result<string>.FromError($"{logTag}. Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has invalid name");
 
                         int matches = 0;
-                        for (int sheetIndex = sheetStartsList.Count - 1; sheetIndex >= 0; --sheetIndex)
+                        for (int configFrameIndex = configFrameStarts.Count - 1; configFrameIndex >= 0; --configFrameIndex)
                         {
-                            SheetOnSheet sheetOnSheet = sheetStartsList[sheetIndex];
-                            if (rowIndex >= sheetOnSheet.StartRowIndex && columnIndex >= sheetOnSheet.StartColumnIndex)
+                            ConfigFrame configFrame = configFrameStarts[configFrameIndex];
+                            if (rowIndex >= configFrame.StartRowIndex && columnIndex >= configFrame.StartColumnIndex)
                             {
                                 if (++matches > 1)
                                     return Result<string>.FromError($"{logTag}. Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has end with more than one matching starts");
 
-                                if (!name.Equals(sheetOnSheet.Name, StringComparison.Ordinal))
-                                    return Result<string>.FromError($"{logTag}. Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has end with geometrically matching start cell [{sheetOnSheet.StartRowIndex + 1}][{sheetOnSheet.StartColumnIndex + 1}] but with different name '{sheetOnSheet.Name}'");
+                                if (!name.Equals(configFrame.Name, StringComparison.Ordinal))
+                                    return Result<string>.FromError($"{logTag}. Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has end with geometrically matching start cell [{configFrame.StartRowIndex + 1}][{configFrame.StartColumnIndex + 1}] but with different name '{configFrame.Name}'");
 
-                                sheetOnSheet.EndRowIndex = rowIndex;
-                                sheetOnSheet.EndColumnIndex = columnIndex;
-                                sheetStartsList.RemoveAt(sheetIndex);
-                                sheetsList.Add(sheetOnSheet);
+                                configFrame.EndRowIndex = rowIndex;
+                                configFrame.EndColumnIndex = columnIndex;
+                                configFrameStarts.RemoveAt(configFrameIndex);
+                                configFrames.Add(configFrame);
                                 break;
                             }
                         }
@@ -87,30 +87,30 @@ namespace C4G.Core.SheetsParsing
                 }
             }
 
-            if (sheetStartsList.Count > 0)
-                return Result<string>.FromError($"{logTag}. There are no matching ends for {sheetStartsList.Count} starts");
+            if (configFrameStarts.Count > 0)
+                return Result<string>.FromError($"{logTag}. There are no matching ends for {configFrameStarts.Count} starts");
 
-            for (int sheetIndex = 0; sheetIndex < sheetsList.Count; sheetIndex++)
+            for (int sheetIndex = 0; sheetIndex < configFrames.Count; sheetIndex++)
             {
-                SheetOnSheet sheetOnSheet = sheetsList[sheetIndex];
+                ConfigFrame configFrame = configFrames[sheetIndex];
 
-                var parseHorizontalResult = SheetsParsingUtils.ParseHorizontal(
-                    sheetOnSheet.Name,
+                var parseVerticalResult = SheetsParsingUtils.ParseVertical(
+                    configFrame.Name,
                     sheetData,
-                    startRowIndex: sheetOnSheet.StartRowIndex + 1,
-                    startColumnIndex: sheetOnSheet.StartColumnIndex + 1,
-                    endRowIndex: sheetOnSheet.EndRowIndex - 1,
-                    endColumnIndex: sheetOnSheet.EndColumnIndex - 1);
+                    startRowIndex: configFrame.StartRowIndex + 1,
+                    startColumnIndex: configFrame.StartColumnIndex + 1,
+                    endRowIndex: configFrame.EndRowIndex - 1,
+                    endColumnIndex: configFrame.EndColumnIndex - 1);
 
-                if (!parseHorizontalResult.IsOk)
-                    return Result<string>.FromError(parseHorizontalResult.Error);
+                if (!parseVerticalResult.IsOk)
+                    return Result<string>.FromError(parseVerticalResult.Error);
 
-                parsedConfigs.Add(parseHorizontalResult.Value);
+                parsedConfigs.Add(parseVerticalResult.Value);
             }
 
             return Result<string>.Ok;
         }
 
-        private static bool IsSheetOnSheetNameValid(string sheetName) => !string.IsNullOrEmpty(sheetName);
+        private static bool IsConfigFrameNameValid(string sheetName) => !string.IsNullOrEmpty(sheetName);
     }
 }
