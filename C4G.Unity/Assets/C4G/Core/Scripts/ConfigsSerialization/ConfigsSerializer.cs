@@ -6,26 +6,25 @@ using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using Newtonsoft.Json;
 using Entity = System.Collections.Generic.IReadOnlyDictionary<string, object>;
-using EntitiesList =
-    System.Collections.Generic.IReadOnlyList<System.Collections.Generic.IReadOnlyDictionary<string, object>>;
+using EntitiesList = System.Collections.Generic.IReadOnlyList<System.Collections.Generic.IReadOnlyDictionary<string, object>>;
 
 namespace C4G.Core.ConfigsSerialization
 {
     public sealed class ConfigsSerializer
     {
         public Result<EntitiesList, string> ParseToEntitiesList(
-            ParsedSheet parsedSheet,
+            ParsedConfig parsedConfig,
             IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
         {
-            bool isValid = ValidateParsedSheet(parsedSheet, out string error);
+            bool isValid = ValidateParsedConfig(parsedConfig, out string error);
             if (!isValid)
                 return Result<EntitiesList, string>.FromError(error);
 
-            var entities = new List<Entity>(parsedSheet.Entities.Count);
+            var entities = new List<Entity>(parsedConfig.Entities.Count);
 
-            foreach (IReadOnlyCollection<string> entityData in parsedSheet.Entities)
+            foreach (IReadOnlyCollection<string> entityData in parsedConfig.Entities)
             {
-                Result<Entity, string> entityDataDictResult = GetEntityDataDict(entityData, parsedSheet.Properties, aliasParsersByName);
+                Result<Entity, string> entityDataDictResult = GetEntityDataDict(entityData, parsedConfig.Properties, aliasParsersByName);
                 if (!entityDataDictResult.IsOk)
                     return Result<EntitiesList, string>.FromError(entityDataDictResult.Error);
                 entities.Add(entityDataDictResult.Value);
@@ -34,25 +33,25 @@ namespace C4G.Core.ConfigsSerialization
             return Result<EntitiesList, string>.FromValue(entities);
         }
 
-        public Result<string, string> SerializeMultipleSheetsAsJsonObject(
-            List<ParsedSheet> parsedSheets,
+        public Result<string, string> SerializeParsedConfigsAsJsonObject(
+            List<ParsedConfig> parsedConfigs,
             IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
         {
-            if (parsedSheets == null)
-                return Result<string, string>.FromError("Parsed sheets cannot be null");
+            if (parsedConfigs == null)
+                return Result<string, string>.FromError("Parsed configs cannot be null");
 
-            var result = new Dictionary<string, EntitiesList>(parsedSheets.Count);
+            var result = new Dictionary<string, EntitiesList>(parsedConfigs.Count);
 
-            foreach (ParsedSheet parsedSheet in parsedSheets)
+            foreach (ParsedConfig parsedConfig in parsedConfigs)
             {
-                Result<EntitiesList, string> sheetSerializationResult = ParseToEntitiesList(parsedSheet, aliasParsersByName);
+                Result<EntitiesList, string> sheetSerializationResult = ParseToEntitiesList(parsedConfig, aliasParsersByName);
                 if (!sheetSerializationResult.IsOk)
                     return Result<string, string>.FromError(sheetSerializationResult.Error);
 
-                if (result.ContainsKey(parsedSheet.Name))
-                    return Result<string, string>.FromError($"Duplicate sheet name '{parsedSheet.Name}'");
+                if (result.ContainsKey(parsedConfig.Name))
+                    return Result<string, string>.FromError($"Duplicate sheet name '{parsedConfig.Name}'");
 
-                result.Add(parsedSheet.Name, sheetSerializationResult.Value);
+                result.Add(parsedConfig.Name, sheetSerializationResult.Value);
             }
 
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -170,33 +169,33 @@ namespace C4G.Core.ConfigsSerialization
             return Result<object, string>.FromValue(result);
         }
 
-        private static bool ValidateParsedSheet(ParsedSheet parsedSheet, out string error)
+        private static bool ValidateParsedConfig(ParsedConfig parsedConfig, out string error)
         {
             error = string.Empty;
 
-            if (string.IsNullOrEmpty(parsedSheet.Name))
-                error = "Configs serialization error. ParsedSheet name is null or empty";
-            else if (parsedSheet.Properties == null)
-                error = "Configs serialization error. ParsedSheet properties are null";
-            else if (parsedSheet.Entities == null)
-                error = "Configs serialization error. ParsedSheet entities are null";
+            if (string.IsNullOrEmpty(parsedConfig.Name))
+                error = "Configs serialization error. ParsedConfig name is null or empty";
+            else if (parsedConfig.Properties == null)
+                error = "Configs serialization error. ParsedConfig properties are null";
+            else if (parsedConfig.Entities == null)
+                error = "Configs serialization error. ParsedConfig entities are null";
             else
             {
                 HashSet<string> propertyNamesHashSet = new HashSet<string>();
-                foreach (ParsedPropertyInfo parsedPropertyInfo in parsedSheet.Properties)
+                foreach (ParsedPropertyInfo parsedPropertyInfo in parsedConfig.Properties)
                 {
                     if (!propertyNamesHashSet.Add(parsedPropertyInfo.Name))
                     {
-                        error = "Configs serialization error. ParsedSheet has duplicated property names";
+                        error = "Configs serialization error. ParsedConfig has duplicated property names";
                         break;
                     }
                 }
 
                 if (string.IsNullOrEmpty(error))
                 {
-                    foreach (IReadOnlyCollection<string> entity in parsedSheet.Entities)
+                    foreach (IReadOnlyCollection<string> entity in parsedConfig.Entities)
                     {
-                        if (entity.Count != parsedSheet.Properties.Count)
+                        if (entity.Count != parsedConfig.Properties.Count)
                         {
                             error = "Configs serialization error. Entity count doesn't match properties count";
                             break;

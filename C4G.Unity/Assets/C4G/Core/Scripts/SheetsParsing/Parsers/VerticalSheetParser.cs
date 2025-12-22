@@ -6,7 +6,7 @@ namespace C4G.Core.SheetsParsing
     [System.Serializable]
     public sealed class VerticalSheetParser : SheetParserBase
     {
-        public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<ParsedSheet> parsedSheets)
+        public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
         {
             IList<object> headersRow = sheetData[0];
             IList<object> typesRow = sheetData[1];
@@ -33,8 +33,8 @@ namespace C4G.Core.SheetsParsing
                 entities.Add(entityValues);
             }
 
-            var parsedSheet = new ParsedSheet(sheetName, properties, entities);
-            parsedSheets.Add(parsedSheet);
+            var parsedConfig = new ParsedConfig(sheetName, properties, entities);
+            parsedConfigs.Add(parsedConfig);
 
             return Result<string>.Ok;
         }

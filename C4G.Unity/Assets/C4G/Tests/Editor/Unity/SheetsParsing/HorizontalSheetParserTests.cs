@@ -44,16 +44,16 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalSheetParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
-            Assert.AreEqual(1, parsedSheets.Count);
-            var parsedSheet = parsedSheets[0];
-            Assert.AreEqual(sheetName, parsedSheet.Name);
-            CollectionAssert.AreEqual(expectedProperties, parsedSheet.Properties);
-            CollectionAssert.AreEqual(expectedEntities, parsedSheet.Entities);
+            Assert.AreEqual(1, parsedConfigs.Count);
+            var parsedConfig = parsedConfigs[0];
+            Assert.AreEqual(sheetName, parsedConfig.Name);
+            CollectionAssert.AreEqual(expectedProperties, parsedConfig.Properties);
+            CollectionAssert.AreEqual(expectedEntities, parsedConfig.Entities);
         }
 
         [Test]
@@ -72,13 +72,13 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
             var emptySheetData = new List<IList<object>>();
             var parser = new HorizontalSheetParser();
-            var sheetsBuffer = new List<ParsedSheet>();
+            var parsedConfigsBuffer = new List<ParsedConfig>();
 
             // Act
-            var invalidDataLengthResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, invalidDataLengthData, parser, sheetsBuffer);
-            var nullSheetNameResult = _sheetsParsing.ParseSheetNonAlloc(null, validSheetData, parser, sheetsBuffer);
-            var nullSheetDataResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, null, parser, sheetsBuffer);
-            var emptySheetResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, emptySheetData, parser, sheetsBuffer);
+            var invalidDataLengthResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, invalidDataLengthData, parser, parsedConfigsBuffer);
+            var nullSheetNameResult = _sheetsParsing.ParseSheetNonAlloc(null, validSheetData, parser, parsedConfigsBuffer);
+            var nullSheetDataResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, null, parser, parsedConfigsBuffer);
+            var emptySheetResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, emptySheetData, parser, parsedConfigsBuffer);
 
             // Assert
             Assert.IsFalse(invalidDataLengthResult.IsOk);

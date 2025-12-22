@@ -25,7 +25,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                 {
                     new List<string> { "Infinity", "-Infinity", "NaN", "0.0" }
                 };
-                var parsedSheet = new ParsedSheet(name, properties, entities);
+                var parsedConfig = new ParsedConfig(name, properties, entities);
 
                 string expectedOutput =
                     @"{
@@ -40,7 +40,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 }";
 
                 // Act
-                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet }, _parsersByName);
+                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -62,7 +62,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                     new List<string> { "Player1", "1.5,2.7,3.9" },
                     new List<string> { "Player2", "10.1,20.2" }
                 };
-                var parsedSheet = new ParsedSheet(name, properties, entities);
+                var parsedConfig = new ParsedConfig(name, properties, entities);
 
                 string expectedOutput =
                     @"{
@@ -86,7 +86,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 }";
 
                 // Act
-                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet }, _parsersByName);
+                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);

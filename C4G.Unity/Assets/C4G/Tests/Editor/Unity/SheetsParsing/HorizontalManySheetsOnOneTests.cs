@@ -45,16 +45,16 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
-            Assert.AreEqual(1, parsedSheets.Count);
-            var parsedSheet = parsedSheets[0];
-            Assert.AreEqual("users", parsedSheet.Name);
-            CollectionAssert.AreEqual(expectedProperties, parsedSheet.Properties);
-            CollectionAssert.AreEqual(expectedEntities, parsedSheet.Entities);
+            Assert.AreEqual(1, parsedConfigs.Count);
+            var parsedConfig = parsedConfigs[0];
+            Assert.AreEqual("users", parsedConfig.Name);
+            CollectionAssert.AreEqual(expectedProperties, parsedConfig.Properties);
+            CollectionAssert.AreEqual(expectedEntities, parsedConfig.Entities);
         }
 
         [Test]
@@ -100,18 +100,18 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
-            Assert.AreEqual(2, parsedSheets.Count);
-            Assert.AreEqual("A", parsedSheets[0].Name);
-            CollectionAssert.AreEqual(expectedPropertiesA, parsedSheets[0].Properties);
-            CollectionAssert.AreEqual(expectedEntitiesA, parsedSheets[0].Entities);
-            Assert.AreEqual("B", parsedSheets[1].Name);
-            CollectionAssert.AreEqual(expectedPropertiesB, parsedSheets[1].Properties);
-            CollectionAssert.AreEqual(expectedEntitiesB, parsedSheets[1].Entities);
+            Assert.AreEqual(2, parsedConfigs.Count);
+            Assert.AreEqual("A", parsedConfigs[0].Name);
+            CollectionAssert.AreEqual(expectedPropertiesA, parsedConfigs[0].Properties);
+            CollectionAssert.AreEqual(expectedEntitiesA, parsedConfigs[0].Entities);
+            Assert.AreEqual("B", parsedConfigs[1].Name);
+            CollectionAssert.AreEqual(expectedPropertiesB, parsedConfigs[1].Properties);
+            CollectionAssert.AreEqual(expectedEntitiesB, parsedConfigs[1].Entities);
         }
 
         [Test]
@@ -151,18 +151,18 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
-            Assert.AreEqual(2, parsedSheets.Count);
-            Assert.AreEqual("A", parsedSheets[0].Name);
-            CollectionAssert.AreEqual(expectedPropertiesA, parsedSheets[0].Properties);
-            CollectionAssert.AreEqual(expectedEntitiesA, parsedSheets[0].Entities);
-            Assert.AreEqual("B", parsedSheets[1].Name);
-            CollectionAssert.AreEqual(expectedPropertiesB, parsedSheets[1].Properties);
-            CollectionAssert.AreEqual(expectedEntitiesB, parsedSheets[1].Entities);
+            Assert.AreEqual(2, parsedConfigs.Count);
+            Assert.AreEqual("A", parsedConfigs[0].Name);
+            CollectionAssert.AreEqual(expectedPropertiesA, parsedConfigs[0].Properties);
+            CollectionAssert.AreEqual(expectedEntitiesA, parsedConfigs[0].Entities);
+            Assert.AreEqual("B", parsedConfigs[1].Name);
+            CollectionAssert.AreEqual(expectedPropertiesB, parsedConfigs[1].Properties);
+            CollectionAssert.AreEqual(expectedEntitiesB, parsedConfigs[1].Entities);
         }
 
         [Test]
@@ -206,18 +206,18 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
-            Assert.AreEqual(2, parsedSheets.Count);
-            Assert.AreEqual("A", parsedSheets[0].Name);
-            CollectionAssert.AreEqual(expectedPropertiesA, parsedSheets[0].Properties);
-            CollectionAssert.AreEqual(expectedEntitiesA, parsedSheets[0].Entities);
-            Assert.AreEqual("B", parsedSheets[1].Name);
-            CollectionAssert.AreEqual(expectedPropertiesB, parsedSheets[1].Properties);
-            CollectionAssert.AreEqual(expectedEntitiesB, parsedSheets[1].Entities);
+            Assert.AreEqual(2, parsedConfigs.Count);
+            Assert.AreEqual("A", parsedConfigs[0].Name);
+            CollectionAssert.AreEqual(expectedPropertiesA, parsedConfigs[0].Properties);
+            CollectionAssert.AreEqual(expectedEntitiesA, parsedConfigs[0].Entities);
+            Assert.AreEqual("B", parsedConfigs[1].Name);
+            CollectionAssert.AreEqual(expectedPropertiesB, parsedConfigs[1].Properties);
+            CollectionAssert.AreEqual(expectedEntitiesB, parsedConfigs[1].Entities);
         }
 
         [Test]
@@ -303,32 +303,32 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
-            Assert.AreEqual(4, parsedSheets.Count);
+            Assert.AreEqual(4, parsedConfigs.Count);
             
             // Config users
-            Assert.AreEqual("users", parsedSheets[0].Name);
-            CollectionAssert.AreEqual(expectedPropertiesUsers, parsedSheets[0].Properties);
-            CollectionAssert.AreEqual(expectedEntitiesUsers, parsedSheets[0].Entities);
+            Assert.AreEqual("users", parsedConfigs[0].Name);
+            CollectionAssert.AreEqual(expectedPropertiesUsers, parsedConfigs[0].Properties);
+            CollectionAssert.AreEqual(expectedEntitiesUsers, parsedConfigs[0].Entities);
             
             // Config settings
-            Assert.AreEqual("settings", parsedSheets[1].Name);
-            CollectionAssert.AreEqual(expectedPropertiesSettings, parsedSheets[1].Properties);
-            CollectionAssert.AreEqual(expectedEntitiesSettings, parsedSheets[1].Entities);
+            Assert.AreEqual("settings", parsedConfigs[1].Name);
+            CollectionAssert.AreEqual(expectedPropertiesSettings, parsedConfigs[1].Properties);
+            CollectionAssert.AreEqual(expectedEntitiesSettings, parsedConfigs[1].Entities);
             
             // Config meta
-            Assert.AreEqual("meta", parsedSheets[2].Name);
-            CollectionAssert.AreEqual(expectedPropertiesMeta, parsedSheets[2].Properties);
-            CollectionAssert.AreEqual(expectedEntitiesMeta, parsedSheets[2].Entities);
+            Assert.AreEqual("meta", parsedConfigs[2].Name);
+            CollectionAssert.AreEqual(expectedPropertiesMeta, parsedConfigs[2].Properties);
+            CollectionAssert.AreEqual(expectedEntitiesMeta, parsedConfigs[2].Entities);
             
             // Config stats
-            Assert.AreEqual("stats", parsedSheets[3].Name);
-            CollectionAssert.AreEqual(expectedPropertiesStats, parsedSheets[3].Properties);
-            CollectionAssert.AreEqual(expectedEntitiesStats, parsedSheets[3].Entities);
+            Assert.AreEqual("stats", parsedConfigs[3].Name);
+            CollectionAssert.AreEqual(expectedPropertiesStats, parsedConfigs[3].Properties);
+            CollectionAssert.AreEqual(expectedEntitiesStats, parsedConfigs[3].Entities);
         }
 
         #endregion
@@ -343,12 +343,12 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             var sheetData = new List<IList<object>>();
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
-            Assert.AreEqual(0, parsedSheets.Count);
+            Assert.AreEqual(0, parsedConfigs.Count);
         }
 
         [Test]
@@ -366,12 +366,12 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
-            Assert.AreEqual(0, parsedSheets.Count);
+            Assert.AreEqual(0, parsedConfigs.Count);
         }
 
         [Test]
@@ -396,15 +396,15 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
-            Assert.AreEqual(1, parsedSheets.Count);
-            Assert.AreEqual("A", parsedSheets[0].Name);
-            CollectionAssert.AreEqual(expectedProperties, parsedSheets[0].Properties);
-            CollectionAssert.AreEqual(expectedEntities, parsedSheets[0].Entities);
+            Assert.AreEqual(1, parsedConfigs.Count);
+            Assert.AreEqual("A", parsedConfigs[0].Name);
+            CollectionAssert.AreEqual(expectedProperties, parsedConfigs[0].Properties);
+            CollectionAssert.AreEqual(expectedEntities, parsedConfigs[0].Entities);
         }
 
         #endregion
@@ -424,8 +424,8 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -445,8 +445,8 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -464,8 +464,8 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -484,8 +484,8 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -505,8 +505,8 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -528,8 +528,8 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -551,8 +551,8 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -574,8 +574,8 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -596,8 +596,8 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -615,8 +615,8 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -640,8 +640,8 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -660,8 +660,8 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk, "Expected error for null property name");
@@ -680,8 +680,8 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             };
 
             // Act
-            var parsedSheets = new List<ParsedSheet>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedSheets);
+            var parsedConfigs = new List<ParsedConfig>();
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalManySheetsOnOneParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk, "Expected error for null property type");
