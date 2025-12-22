@@ -8,33 +8,26 @@ namespace C4G.Core.SheetsParsing
     {
         public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
         {
-            IList<object> headersRow = sheetData[0];
-            IList<object> typesRow = sheetData[1];
+            if (sheetData.Count < 3)
+                return Result<string>.FromError($"C4G Error. Sheet name '{sheetName}'. Rows amount '{sheetData.Count}' < 3");
 
-            List<ParsedPropertyInfo> properties = new List<ParsedPropertyInfo>(headersRow.Count - 1);
-            for (int colIndex = 1; colIndex < headersRow.Count; colIndex++)
-            {
-                string propertyName = (string)headersRow[colIndex];
-                string propertyType = (string)typesRow[colIndex];
-                properties.Add(new ParsedPropertyInfo(propertyName, propertyType));
-            }
+            if (sheetData[0].Count < 1)
+                return Result<string>.FromError($"C4G Error. Sheet name '{sheetName}'. Columns amount '{sheetData[0].Count}' < 1");
 
-            List<List<string>> entities = new List<List<string>>(sheetData.Count - 2);
-            for (int rowIndex = 2; rowIndex < sheetData.Count; rowIndex++)
-            {
-                IList<object> row = sheetData[rowIndex];
-                List<string> entityValues = new List<string>(properties.Count);
+            int dataRowLength = sheetData[0].Count;
 
-                for (int colIndex = 1; colIndex < row.Count; colIndex++)
-                {
-                    entityValues.Add((string)row[colIndex]);
-                }
+            var parseVerticalResult = SheetsParsingUtils.ParseVertical(
+                sheetName,
+                sheetData,
+                startRowIndex: 0,
+                startColumnIndex: 0,
+                endRowIndex: sheetData.Count - 1,
+                endColumnIndex: dataRowLength - 1);
 
-                entities.Add(entityValues);
-            }
+            if (!parseVerticalResult.IsOk)
+                return Result<string>.FromError(parseVerticalResult.Error);
 
-            var parsedConfig = new ParsedConfig(sheetName, properties, entities);
-            parsedConfigs.Add(parsedConfig);
+            parsedConfigs.Add(parseVerticalResult.Value);
 
             return Result<string>.Ok;
         }
