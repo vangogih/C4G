@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using C4G.Core.SheetsParsing;
+using C4G.Core.SheetsParsing._0_RawParsing.RawParsers;
+using C4G.Core.SheetsParsing._1_PropertiesHierarchyTraversal;
 using NUnit.Framework;
 
 namespace C4G.Tests.Editor.Unity.SheetsParsing
 {
     [TestFixture]
-    public class VerticalSheetParserTests
+    public class VerticalRawSheetParserTests
     {
         private Core.SheetsParsing.SheetsParsing _sheetsParsing;
 
@@ -47,7 +48,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -81,7 +82,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -118,7 +119,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -150,7 +151,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -181,7 +182,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -209,7 +210,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, twoRowsOnly, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, twoRowsOnly, new VerticalRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -231,7 +232,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, emptyColumns, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, emptyColumns, new VerticalRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -253,7 +254,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, inconsistentData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(validSheetName, inconsistentData, new VerticalRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -274,7 +275,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -295,7 +296,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -320,7 +321,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -341,7 +342,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);

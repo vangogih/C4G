@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using C4G.Core.SheetsParsing;
+using C4G.Core.SheetsParsing._0_RawParsing.RawParsers;
+using C4G.Core.SheetsParsing._1_PropertiesHierarchyTraversal;
 using NUnit.Framework;
 
 namespace C4G.Tests.Editor.Unity.SheetsParsing
 {
     [TestFixture]
-    public class HorizontalSheetParserTests
+    public class HorizontalRawSheetParserTests
     {
         private Core.SheetsParsing.SheetsParsing _sheetsParsing;
 
@@ -45,7 +46,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -71,7 +72,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { "Id", "int", "1" }
             };
             var emptySheetData = new List<IList<object>>();
-            var parser = new HorizontalSheetParser();
+            var parser = new HorizontalRawSheetParser();
             var parsedConfigsBuffer = new List<ParsedConfig>();
 
             // Act

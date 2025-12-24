@@ -1,4 +1,4 @@
-namespace C4G.Core.SheetsParsing
+namespace C4G.Core.SheetsParsing._1_PropertiesHierarchyTraversal
 {
     public readonly struct ParsedProperty
     {

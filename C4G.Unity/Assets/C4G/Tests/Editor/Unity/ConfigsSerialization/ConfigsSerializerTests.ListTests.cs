@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using C4G.Core.SheetsParsing;
+using C4G.Core.SheetsParsing._1_PropertiesHierarchyTraversal;
 using C4G.Core.Utils;
 using NUnit.Framework;
 

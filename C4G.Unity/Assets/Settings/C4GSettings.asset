@@ -45,14 +45,17 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: HorizontalSheetParser, ns: C4G.Core.SheetsParsing, asm: C4G.Core}
+      type: {class: HorizontalRawSheetParser, ns: C4G.Core.SheetsParsing._0_RawParsing.RawParsers,
+        asm: C4G.Core}
     00000001:
-      type: {class: HorizontalSheetParser, ns: C4G.Core.SheetsParsing, asm: C4G.Core}
+      type: {class: HorizontalRawSheetParser, ns: C4G.Core.SheetsParsing._0_RawParsing.RawParsers,
+        asm: C4G.Core}
     00000002:
-      type: {class: VerticalSheetParser, ns: C4G.Core.SheetsParsing, asm: C4G.Core}
+      type: {class: VerticalRawSheetParser, ns: C4G.Core.SheetsParsing._0_RawParsing.RawParsers,
+        asm: C4G.Core}
     00000003:
-      type: {class: HorizontalManyConfigsOnOneSheetParser, ns: C4G.Core.SheetsParsing,
+      type: {class: HorizontalManyConfigsOnOneRawSheetParser, ns: C4G.Core.SheetsParsing._0_RawParsing.RawParsers,
         asm: C4G.Core}
     00000004:
-      type: {class: VerticalManyConfigsOnOneSheetParser, ns: C4G.Core.SheetsParsing,
+      type: {class: VerticalManyConfigsOnOneRawSheetParser, ns: C4G.Core.SheetsParsing._0_RawParsing.RawParsers,
         asm: C4G.Core}

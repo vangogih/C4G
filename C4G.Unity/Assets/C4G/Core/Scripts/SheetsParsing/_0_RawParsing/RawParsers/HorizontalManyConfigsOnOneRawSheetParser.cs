@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using C4G.Core.Utils;
 
-namespace C4G.Core.SheetsParsing
+namespace C4G.Core.SheetsParsing._0_RawParsing.RawParsers
 {
     [Serializable]
-    public sealed class HorizontalManyConfigsOnOneSheetParser : SheetParserBase
+    public sealed class HorizontalManyConfigsOnOneRawSheetParser : RawSheetParserBase
     {
         public struct ConfigFrame
         {
@@ -16,7 +16,7 @@ namespace C4G.Core.SheetsParsing
             public int EndColumnIndex;
         }
 
-        public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
+        public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<RawParsedConfig> parsedConfigs)
         {
             const string logTag = "HorizontalManySheetsOnOneParser. ParseNonAlloc";
 
@@ -94,7 +94,7 @@ namespace C4G.Core.SheetsParsing
             {
                 ConfigFrame configFrame = configFrames[sheetIndex];
 
-                var parseHorizontalResult = SheetsParsingUtils.ParseHorizontal(
+                var parseHorizontalResult = RawParsingUtils.RawParseHorizontal(
                     configFrame.Name,
                     sheetData,
                     startRowIndex: configFrame.StartRowIndex + 1,

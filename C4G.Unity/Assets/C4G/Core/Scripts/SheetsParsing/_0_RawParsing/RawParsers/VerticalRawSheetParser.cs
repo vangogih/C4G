@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using C4G.Core.Utils;
 
-namespace C4G.Core.SheetsParsing
+namespace C4G.Core.SheetsParsing._0_RawParsing.RawParsers
 {
     [System.Serializable]
-    public sealed class VerticalSheetParser : SheetParserBase
+    public sealed class VerticalRawSheetParser : RawSheetParserBase
     {
-        public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
+        public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<RawParsedConfig> parsedConfigs)
         {
             if (sheetData.Count < 3)
                 return Result<string>.FromError($"C4G Error. Sheet name '{sheetName}'. Rows amount '{sheetData.Count}' < 3");
@@ -16,7 +16,7 @@ namespace C4G.Core.SheetsParsing
 
             int dataRowLength = sheetData[0].Count;
 
-            var parseVerticalResult = SheetsParsingUtils.ParseVertical(
+            var parseVerticalResult = RawParsingUtils.RawParseVertical(
                 sheetName,
                 sheetData,
                 startRowIndex: 0,

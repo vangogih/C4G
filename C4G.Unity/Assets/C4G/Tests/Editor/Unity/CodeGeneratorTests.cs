@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using C4G.Core.CodeGeneration;
 using C4G.Core.ConfigsSerialization;
-using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NSubstitute;
 using NUnit.Framework;
 using System;
+using C4G.Core.SheetsParsing._1_PropertiesHierarchyTraversal;
 
 namespace C4G.Tests.Editor.Unity
 {

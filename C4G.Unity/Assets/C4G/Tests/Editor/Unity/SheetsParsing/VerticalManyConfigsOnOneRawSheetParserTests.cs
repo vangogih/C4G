@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using C4G.Core.SheetsParsing;
+using C4G.Core.SheetsParsing._0_RawParsing.RawParsers;
+using C4G.Core.SheetsParsing._1_PropertiesHierarchyTraversal;
 using NUnit.Framework;
 
 namespace C4G.Tests.Editor.Unity.SheetsParsing
 {
     [TestFixture]
-    public class VerticalManyConfigsOnOneSheetParserTests
+    public class VerticalManyConfigsOnOneRawSheetParserTests
     {
         private Core.SheetsParsing.SheetsParsing _sheetsParsing;
 
@@ -48,7 +49,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -98,7 +99,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -158,7 +159,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -217,7 +218,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -322,7 +323,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -362,7 +363,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -385,7 +386,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -417,7 +418,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -447,7 +448,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -470,7 +471,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -489,7 +490,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -511,7 +512,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -534,7 +535,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -558,7 +559,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -581,7 +582,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -606,7 +607,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -629,7 +630,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -649,7 +650,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -676,7 +677,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -698,7 +699,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk, "Expected error for null property name");
@@ -720,7 +721,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new VerticalManyConfigsOnOneRawSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk, "Expected error for null property type");

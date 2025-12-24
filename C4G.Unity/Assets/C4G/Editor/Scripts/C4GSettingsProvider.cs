@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using C4G.Core.ConfigsSerialization;
 using C4G.Core.Settings;
-using C4G.Core.SheetsParsing;
+using C4G.Core.SheetsParsing._0_RawParsing;
 using C4G.Core.Utils;
 using UnityEngine;
 
@@ -23,7 +23,7 @@ namespace C4G.Editor
 
         Result<C4GSettings, string> IC4GSettingsProvider.GetSettings()
         {
-            var sheetParsersByName = new Dictionary<string, SheetParserBase>(_sheetDefinitions.Count, StringComparer.Ordinal);
+            var sheetParsersByName = new Dictionary<string, RawSheetParserBase>(_sheetDefinitions.Count, StringComparer.Ordinal);
             foreach (SerializedSheetDefinition sheetDefinition in _sheetDefinitions)
             {
                 string sheetName = sheetDefinition.Name;

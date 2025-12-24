@@ -6,6 +6,8 @@ using C4G.Core.CodeGeneration;
 using C4G.Core.ConfigsSerialization;
 using C4G.Core.Settings;
 using C4G.Core.SheetsParsing;
+using C4G.Core.SheetsParsing._0_RawParsing;
+using C4G.Core.SheetsParsing._1_PropertiesHierarchyTraversal;
 using C4G.Core.Utils;
 
 namespace C4G.Core
@@ -47,9 +49,9 @@ namespace C4G.Core
 
             int sheetsCount = settings.SheetParsersByName.Count;
 
-            var sheets = new List<(KeyValuePair<string, SheetParserBase> sheetName, IList<IList<object>> sheet)>(sheetsCount);
+            var sheets = new List<(KeyValuePair<string, RawSheetParserBase> sheetName, IList<IList<object>> sheet)>(sheetsCount);
 
-            foreach (KeyValuePair<string, SheetParserBase> parserByName in settings.SheetParsersByName)
+            foreach (KeyValuePair<string, RawSheetParserBase> parserByName in settings.SheetParsersByName)
             {
                 Result<IList<IList<object>>, string> loadSheetResult = await _googleInteraction.LoadSheetAsync(parserByName.Key, settings.TableId, settings.ClientSecret, ct);
                 if (ct.IsCancellationRequested)
@@ -62,7 +64,7 @@ namespace C4G.Core
             var parsedConfigs = new List<ParsedConfig>(sheetsCount);
             var cycleParsedConfigsBuffer = new List<ParsedConfig>(sheetsCount);
 
-            foreach ((KeyValuePair<string, SheetParserBase> parserByName, IList<IList<object>> sheet) in sheets)
+            foreach ((KeyValuePair<string, RawSheetParserBase> parserByName, IList<IList<object>> sheet) in sheets)
             {
                 cycleParsedConfigsBuffer.Clear();
 
@@ -155,7 +157,7 @@ namespace C4G.Core
                 return Result<string>.FromError("C4G Error. Sheet parsers by name is null or empty");
             }
 
-            foreach (KeyValuePair<string, SheetParserBase> sheetParserByName in settings.SheetParsersByName)
+            foreach (KeyValuePair<string, RawSheetParserBase> sheetParserByName in settings.SheetParsersByName)
             {
                 if (string.IsNullOrEmpty(sheetParserByName.Key))
                     return Result<string>.FromError($"C4G Error. Sheet name is null or empty");

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using C4G.Core.SheetsParsing;
+using C4G.Core.SheetsParsing._0_RawParsing;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,10 +15,10 @@ namespace C4G.Editor
         public const string ParserPropertyName = nameof(_parser);
 
         [SerializeField] private string _name;
-        [SerializeReference] private SheetParserBase _parser;
+        [SerializeReference] private RawSheetParserBase _parser;
 
         public string Name => _name;
-        public SheetParserBase Parser => _parser;
+        public RawSheetParserBase Parser => _parser;
     }
 
     [CustomPropertyDrawer(typeof(SerializedSheetDefinition))]
@@ -105,7 +106,7 @@ namespace C4G.Editor
 
         private static List<Type> GetAllParserTypes()
         {
-            var derivedTypes = TypeCache.GetTypesDerivedFrom<SheetParserBase>();
+            var derivedTypes = TypeCache.GetTypesDerivedFrom<RawSheetParserBase>();
 
             var types = new List<Type>();
             foreach (var type in derivedTypes)

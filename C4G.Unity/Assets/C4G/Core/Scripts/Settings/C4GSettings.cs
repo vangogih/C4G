@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using C4G.Core.ConfigsSerialization;
 using C4G.Core.SheetsParsing;
+using C4G.Core.SheetsParsing._0_RawParsing;
 
 namespace C4G.Core.Settings
 {
@@ -11,7 +12,7 @@ namespace C4G.Core.Settings
         public readonly string ClientSecret;
         public readonly string GeneratedCodeFolderFullPath;
         public readonly string SerializedConfigsFolderFullPath;
-        public readonly IReadOnlyDictionary<string, SheetParserBase> SheetParsersByName;
+        public readonly IReadOnlyDictionary<string, RawSheetParserBase> SheetParsersByName;
         public readonly IReadOnlyDictionary<string, IC4GTypeParser> AliasParsersByName;
 
         public C4GSettings(
@@ -20,7 +21,7 @@ namespace C4G.Core.Settings
             string clientSecret,
             string generatedCodeFolderFullPath,
             string serializedConfigsFolderFullPath,
-            IReadOnlyDictionary<string, SheetParserBase> sheetParsersByName,
+            IReadOnlyDictionary<string, RawSheetParserBase> sheetParsersByName,
             IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
         {
             TableId = tableId;
