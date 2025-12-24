@@ -14,11 +14,11 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "ExtremeValuesSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("MaxInt", "int"),
-                    new ParsedPropertyInfo("MinInt", "int"),
-                    new ParsedPropertyInfo("Zero", "int")
+                    new ParsedProperty("MaxInt", "int"),
+                    new ParsedProperty("MinInt", "int"),
+                    new ParsedProperty("Zero", "int")
                 };
                 var entities = new List<List<string>>
                 {
@@ -50,9 +50,9 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "OverflowSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("TooBig", "int")
+                    new ParsedProperty("TooBig", "int")
                 };
                 var entities = new List<List<string>>
                 {
@@ -72,11 +72,11 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "InvalidSimpleTypeSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("IsActive", "bool"),
-                    new ParsedPropertyInfo("Score", "float")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("IsActive", "bool"),
+                    new ParsedProperty("Score", "float")
                 };
                 var entities = new List<List<string>>
                 {

@@ -14,12 +14,12 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "SpecialFloatSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Infinity", "float"),
-                    new ParsedPropertyInfo("NegInfinity", "float"),
-                    new ParsedPropertyInfo("NaN", "float"),
-                    new ParsedPropertyInfo("Zero", "float")
+                    new ParsedProperty("Infinity", "float"),
+                    new ParsedProperty("NegInfinity", "float"),
+                    new ParsedProperty("NaN", "float"),
+                    new ParsedProperty("Zero", "float")
                 };
                 var entities = new List<List<string>>
                 {
@@ -52,10 +52,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "FloatListSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Name", "string"),
-                    new ParsedPropertyInfo("Scores", "List<float>")
+                    new ParsedProperty("Name", "string"),
+                    new ParsedProperty("Scores", "List<float>")
                 };
                 var entities = new List<List<string>>
                 {

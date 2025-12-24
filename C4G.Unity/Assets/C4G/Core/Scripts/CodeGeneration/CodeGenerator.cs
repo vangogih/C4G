@@ -25,7 +25,7 @@ namespace C4G.Core.CodeGeneration
                 {
                     for (int propertyIndex = 0; propertyIndex < parsedConfig.Properties.Count; propertyIndex++)
                     {
-                        ParsedPropertyInfo property = parsedConfig.Properties[propertyIndex];
+                        ParsedProperty property = parsedConfig.Properties[propertyIndex];
                         string actualType = ResolveType(property.Type, aliasParsersByName);
                         w.WritePublicProperty(property.Name, actualType);
                     }

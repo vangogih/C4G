@@ -14,13 +14,13 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "SpecialCharsSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("EmptyString", "string"),
-                    new ParsedPropertyInfo("WithQuotes", "string"),
-                    new ParsedPropertyInfo("WithNewlines", "string"),
-                    new ParsedPropertyInfo("WithCommas", "string"),
-                    new ParsedPropertyInfo("Unicode", "string")
+                    new ParsedProperty("EmptyString", "string"),
+                    new ParsedProperty("WithQuotes", "string"),
+                    new ParsedProperty("WithNewlines", "string"),
+                    new ParsedProperty("WithCommas", "string"),
+                    new ParsedProperty("Unicode", "string")
                 };
                 var entities = new List<List<string>>
                 {
@@ -40,10 +40,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "StringListSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Name", "string"),
-                    new ParsedPropertyInfo("Tags", "List<string>")
+                    new ParsedProperty("Name", "string"),
+                    new ParsedProperty("Tags", "List<string>")
                 };
                 var entities = new List<List<string>>
                 {

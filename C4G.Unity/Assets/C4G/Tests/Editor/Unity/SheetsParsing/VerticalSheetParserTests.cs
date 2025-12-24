@@ -30,13 +30,13 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { "2", "Bob", "6.6", "35.1", "5,6,8" },
                 new List<object> { "3", "Charlie", "3.5", "33", "3,5" }
             };
-            var expectedProperties = new List<ParsedPropertyInfo>
+            var expectedProperties = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("Id", "int"),
-                new ParsedPropertyInfo("Name", "string"),
-                new ParsedPropertyInfo("Rank", "float"),
-                new ParsedPropertyInfo("Range", "double"),
-                new ParsedPropertyInfo("Slots", "List<int>")
+                new ParsedProperty("Id", "int"),
+                new ParsedProperty("Name", "string"),
+                new ParsedProperty("Rank", "float"),
+                new ParsedProperty("Range", "double"),
+                new ParsedProperty("Slots", "List<int>")
             };
             var expectedEntities = new List<IReadOnlyCollection<string>>
             {
@@ -69,10 +69,10 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { "int", "string" },
                 new List<object> { "100", "Test" }
             };
-            var expectedProperties = new List<ParsedPropertyInfo>
+            var expectedProperties = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("Id", "int"),
-                new ParsedPropertyInfo("Name", "string")
+                new ParsedProperty("Id", "int"),
+                new ParsedProperty("Name", "string")
             };
             var expectedEntities = new List<IReadOnlyCollection<string>>
             {
@@ -105,9 +105,9 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { "2" },
                 new List<object> { "3" }
             };
-            var expectedProperties = new List<ParsedPropertyInfo>
+            var expectedProperties = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("Id", "int")
+                new ParsedProperty("Id", "int")
             };
             var expectedEntities = new List<IReadOnlyCollection<string>>
             {

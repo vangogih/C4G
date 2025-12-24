@@ -61,14 +61,14 @@ namespace C4G.Core.ConfigsSerialization
 
         private Result<Entity, string> GetEntityDataDict(
             IReadOnlyCollection<string> entityData,
-            IReadOnlyList<ParsedPropertyInfo> properties,
+            IReadOnlyList<ParsedProperty> properties,
             IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
         {
             var entityDataDict = new Dictionary<string, object>();
 
             int index = 0;
 
-            foreach (ParsedPropertyInfo property in properties)
+            foreach (ParsedProperty property in properties)
             {
                 string serializedPropertyValue = entityData.ElementAt(index);
                 Result<object, string> propertyValueResult = GetPropertyValue(property, serializedPropertyValue, aliasParsersByName);
@@ -99,7 +99,7 @@ namespace C4G.Core.ConfigsSerialization
             };
 
         private Result<object, string> GetPropertyValue(
-            ParsedPropertyInfo property,
+            ParsedProperty property,
             string serializedPropertyValue,
             IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
         {
@@ -182,7 +182,7 @@ namespace C4G.Core.ConfigsSerialization
             else
             {
                 HashSet<string> propertyNamesHashSet = new HashSet<string>();
-                foreach (ParsedPropertyInfo parsedPropertyInfo in parsedConfig.Properties)
+                foreach (ParsedProperty parsedPropertyInfo in parsedConfig.Properties)
                 {
                     if (!propertyNamesHashSet.Add(parsedPropertyInfo.Name))
                     {

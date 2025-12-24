@@ -14,12 +14,12 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "BoolVariationsSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Bool1", "bool"),
-                    new ParsedPropertyInfo("Bool2", "bool"),
-                    new ParsedPropertyInfo("Bool3", "bool"),
-                    new ParsedPropertyInfo("Bool4", "bool")
+                    new ParsedProperty("Bool1", "bool"),
+                    new ParsedProperty("Bool2", "bool"),
+                    new ParsedProperty("Bool3", "bool"),
+                    new ParsedProperty("Bool4", "bool")
                 };
                 var entities = new List<List<string>>
                 {
@@ -40,10 +40,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "BoolListSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("Flags", "List<bool>")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("Flags", "List<bool>")
                 };
                 var entities = new List<List<string>>
                 {

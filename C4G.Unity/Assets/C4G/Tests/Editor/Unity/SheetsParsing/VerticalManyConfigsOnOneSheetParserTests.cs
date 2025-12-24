@@ -33,11 +33,11 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { ""            , ""       , ""        , ""      , "end.users" }
             };
 
-            var expectedProperties = new List<ParsedPropertyInfo>
+            var expectedProperties = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("id", "int"),
-                new ParsedPropertyInfo("name", "string"),
-                new ParsedPropertyInfo("age", "float")
+                new ParsedProperty("id", "int"),
+                new ParsedProperty("name", "string"),
+                new ParsedProperty("age", "float")
             };
             var expectedEntities = new List<IReadOnlyCollection<string>>
             {
@@ -75,19 +75,19 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { ""         , ""       , "end.A" , ""   , ""        , "30"     , "Z"      },
                 new List<object> { ""         , ""       , ""      , ""   , ""        , ""       , ""       , "end.B" }
             };
-            var expectedPropertiesA = new List<ParsedPropertyInfo>
+            var expectedPropertiesA = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("field1", "type1")
+                new ParsedProperty("field1", "type1")
             };
             var expectedEntitiesA = new List<IReadOnlyCollection<string>>
             {
                 new List<string> { "val1" },
                 new List<string> { "val2" }
             };
-            var expectedPropertiesB = new List<ParsedPropertyInfo>
+            var expectedPropertiesB = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("id", "int"),
-                new ParsedPropertyInfo("name", "string")
+                new ParsedProperty("id", "int"),
+                new ParsedProperty("name", "string")
             };
             var expectedEntitiesB = new List<IReadOnlyCollection<string>>
             {
@@ -137,18 +137,18 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { ""        , ""    , ""      , ""        , "beta"   },
                 new List<object> { ""        , ""    , ""      , ""        , ""       , "end.B" }
             };
-            var expectedPropertiesA = new List<ParsedPropertyInfo>
+            var expectedPropertiesA = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("x", "int")
+                new ParsedProperty("x", "int")
             };
             var expectedEntitiesA = new List<IReadOnlyCollection<string>>
             {
                 new List<string> { "1" },
                 new List<string> { "2" }
             };
-            var expectedPropertiesB = new List<ParsedPropertyInfo>
+            var expectedPropertiesB = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("y", "string")
+                new ParsedProperty("y", "string")
             };
             var expectedEntitiesB = new List<IReadOnlyCollection<string>>
             {
@@ -196,18 +196,18 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { ""        , ""    , ""       , ""        , "Jane"   , "false"  },
                 new List<object> { ""        , ""    , ""       , ""        , ""       , ""       , "end.B" }
             };
-            var expectedPropertiesA = new List<ParsedPropertyInfo>
+            var expectedPropertiesA = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("id", "int")
+                new ParsedProperty("id", "int")
             };
             var expectedEntitiesA = new List<IReadOnlyCollection<string>>
             {
                 new List<string> { "100" }
             };
-            var expectedPropertiesB = new List<ParsedPropertyInfo>
+            var expectedPropertiesB = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("name", "string"),
-                new ParsedPropertyInfo("active", "bool")
+                new ParsedProperty("name", "string"),
+                new ParsedProperty("active", "bool")
             };
             var expectedEntitiesB = new List<IReadOnlyCollection<string>>
             {
@@ -277,12 +277,12 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { ""           , ""        , ""         , ""            , "disk"   , "12.3"  },
                 new List<object> { ""           , ""        , ""         , ""            , ""       , ""      , "end.stats" }
             };
-            var expectedPropertiesUsers = new List<ParsedPropertyInfo>
+            var expectedPropertiesUsers = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("id", "int"),
-                new ParsedPropertyInfo("name", "string"),
-                new ParsedPropertyInfo("age", "int"),
-                new ParsedPropertyInfo("salary", "float")
+                new ParsedProperty("id", "int"),
+                new ParsedProperty("name", "string"),
+                new ParsedProperty("age", "int"),
+                new ParsedProperty("salary", "float")
             };
             var expectedEntitiesUsers = new List<IReadOnlyCollection<string>>
             {
@@ -290,28 +290,28 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<string> { "2", "Bob", "30", "75.3" },
                 new List<string> { "3", "Charlie", "35", "90.1" }
             };
-            var expectedPropertiesSettings = new List<ParsedPropertyInfo>
+            var expectedPropertiesSettings = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("key", "string"),
-                new ParsedPropertyInfo("value", "string")
+                new ParsedProperty("key", "string"),
+                new ParsedProperty("value", "string")
             };
             var expectedEntitiesSettings = new List<IReadOnlyCollection<string>>
             {
                 new List<string> { "theme", "dark" },
                 new List<string> { "lang", "en" }
             };
-            var expectedPropertiesMeta = new List<ParsedPropertyInfo>
+            var expectedPropertiesMeta = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("version", "string")
+                new ParsedProperty("version", "string")
             };
             var expectedEntitiesMeta = new List<IReadOnlyCollection<string>>
             {
                 new List<string> { "1.0" }
             };
-            var expectedPropertiesStats = new List<ParsedPropertyInfo>
+            var expectedPropertiesStats = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("metric", "string"),
-                new ParsedPropertyInfo("value", "float")
+                new ParsedProperty("metric", "string"),
+                new ParsedProperty("value", "float")
             };
             var expectedEntitiesStats = new List<IReadOnlyCollection<string>>
             {
@@ -406,9 +406,9 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { ""        , ""      , "end.A" }
             };
 
-            var expectedProperties = new List<ParsedPropertyInfo>
+            var expectedProperties = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("field", "type")
+                new ParsedProperty("field", "type")
             };
             var expectedEntities = new List<IReadOnlyCollection<string>>
             {

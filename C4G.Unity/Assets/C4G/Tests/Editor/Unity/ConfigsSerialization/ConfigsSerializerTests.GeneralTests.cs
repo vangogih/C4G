@@ -14,10 +14,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "TestSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("Name", "string")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("Name", "string")
                 };
                 var entities = new List<List<string>>
                 {
@@ -53,10 +53,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "EmptyEntitiesSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("Name", "string")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("Name", "string")
                 };
                 var entities = new List<List<string>>();
                 var parsedConfig = new ParsedConfig(name, properties, entities);
@@ -79,7 +79,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "EmptyPropertiesSheet";
-                var properties = new List<ParsedPropertyInfo>();
+                var properties = new List<ParsedProperty>();
                 var entities = new List<List<string>> { new List<string>(), new List<string>() };
                 var parsedConfig = new ParsedConfig(name, properties, entities);
 
@@ -104,15 +104,15 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var parsedConfigWithNullName =
-                    new ParsedConfig(null, new List<ParsedPropertyInfo>(), new List<List<string>>());
+                    new ParsedConfig(null, new List<ParsedProperty>(), new List<List<string>>());
                 var parsedConfigWithNullProperties = new ParsedConfig("TestSheet", null, new List<List<string>>());
-                var parsedConfigWithNullEntities = new ParsedConfig("TestSheet", new List<ParsedPropertyInfo>(), null);
+                var parsedConfigWithNullEntities = new ParsedConfig("TestSheet", new List<ParsedProperty>(), null);
 
                 var parsedConfigWithMismatchedData = new ParsedConfig("MismatchedDataSheet",
-                    new List<ParsedPropertyInfo>
+                    new List<ParsedProperty>
                     {
-                        new ParsedPropertyInfo("Id", "int"),
-                        new ParsedPropertyInfo("Name", "string")
+                        new ParsedProperty("Id", "int"),
+                        new ParsedProperty("Name", "string")
                     },
                     new List<List<string>>
                     {
@@ -141,10 +141,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "UnknownTypeSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("CustomProperty", "UnknownType")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("CustomProperty", "UnknownType")
                 };
                 var entities = new List<List<string>>
                 {
@@ -164,13 +164,13 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "MixedTypesSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("Name", "string"),
-                    new ParsedPropertyInfo("IsActive", "bool"),
-                    new ParsedPropertyInfo("Scores", "List<double>"),
-                    new ParsedPropertyInfo("Tags", "List<string>")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("Name", "string"),
+                    new ParsedProperty("IsActive", "bool"),
+                    new ParsedProperty("Scores", "List<double>"),
+                    new ParsedProperty("Tags", "List<string>")
                 };
                 var entities = new List<List<string>>
                 {

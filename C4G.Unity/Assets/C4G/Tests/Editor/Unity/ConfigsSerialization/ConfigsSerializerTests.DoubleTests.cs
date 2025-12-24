@@ -14,10 +14,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "DoubleListSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Name", "string"),
-                    new ParsedPropertyInfo("Scores", "List<double>")
+                    new ParsedProperty("Name", "string"),
+                    new ParsedProperty("Scores", "List<double>")
                 };
                 var entities = new List<List<string>>
                 {

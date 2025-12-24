@@ -15,10 +15,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "ListTestSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("Numbers", "List<int>")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("Numbers", "List<int>")
                 };
                 var entities = new List<List<string>>
                 {
@@ -61,11 +61,11 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "EmptyListSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("EmptyNumbers", "List<int>"),
-                    new ParsedPropertyInfo("EmptyTags", "List<string>")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("EmptyNumbers", "List<int>"),
+                    new ParsedProperty("EmptyTags", "List<string>")
                 };
                 var entities = new List<List<string>>
                 {
@@ -103,10 +103,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "WhitespaceListSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("Items", "List<string>")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("Items", "List<string>")
                 };
                 var entities = new List<List<string>>
                 {
@@ -141,10 +141,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "SingleElementSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("SingleItem", "List<string>")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("SingleItem", "List<string>")
                 };
                 var entities = new List<List<string>>
                 {
@@ -177,10 +177,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "InvalidListSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("UnknownList", "List<UnknownType>")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("UnknownList", "List<UnknownType>")
                 };
                 var entities = new List<List<string>>
                 {
@@ -200,10 +200,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "InvalidElementSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("Numbers", "List<int>")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("Numbers", "List<int>")
                 };
                 var entities = new List<List<string>>
                 {
@@ -223,10 +223,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "EmptyElementsSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("Items", "List<string>")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("Items", "List<string>")
                 };
                 var entities = new List<List<string>>
                 {
@@ -247,10 +247,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "OnlyCommasSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("Items", "List<string>")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("Items", "List<string>")
                 };
                 var entities = new List<List<string>>
                 {
@@ -270,11 +270,11 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "CaseTestSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Items1", "list<int>"), // lowercase
-                    new ParsedPropertyInfo("Items2", "LIST<INT>"), // uppercase  
-                    new ParsedPropertyInfo("Items3", "List<String>") // mixed case
+                    new ParsedProperty("Items1", "list<int>"), // lowercase
+                    new ParsedProperty("Items2", "LIST<INT>"), // uppercase  
+                    new ParsedProperty("Items3", "List<String>") // mixed case
                 };
                 var entities = new List<List<string>>
                 {
@@ -294,12 +294,12 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "MalformedSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("BadList1", "List<>"),
-                    new ParsedPropertyInfo("BadList2", "List<int"),
-                    new ParsedPropertyInfo("BadList3", "Listint>"),
-                    new ParsedPropertyInfo("BadList4", "List<int,string>")
+                    new ParsedProperty("BadList1", "List<>"),
+                    new ParsedProperty("BadList2", "List<int"),
+                    new ParsedProperty("BadList3", "Listint>"),
+                    new ParsedProperty("BadList4", "List<int,string>")
                 };
                 var entities = new List<List<string>>
                 {
@@ -319,10 +319,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "LargeListSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new List<ParsedProperty>
                 {
-                    new ParsedPropertyInfo("Id", "int"),
-                    new ParsedPropertyInfo("LargeList", "List<int>")
+                    new ParsedProperty("Id", "int"),
+                    new ParsedProperty("LargeList", "List<int>")
                 };
 
                 var largeList = string.Join(",", Enumerable.Range(1, 10000));

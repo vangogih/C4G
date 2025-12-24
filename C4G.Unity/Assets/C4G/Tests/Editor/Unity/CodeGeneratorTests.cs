@@ -43,10 +43,10 @@ public partial class ClassName
 }}
 ";
             var className = "ClassName";
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("Id", "int"),
-                new ParsedPropertyInfo("BaseHp", "int")
+                new ParsedProperty("Id", "int"),
+                new ParsedProperty("BaseHp", "int")
             };
             var entities = new List<List<string>>();
             var parsedConfig = new ParsedConfig(className, propertyInfos, entities);
@@ -63,10 +63,10 @@ public partial class ClassName
         public void GenerateDTOClass_WrongInputLeadsToError()
         {
             // Arrange
-            var parsedConfigWithNullName = new ParsedConfig(null, new List<ParsedPropertyInfo>(), new List<List<string>>());
-            var parsedConfigWithEmptyName = new ParsedConfig(string.Empty, new List<ParsedPropertyInfo>(), new List<List<string>>());
+            var parsedConfigWithNullName = new ParsedConfig(null, new List<ParsedProperty>(), new List<List<string>>());
+            var parsedConfigWithEmptyName = new ParsedConfig(string.Empty, new List<ParsedProperty>(), new List<List<string>>());
             var parsedConfigWithNullProps = new ParsedConfig("ClassName", null, new List<List<string>>());
-            var parsedConfigWithNullEntities = new ParsedConfig("ClassName", new List<ParsedPropertyInfo>(), null);
+            var parsedConfigWithNullEntities = new ParsedConfig("ClassName", new List<ParsedProperty>(), null);
 
             // Act
             Result<string, string> nullNameOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithNullName, _parsersByName);
@@ -99,9 +99,9 @@ public partial class Character
             IC4GTypeParser parser = CreateParserForType(typeof(int));
             _parsersByName.Add("Health", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("Health", "Health")
+                new ParsedProperty("Health", "Health")
             };
             var parsedConfig = new ParsedConfig("Character", propertyInfos, new List<List<string>>());
 
@@ -130,9 +130,9 @@ public partial class Item
             IC4GTypeParser parser = CreateParserForType(typeof(TestEnum));
             _parsersByName.Add("TestEnum", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("TestEnum", "TestEnum")
+                new ParsedProperty("TestEnum", "TestEnum")
             };
             var parsedConfig = new ParsedConfig("Item", propertyInfos, new List<List<string>>());
 
@@ -162,9 +162,9 @@ public partial class Container
             IC4GTypeParser parser = CreateParserForType(typeof(List<int>));
             _parsersByName.Add("IntList", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("Items", "IntList")
+                new ParsedProperty("Items", "IntList")
             };
             var parsedConfig = new ParsedConfig("Container", propertyInfos, new List<List<string>>());
 
@@ -193,9 +193,9 @@ public partial class Data
             IC4GTypeParser parser = CreateParserForType(typeof(int[]));
             _parsersByName.Add("IntArray", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("Values", "IntArray")
+                new ParsedProperty("Values", "IntArray")
             };
             var parsedConfig = new ParsedConfig("Data", propertyInfos, new List<List<string>>());
 
@@ -225,9 +225,9 @@ public partial class Grid
             IC4GTypeParser parser = CreateParserForType(typeof(int[,]));
             _parsersByName.Add("IntMatrix", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("Matrix", "IntMatrix")
+                new ParsedProperty("Matrix", "IntMatrix")
             };
             var parsedConfig = new ParsedConfig("Grid", propertyInfos, new List<List<string>>());
 
@@ -257,9 +257,9 @@ public partial class Mapping
             IC4GTypeParser parser = CreateParserForType(typeof(Dictionary<int, string>));
             _parsersByName.Add("IntToStringMap", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("IntToStringMap", "IntToStringMap")
+                new ParsedProperty("IntToStringMap", "IntToStringMap")
             };
             var parsedConfig = new ParsedConfig("Mapping", propertyInfos, new List<List<string>>());
 
@@ -288,9 +288,9 @@ public partial class ComplexData
             IC4GTypeParser parser = CreateParserForType(typeof(Dictionary<string, List<int>>));
             _parsersByName.Add("ComplexMap", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("ComplexMap", "ComplexMap")
+                new ParsedProperty("ComplexMap", "ComplexMap")
             };
             var parsedConfig = new ParsedConfig("ComplexData", propertyInfos, new List<List<string>>());
 
@@ -324,11 +324,11 @@ public partial class MixedClass
             _parsersByName.Add("Health", healthParser);
             _parsersByName.Add("IntArray", intArrayParser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("Health", "Health"),
-                new ParsedPropertyInfo("Level", "int"),
-                new ParsedPropertyInfo("Scores", "IntArray")
+                new ParsedProperty("Health", "Health"),
+                new ParsedProperty("Level", "int"),
+                new ParsedProperty("Scores", "IntArray")
             };
             var parsedConfig = new ParsedConfig("MixedClass", propertyInfos, new List<List<string>>());
 
@@ -355,9 +355,9 @@ public partial class TestClass
 }}
 ";
 
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("Value", "UnknownType")
+                new ParsedProperty("Value", "UnknownType")
             };
             var parsedConfig = new ParsedConfig("TestClass", propertyInfos, new List<List<string>>());
 
@@ -385,10 +385,10 @@ public partial class TestClass
 }}
 ";
 
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("Hp", "Health"),
-                new ParsedPropertyInfo("Items", "IntList")
+                new ParsedProperty("Hp", "Health"),
+                new ParsedProperty("Items", "IntList")
             };
             var parsedConfig = new ParsedConfig("TestClass", propertyInfos, new List<List<string>>());
 

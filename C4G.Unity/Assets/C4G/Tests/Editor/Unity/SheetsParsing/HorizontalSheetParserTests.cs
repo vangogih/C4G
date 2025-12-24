@@ -28,13 +28,13 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { "Range", "double", "8.5", "35.1", "33" },
                 new List<object> { "Slots", "List<int>", "1,2,3", "5,6,8", "3,5" }
             };
-            var expectedProperties = new List<ParsedPropertyInfo>
+            var expectedProperties = new List<ParsedProperty>
             {
-                new ParsedPropertyInfo("Id", "int"),
-                new ParsedPropertyInfo("Name", "string"),
-                new ParsedPropertyInfo("Rank", "float"),
-                new ParsedPropertyInfo("Range", "double"),
-                new ParsedPropertyInfo("Slots", "List<int>")
+                new ParsedProperty("Id", "int"),
+                new ParsedProperty("Name", "string"),
+                new ParsedProperty("Rank", "float"),
+                new ParsedProperty("Range", "double"),
+                new ParsedProperty("Slots", "List<int>")
             };
             var expectedEntities = new List<IReadOnlyCollection<string>>
             {

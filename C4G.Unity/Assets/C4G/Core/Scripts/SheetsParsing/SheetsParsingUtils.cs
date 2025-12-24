@@ -15,7 +15,7 @@ namespace C4G.Core.SheetsParsing
                 return Result<ParsedConfig, string>.FromError($"C4G Error. Sheet name '{sheetName}'. Rows amount '{sheetData.Count}' < expected '{endRowIndex + 1}'");
 
             int propertiesAmount = endRowIndex - startRowIndex + 1;
-            ParsedPropertyInfo[] properties = new ParsedPropertyInfo[propertiesAmount];
+            ParsedProperty[] properties = new ParsedProperty[propertiesAmount];
 
             int entitiesWithTypeDeclarationAmount = endColumnIndex - startColumnIndex + 1;
             int entitiesAmount = entitiesWithTypeDeclarationAmount - 2;
@@ -41,7 +41,7 @@ namespace C4G.Core.SheetsParsing
                 if (string.IsNullOrEmpty(propertyType))
                     return Result<ParsedConfig, string>.FromError($"C4G Error. Sheet name '{sheetName}'. Cell [{rowIndex + 1}][{startColumnIndex + 2}] must contain property type, but has null or empty value instead");
 
-                var parsedPropertyInfo = new ParsedPropertyInfo(propertyName, propertyType);
+                var parsedPropertyInfo = new ParsedProperty(propertyName, propertyType);
                 properties[rowIndex - startRowIndex] = parsedPropertyInfo;
 
                 for (int columnIndex = startColumnIndex + 2; columnIndex <= endColumnIndex; columnIndex++)
@@ -87,7 +87,7 @@ namespace C4G.Core.SheetsParsing
                 return Result<ParsedConfig, string>.FromError($"C4G Error. Sheet name '{sheetName}'. Row '{startRowIndex + 2}' length '{typesRow.Count}' < expected '{endColumnIndex + 1}'");
 
             int propertiesAmount = endColumnIndex - startColumnIndex + 1;
-            ParsedPropertyInfo[] properties = new ParsedPropertyInfo[propertiesAmount];
+            ParsedProperty[] properties = new ParsedProperty[propertiesAmount];
 
             for (int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++)
             {
@@ -99,7 +99,7 @@ namespace C4G.Core.SheetsParsing
                 if (string.IsNullOrEmpty(propertyType))
                     return Result<ParsedConfig, string>.FromError($"C4G Error. Sheet name '{sheetName}'. Cell [{startRowIndex + 2}][{columnIndex + 1}] must contain property type, but has null or empty value instead");
 
-                var parsedPropertyInfo = new ParsedPropertyInfo(propertyName, propertyType);
+                var parsedPropertyInfo = new ParsedProperty(propertyName, propertyType);
                 properties[columnIndex - startColumnIndex] = parsedPropertyInfo;
             }
 
