@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'C4G',
-  tagline: 'Configs for everyone',
+  tagline: '⚙️ Delightful Game Configuration',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -15,10 +15,10 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https://vangogih.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/C4G/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -33,6 +33,18 @@ const config: Config = {
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'ru'],
+    localeConfigs: {
+      en: {
+        label: 'English',
+        direction: 'ltr',
+        htmlLang: 'en-US',
+      },
+      ru: {
+        label: 'Русский',
+        direction: 'ltr',
+        htmlLang: 'ru-RU',
+      },
+    },
   },
 
   presets: [
@@ -41,26 +53,11 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          editUrl: 'https://github.com/vangogih/C4G/tree/master/website/',
+          showLastUpdateAuthor: true,
+          showLastUpdateTime: true,
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        blog: false,
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -77,7 +74,7 @@ const config: Config = {
     navbar: {
       title: 'C4G',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'C4G Logo',
         src: 'img/logo.svg',
       },
       items: [
@@ -85,9 +82,22 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Docs',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
+        {
+          to: '/docs/api/introduction',
+          label: 'API',
+          position: 'left',
+        },
+        {
+          to: '/docs/help',
+          label: 'Help',
+          position: 'left',
+        },
+        {
+          type: 'localeDropdown',
+          position: 'right',
+        },
         {
           href: 'https://github.com/vangogih/C4G',
           label: 'GitHub',
@@ -102,8 +112,16 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/intro',
+              label: 'Getting Started',
+              to: '/docs/getting-started',
+            },
+            {
+              label: 'Guides',
+              to: '/docs/guides/overview',
+            },
+            {
+              label: 'API Reference',
+              to: '/docs/api/introduction',
             },
           ],
         },
@@ -112,15 +130,11 @@ const config: Config = {
           items: [
             {
               label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              href: 'https://stackoverflow.com/questions/tagged/c4g',
             },
             {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
+              label: 'GitHub Discussions',
+              href: 'https://github.com/vangogih/C4G/discussions',
             },
           ],
         },
@@ -131,10 +145,14 @@ const config: Config = {
               label: 'GitHub',
               href: 'https://github.com/vangogih/C4G',
             },
+            {
+              label: 'Releases',
+              href: 'https://github.com/vangogih/C4G/releases',
+            },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} C4G, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} C4G. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,

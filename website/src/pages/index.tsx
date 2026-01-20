@@ -20,8 +20,14 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
+            to="/docs/getting-started">
+            Get Started
+          </Link>
+          <Link
+            className="button button--outline button--secondary button--lg"
+            to="/docs/installation"
+            style={{marginLeft: '1rem'}}>
+            Installation Guide
           </Link>
         </div>
       </div>
@@ -33,8 +39,8 @@ export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title={`${siteConfig.title} - Game Configuration Made Easy`}
+      description="Production-ready remote game configuration toolset for Unity. Auto-generate C# DTOs from Google Sheets and manage game configs with ease.">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

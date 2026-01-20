@@ -5,50 +5,78 @@ import styles from './styles.module.css';
 
 type FeatureItem = {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
+  emoji: string;
   description: ReactNode;
 };
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Zero Configuration',
+    emoji: '⚡',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        C4G works out of the box with minimal setup. Just configure your Google Sheets
+        integration and start managing your game configs immediately.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Auto Code Generation',
+    emoji: '🔧',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Automatically generates C# DTO classes from your Google Sheets structure.
+        No manual coding required - focus on your game logic instead.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Production Ready',
+    emoji: '🚀',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Built for reliability and performance. Thoroughly tested with high code
+        coverage and used in production environments.
+      </>
+    ),
+  },
+  {
+    title: 'Type Safe',
+    emoji: '🔒',
+    description: (
+      <>
+        Strong typing with custom type parsers for primitives, enums, and custom
+        aliases. Catch errors at compile time, not runtime.
+      </>
+    ),
+  },
+  {
+    title: 'Google Sheets Integration',
+    emoji: '📊',
+    description: (
+      <>
+        Leverage the familiar Google Sheets interface for configuration management.
+        Enable non-programmers to manage game configs with ease.
+      </>
+    ),
+  },
+  {
+    title: 'Modular Architecture',
+    emoji: '🧩',
+    description: (
+      <>
+        Clean, modular design with facade pattern. Easily extend with custom type
+        parsers and integrate into your existing workflow.
       </>
     ),
   },
 ];
 
-function Feature({title, Svg, description}: FeatureItem) {
+function Feature({title, emoji, description}: FeatureItem) {
   return (
     <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
       <div className="text--center padding-horiz--md">
+        <div className={styles.featureEmoji}>{emoji}</div>
         <Heading as="h3">{title}</Heading>
         <p>{description}</p>
       </div>
