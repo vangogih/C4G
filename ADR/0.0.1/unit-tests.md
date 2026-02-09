@@ -17,3 +17,7 @@ Create and maintain automatic tests with 95+ percents of coverage
 
 Early issues detection
 Better code-level architecture
+
+## See also
+
+- [CI Workflow Coordination](../0.0.5/ci-workflow-coordination.md) — automated CI pipelines for running standalone and Unity tests
