@@ -1,0 +1,50 @@
+name: unity-tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  unity-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        unityVersion:
+          - 2019.4.40f1
+          - 2020.3.49f1
+          - 2021.3.58f1
+          - 2022.3.71f1
+          - 2023.1.22f1
+          - 6000.3.1f1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Unity Library
+        uses: actions/cache@v4
+        with:
+          path: C4G.Unity/Library
+          key: Library-C4G.Unity-${{ matrix.unityVersion }}
+          restore-keys: |
+            Library-C4G.Unity-
+            Library-
+
+      - name: Unity Test Runner
+        uses: game-ci/unity-test-runner@v4
+        id: unity-test
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: ./C4G.Unity
+          unityVersion: ${{ matrix.unityVersion }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          testMode: editmode
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.unityVersion }}
+          path: ${{ steps.unity-test.outputs.artifactsPath }}
+          retention-days: 14
