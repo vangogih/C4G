@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+
+        <!-- Coverlet: Code Coverage Collection (OpenCover format) -->
+        <CollectCoverage>true</CollectCoverage>
+        <CoverletOutputFormat>opencover</CoverletOutputFormat>
+        <CoverletOutput>$(MSBuildProjectDirectory)/coverage/</CoverletOutput>
+        <Include>[C4G.Standalone]*</Include>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.msbuild" Version="6.0.4" />
+        <PackageReference Include="nunit" Version="3.12.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+        <PackageReference Include="ReportGenerator" Version="5.0.4" />
+
+        <Reference Include="NSubstitute">
+            <HintPath>..\C4G.Unity\Assets\C4G\Plugins\NSubstitute.dll</HintPath>
+        </Reference>
+        <Reference Include="Castle.Core">
+            <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Castle.Core.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\C4G.Standalone\C4G.Standalone.csproj" />
+        <Compile Include="..\C4G.Unity\Assets\C4G\Tests\**\*.cs" />
+    </ItemGroup>
+
+    <!-- ReportGenerator: Auto-generate coverage reports after test run -->
+    <Target Name="GenerateCoverageReport" AfterTargets="GenerateCoverageResultAfterTest">
+        <ItemGroup>
+            <CoverageFiles Include="$(MSBuildProjectDirectory)/coverage/coverage.opencover.xml" />
+        </ItemGroup>
+        <ReportGenerator
+            ProjectDirectory="$(MSBuildProjectDirectory)"
+            ReportFiles="@(CoverageFiles)"
+            TargetDirectory="$(MSBuildProjectDirectory)/../C4G.Unity/CodeCoverage"
+            ReportTypes="Html;MarkdownSummary;JsonSummary;Badges"
+            AssemblyFilters="+C4G.Standalone"
+            VerbosityLevel="Info" />
+        <RemoveDir Directories="$(MSBuildProjectDirectory)/coverage" />
+    </Target>
+
+</Project>
