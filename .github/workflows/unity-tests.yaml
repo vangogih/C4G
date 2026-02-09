@@ -1,6 +1,9 @@
 name: unity-tests
 
 on:
+  push:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
