@@ -47,3 +47,7 @@ sequenceDiagram
   - **Tests fail**: `wait-for-tests` fails, `create-release` is skipped (release is not created).
   - **Direct push to master** (not via release): both test workflows trigger normally, no release created.
   - **Manual Unity test run**: `workflow_dispatch` trigger is preserved on `unity-tests.yaml`.
+
+## See also
+
+- [.NET Scripts in CI Workflows](../0.0.4/dotnet-scripts-for-ci.md) — why CI scripts are written in C# instead of Bash, Python, or Cake

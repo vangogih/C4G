@@ -20,3 +20,4 @@ No need for excess administration
 ## See also
 
 - [CI Workflow Coordination](../0.0.5/ci-workflow-coordination.md) — GitHub Actions workflows for testing and release automation
+- [.NET Scripts in CI Workflows](../0.0.4/dotnet-scripts-for-ci.md) — why CI scripts are written in C# instead of Bash, Python, or Cake
