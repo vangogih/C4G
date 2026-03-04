@@ -1,10 +1,9 @@
 # C4G Documentation Website
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator. The design is inspired by the [Jest website](https://jestjs.io) with C4G's custom theme.
+This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
 ## Features
 
-- 🎨 Jest-inspired design with custom green theme
 - 🌍 Full internationalization support (English & Russian)
 - 📱 Responsive design with dark/light mode
 - 📚 Comprehensive documentation (Installation, OAuth, Google Sheets, Editor Workflow)
