@@ -45,7 +45,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetNonAlloc(sheetName, sheetData, new HorizontalSheetParser(), parsedConfigs);
+            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new HorizontalSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -75,10 +75,10 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             var parsedConfigsBuffer = new List<ParsedConfig>();
 
             // Act
-            var invalidDataLengthResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, invalidDataLengthData, parser, parsedConfigsBuffer);
-            var nullSheetNameResult = _sheetsParsing.ParseSheetNonAlloc(null, validSheetData, parser, parsedConfigsBuffer);
-            var nullSheetDataResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, null, parser, parsedConfigsBuffer);
-            var emptySheetResult = _sheetsParsing.ParseSheetNonAlloc(validSheetName, emptySheetData, parser, parsedConfigsBuffer);
+            var invalidDataLengthResult = _sheetsParsing.ParseSheetToList(validSheetName, invalidDataLengthData, parser, parsedConfigsBuffer);
+            var nullSheetNameResult = _sheetsParsing.ParseSheetToList(null, validSheetData, parser, parsedConfigsBuffer);
+            var nullSheetDataResult = _sheetsParsing.ParseSheetToList(validSheetName, null, parser, parsedConfigsBuffer);
+            var emptySheetResult = _sheetsParsing.ParseSheetToList(validSheetName, emptySheetData, parser, parsedConfigsBuffer);
 
             // Assert
             Assert.IsFalse(invalidDataLengthResult.IsOk);

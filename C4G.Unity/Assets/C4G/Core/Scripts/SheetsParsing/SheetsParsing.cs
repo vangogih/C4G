@@ -5,7 +5,7 @@ namespace C4G.Core.SheetsParsing
 {
     public sealed class SheetsParsing
     {
-        public Result<string> ParseSheetNonAlloc(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, List<ParsedConfig> parsedConfigs)
+        public Result<string> ParseSheetToList(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, List<ParsedConfig> parsedConfigs)
         {
             if (!ValidateParameters(sheetName, sheetData, parserBase, parsedConfigs, out string error))
                 return Result<string>.FromError(error);

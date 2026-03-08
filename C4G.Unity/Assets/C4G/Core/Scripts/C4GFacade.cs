@@ -66,7 +66,7 @@ namespace C4G.Core
             {
                 cycleParsedConfigsBuffer.Clear();
 
-                var sheetParsingResult = _sheetsParsing.ParseSheetNonAlloc(parserByName.Key, sheet, parserByName.Value, cycleParsedConfigsBuffer);
+                var sheetParsingResult = _sheetsParsing.ParseSheetToList(parserByName.Key, sheet, parserByName.Value, cycleParsedConfigsBuffer);
                 if (!sheetParsingResult.IsOk)
                     return sheetParsingResult;
 
