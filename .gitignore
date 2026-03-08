@@ -1,4 +1,9 @@
 /.cursor
+
+# Visual Studio Code
+*/.vscode/
+
+# C4G
 C4G.Standalone.Tests/coverage/
 C4G.Unity/CodeCoverage/
 
