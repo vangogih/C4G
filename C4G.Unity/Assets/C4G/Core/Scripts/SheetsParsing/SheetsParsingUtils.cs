@@ -1,8 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using C4G.Core.Utils;
 
 namespace C4G.Core.SheetsParsing
 {
+    internal struct ConfigFrame
+    {
+        public int StartRowIndex;
+        public int StartColumnIndex;
+        public string Name;
+        public int EndRowIndex;
+        public int EndColumnIndex;
+    }
+
     internal static class SheetsParsingUtils
     {
         internal static Result<ParsedConfig, string> ParseHorizontal(string sheetName, IList<IList<object>> sheetData, int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
@@ -140,6 +150,83 @@ namespace C4G.Core.SheetsParsing
                 return $"C4G Error. Sheet name '{sheetName}'. Start column index '{startColumnIndex}' must be lower than or equal to end column index '{endColumnIndex}'";
 
             return string.Empty;
+        }
+
+        internal static Result<List<ConfigFrame>, string> ParseConfigFrames(string sheetName, IList<IList<object>> sheetData)
+        {
+            const string logTag = "SheetsParsingUtils.ParseConfigFrames";
+
+            var configFrameStarts = new List<ConfigFrame>();
+            var configFrames = new List<ConfigFrame>();
+
+            for (int rowIndex = 0; rowIndex < sheetData.Count; rowIndex++)
+            {
+                IList<object> row = sheetData[rowIndex];
+
+                if (row == null)
+                    return Result<List<ConfigFrame>, string>.FromError($"C4G Error. Sheet name '{sheetName}'. Row '{rowIndex + 1}' is null but shouldn't");
+
+                for (int columnIndex = 0; columnIndex < row.Count; columnIndex++)
+                {
+                    object cell = row[columnIndex];
+                    string cellText = cell == null ? string.Empty : cell.ToString().Trim();
+                    string[] cellTextSplitByPoint = cellText.Split('.');
+
+                    if (cellTextSplitByPoint.Length != 2)
+                        continue;
+
+                    if (cellTextSplitByPoint[0] == "start")
+                    {
+                        string name = cellTextSplitByPoint[1];
+                        bool nameValid = !string.IsNullOrEmpty(name);
+                        if (!nameValid)
+                            return Result<List<ConfigFrame>, string>.FromError($"{logTag}. Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has invalid name");
+
+                        var configFrame = new ConfigFrame
+                        {
+                            StartRowIndex = rowIndex,
+                            StartColumnIndex = columnIndex,
+                            Name = name
+                        };
+                        configFrameStarts.Add(configFrame);
+                    }
+                    else if (cellTextSplitByPoint[0] == "end")
+                    {
+                        string name = cellTextSplitByPoint[1];
+                        bool nameValid = !string.IsNullOrEmpty(name);
+                        if (!nameValid)
+                            return Result<List<ConfigFrame>, string>.FromError($"{logTag}. Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has invalid name");
+
+                        int matches = 0;
+                        for (int configFrameIndex = configFrameStarts.Count - 1; configFrameIndex >= 0; --configFrameIndex)
+                        {
+                            ConfigFrame configFrame = configFrameStarts[configFrameIndex];
+                            if (rowIndex >= configFrame.StartRowIndex && columnIndex >= configFrame.StartColumnIndex)
+                            {
+                                if (++matches > 1)
+                                    return Result<List<ConfigFrame>, string>.FromError($"{logTag}. Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has end with more than one matching starts");
+
+                                if (!name.Equals(configFrame.Name, StringComparison.Ordinal))
+                                    return Result<List<ConfigFrame>, string>.FromError($"{logTag}. Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has end with geometrically matching start cell [{configFrame.StartRowIndex + 1}][{configFrame.StartColumnIndex + 1}] but with different name '{configFrame.Name}'");
+
+                                configFrame.EndRowIndex = rowIndex;
+                                configFrame.EndColumnIndex = columnIndex;
+                                configFrameStarts.RemoveAt(configFrameIndex);
+                                configFrames.Add(configFrame);
+                                break;
+                            }
+                        }
+
+                        if (matches == 0)
+                            return Result<List<ConfigFrame>, string>.FromError($"{logTag}. Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has end but there are no matching starts");
+                    }
+                }
+            }
+
+            if (configFrameStarts.Count > 0)
+                return Result<List<ConfigFrame>, string>.FromError($"{logTag}. There are no matching ends for {configFrameStarts.Count} starts");
+
+            return Result<List<ConfigFrame>, string>.FromValue(configFrames);
         }
     }
 }
