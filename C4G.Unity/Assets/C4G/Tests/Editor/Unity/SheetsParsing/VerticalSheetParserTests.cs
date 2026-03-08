@@ -15,8 +15,6 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             _sheetsParsing = new Core.SheetsParsing.SheetsParsing();
         }
 
-        #region Positive Cases
-
         [Test]
         public void ParseSheet_Positive_UsualCase()
         {
@@ -191,10 +189,6 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             Assert.AreEqual(100, parsedConfig.Entities.Count);
         }
 
-        #endregion
-
-        #region Negative Cases
-
         [Test]
         public void ParseSheet_Negative_InsufficientRows()
         {
@@ -302,10 +296,6 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             Assert.IsTrue(result.Error.Contains("must contain property type"));
         }
 
-        #endregion
-
-        #region Destructive Cases
-
         [Test]
         public void ParseSheet_Destructive_NullPropertyName()
         {
@@ -347,7 +337,5 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             Assert.IsFalse(result.IsOk);
             Assert.IsTrue(result.Error.Contains("must contain property type"));
         }
-
-        #endregion
     }
 }

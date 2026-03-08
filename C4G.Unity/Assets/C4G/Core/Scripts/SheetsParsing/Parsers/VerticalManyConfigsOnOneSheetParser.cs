@@ -7,7 +7,7 @@ namespace C4G.Core.SheetsParsing
     [Serializable]
     public sealed class VerticalManyConfigsOnOneSheetParser : SheetParserBase
     {
-        public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
+        public override Result<string> ParseToList(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
         {
             Result<List<ConfigFrame>, string> parseConfigFramesResult = SheetsParsingUtils.ParseConfigFrames(sheetName, sheetData);
             if (!parseConfigFramesResult.IsOk)

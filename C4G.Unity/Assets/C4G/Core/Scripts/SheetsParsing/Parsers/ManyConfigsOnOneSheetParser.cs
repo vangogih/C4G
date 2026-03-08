@@ -16,7 +16,7 @@ namespace C4G.Core.SheetsParsing
             public int EndColumnIndex;
         }
 
-        public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
+        public override Result<string> ParseToList(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
         {
             const string logTag = "ManyConfigsOnOneSheetParser. ParseNonAlloc";
 

@@ -6,11 +6,11 @@ namespace C4G.Core.SheetsParsing
 {
     internal struct ConfigFrame
     {
-        public int StartRowIndex;
-        public int StartColumnIndex;
-        public string Name;
-        public int EndRowIndex;
-        public int EndColumnIndex;
+        internal int StartRowIndex;
+        internal int StartColumnIndex;
+        internal string Name;
+        internal int EndRowIndex;
+        internal int EndColumnIndex;
     }
 
     internal static class SheetsParsingUtils
@@ -72,7 +72,7 @@ namespace C4G.Core.SheetsParsing
                 return $"C4G Error. Sheet name '{sheetName}'. Start row index '{startRowIndex}' must be lower than or equal to end row index '{endRowIndex}'";
 
             if (startColumnIndex < 0)
-                return $"C4G Error. Sheet name '{sheetName}'. Start column index {startColumnIndex} must be greater than or equal to 0";
+                return $"C4G Error. Sheet name '{sheetName}'. Start column index '{startColumnIndex}' must be greater than or equal to 0";
             if (endColumnIndex - startColumnIndex < 2)
                 return $"C4G Error. Sheet name '{sheetName}'. End column index '{endColumnIndex}' minus start column index '{startColumnIndex}' must be greater than or equal to 2";
 
@@ -145,7 +145,7 @@ namespace C4G.Core.SheetsParsing
                 return $"C4G Error. Sheet name '{sheetName}'. End row index '{endRowIndex}' minus start row index '{startRowIndex}' must be greater than or equal to 2";
 
             if (startColumnIndex < 0)
-                return $"C4G Error. Sheet name '{sheetName}'. Start column index {startColumnIndex} must be greater than or equal to 0";
+                return $"C4G Error. Sheet name '{sheetName}'. Start column index '{startColumnIndex}' must be greater than or equal to 0";
             if (startColumnIndex > endColumnIndex)
                 return $"C4G Error. Sheet name '{sheetName}'. Start column index '{startColumnIndex}' must be lower than or equal to end column index '{endColumnIndex}'";
 
@@ -224,7 +224,7 @@ namespace C4G.Core.SheetsParsing
             }
 
             if (configFrameStarts.Count > 0)
-                return Result<List<ConfigFrame>, string>.FromError($"{logTag}. There are no matching ends for {configFrameStarts.Count} starts");
+                return Result<List<ConfigFrame>, string>.FromError($"{logTag}. There are no matching ends for '{configFrameStarts.Count}' starts");
 
             return Result<List<ConfigFrame>, string>.FromValue(configFrames);
         }

@@ -15,8 +15,6 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             _sheetsParsing = new Core.SheetsParsing.SheetsParsing();
         }
 
-        #region Positive Cases
-
         [Test]
         public void ParseSheet_Positive_SingleValidConfig()
         {
@@ -349,10 +347,6 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             CollectionAssert.AreEqual(expectedEntitiesStats, parsedConfigs[3].Entities);
         }
 
-        #endregion
-
-        #region Edge Cases
-
         [Test]
         public void ParseSheet_Edge_EmptySheet()
         {
@@ -426,10 +420,6 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             CollectionAssert.AreEqual(expectedProperties, parsedConfigs[0].Properties);
             CollectionAssert.AreEqual(expectedEntities, parsedConfigs[0].Entities);
         }
-
-        #endregion
-
-        #region Negative Cases
 
         [Test]
         public void ParseSheet_Negative_EmptyStartName()
@@ -655,10 +645,6 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             Assert.IsFalse(result.IsOk);
         }
 
-        #endregion
-
-        #region Destructive Cases
-
         [Test]
         public void ParseSheet_Destructive_NullRowInMiddleOfSheet()
         {
@@ -725,7 +711,5 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             // Assert
             Assert.IsFalse(result.IsOk, "Expected error for null property type");
         }
-
-        #endregion
     }
 }

@@ -10,7 +10,7 @@ namespace C4G.Core.SheetsParsing
             if (!ValidateParameters(sheetName, sheetData, parserBase, parsedConfigs, out string error))
                 return Result<string>.FromError(error);
 
-            return parserBase.ParseNonAlloc(sheetName, sheetData, parsedConfigs);
+            return parserBase.ParseToList(sheetName, sheetData, parsedConfigs);
         }
 
         private static bool ValidateParameters(

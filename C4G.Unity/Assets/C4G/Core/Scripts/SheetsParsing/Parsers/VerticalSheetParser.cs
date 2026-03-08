@@ -6,7 +6,7 @@ namespace C4G.Core.SheetsParsing
     [System.Serializable]
     public sealed class VerticalSheetParser : SheetParserBase
     {
-        public override Result<string> ParseNonAlloc(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
+        public override Result<string> ParseToList(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
         {
             if (sheetData.Count < 3)
                 return Result<string>.FromError($"C4G Error. Sheet name '{sheetName}'. Rows amount '{sheetData.Count}' < 3");
