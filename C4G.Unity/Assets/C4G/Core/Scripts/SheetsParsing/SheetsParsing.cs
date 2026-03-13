@@ -5,18 +5,20 @@ namespace C4G.Core.SheetsParsing
 {
     public sealed class SheetsParsing
     {
-        public const string TYPE_HEADER = "C4G_TYPE";
-        public const string NAME_HEADER = "C4G_NAME";
-
-        public Result<ParsedSheet, string> ParseSheet(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase)
+        public Result<string> ParseSheetToList(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, List<ParsedConfig> parsedConfigs)
         {
-            if (!ValidateParameters(sheetName, sheetData, parserBase, out string error))
-                return Result<ParsedSheet, string>.FromError(error);
+            if (!ValidateParameters(sheetName, sheetData, parserBase, parsedConfigs, out string error))
+                return Result<string>.FromError(error);
 
-            return parserBase.Parse(sheetName, sheetData);
+            return parserBase.ParseToList(sheetName, sheetData, parsedConfigs);
         }
 
-        private static bool ValidateParameters(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, out string error)
+        private static bool ValidateParameters(
+            string sheetName,
+            IList<IList<object>> sheetData,
+            SheetParserBase parserBase,
+            List<ParsedConfig> parsedConfigs,
+            out string error)
         {
             error = string.Empty;
 
@@ -38,10 +40,9 @@ namespace C4G.Core.SheetsParsing
                 return false;
             }
 
-            string parserError = parserBase.Validate(sheetName, sheetData);
-            if (!string.IsNullOrEmpty(parserError))
+            if (parsedConfigs == null)
             {
-                error = parserError;
+                error = $"Sheets parsing error '{sheetName}'. Parsed configs list must not be null";
                 return false;
             }
 

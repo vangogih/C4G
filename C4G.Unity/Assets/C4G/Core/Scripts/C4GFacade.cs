@@ -59,29 +59,36 @@ namespace C4G.Core
                 sheets.Add((sheetName: parserByName, sheet: loadSheetResult.Value));
             }
 
-            var parsedSheets = new List<ParsedSheet>(sheetsCount);
+            var parsedConfigs = new List<ParsedConfig>(sheetsCount);
+            var cycleParsedConfigsBuffer = new List<ParsedConfig>(sheetsCount);
 
             foreach ((KeyValuePair<string, SheetParserBase> parserByName, IList<IList<object>> sheet) in sheets)
             {
-                var sheetParsingResult = _sheetsParsing.ParseSheet(parserByName.Key, sheet, parserByName.Value);
+                cycleParsedConfigsBuffer.Clear();
+
+                var sheetParsingResult = _sheetsParsing.ParseSheetToList(parserByName.Key, sheet, parserByName.Value, cycleParsedConfigsBuffer);
                 if (!sheetParsingResult.IsOk)
-                    return sheetParsingResult.WithoutValue();
+                    return sheetParsingResult;
 
-                parsedSheets.Add(sheetParsingResult.Value);
+                parsedConfigs.AddRange(cycleParsedConfigsBuffer);
+            }
 
-                var dtoClassGenerationResult = _codeGenerator.GenerateDTOClass(sheetParsingResult.Value, settings.AliasParsersByName);
+            foreach (ParsedConfig parsedConfig in parsedConfigs)
+            {
+                var dtoClassGenerationResult = _codeGenerator.GenerateDTOClass(parsedConfig, settings.AliasParsersByName);
                 if (!dtoClassGenerationResult.IsOk)
                     return dtoClassGenerationResult.WithoutValue();
 
                 var writeDtoClassToFileResult = _io.WriteToFile(
                     settings.GeneratedCodeFolderFullPath,
-                    $"{sheetParsingResult.Value.Name}.cs",
+                    $"{parsedConfig.Name}.cs",
                     dtoClassGenerationResult.Value);
+
                 if (!writeDtoClassToFileResult.IsOk)
                     return writeDtoClassToFileResult;
             }
 
-            var rootConfigClassGenerationResult = _codeGenerator.GenerateRootConfigClass(settings.RootConfigName, parsedSheets);
+            var rootConfigClassGenerationResult = _codeGenerator.GenerateRootConfigClass(settings.RootConfigName, parsedConfigs);
             if (!rootConfigClassGenerationResult.IsOk)
                 return rootConfigClassGenerationResult.WithoutValue();
 
@@ -92,7 +99,7 @@ namespace C4G.Core
             if (!writeRootConfigClassToFileResult.IsOk)
                 return writeRootConfigClassToFileResult;
 
-            var serializedConfigSerializationResult = _configsSerializer.SerializeMultipleSheetsAsJsonObject(parsedSheets, settings.AliasParsersByName);
+            var serializedConfigSerializationResult = _configsSerializer.SerializeParsedConfigsAsJsonObject(parsedConfigs, settings.AliasParsersByName);
             if (!serializedConfigSerializationResult.IsOk)
                 return serializedConfigSerializationResult.WithoutValue();
 

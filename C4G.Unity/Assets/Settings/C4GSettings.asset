@@ -15,8 +15,8 @@ MonoBehaviour:
   _tableId: 1xNbXhj706f2ZLUCqROPkAEki_gRe1CPomkPoWua4ogU
   _rootConfigName: C4GRootConfig
   _clientSecret: '{"installed":{"client_id":"510360260530-f719ev0kb9n7lm121r5v3ths14mgg3jn.apps.googleusercontent.com","project_id":"c4g-test-440907","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"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","redirect_uris":["http://localhost"]}}'
-  _generatedCodeFolderPath: Scripts/C4GGenerated
-  _serializedConfigsFolderPath: Scripts/C4GGenerated
+  _generatedCodeFolderPath: Assets/Scripts/C4GGenerated
+  _serializedConfigsFolderPath: Assets/Scripts/C4GGenerated
   _sheetDefinitions:
   - _name: Sheet1
     _parser:
@@ -27,6 +27,12 @@ MonoBehaviour:
   - _name: VerticalSheet
     _parser:
       id: 2
+  - _name: HorizontalManySheetsOnOne
+    _parser:
+      id: 3
+  - _name: VerticalManySheetsOnOne
+    _parser:
+      id: 4
   _aliasDefinitions:
   - _name: MyEnum
     _parser:
@@ -44,3 +50,9 @@ MonoBehaviour:
       type: {class: HorizontalSheetParser, ns: C4G.Core.SheetsParsing, asm: C4G.Core}
     00000002:
       type: {class: VerticalSheetParser, ns: C4G.Core.SheetsParsing, asm: C4G.Core}
+    00000003:
+      type: {class: HorizontalManyConfigsOnOneSheetParser, ns: C4G.Core.SheetsParsing,
+        asm: C4G.Core}
+    00000004:
+      type: {class: VerticalManyConfigsOnOneSheetParser, ns: C4G.Core.SheetsParsing,
+        asm: C4G.Core}

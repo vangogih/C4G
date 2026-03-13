@@ -26,10 +26,10 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                 {
                     new List<string> { "", "\"quoted\"", "line1\nline2", "has,comma", "emoji🎉测试" }
                 };
-                var parsedSheet = new ParsedSheet(name, properties, entities);
+                var parsedConfig = new ParsedConfig(name, properties, entities);
 
                 // Act
-                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet }, _parsersByName);
+                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
 
                 //Assert
                 Assert.IsTrue(output.IsOk);
@@ -50,7 +50,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                     new List<string> { "Alice", "tag1,tag2,tag3" },
                     new List<string> { "Bob", "admin,user" }
                 };
-                var parsedSheet = new ParsedSheet(name, properties, entities);
+                var parsedConfig = new ParsedConfig(name, properties, entities);
 
                 string expectedOutput =
                     @"{
@@ -74,7 +74,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 }";
 
                 // Act
-                Result<string, string> output = _configsSerializer.SerializeMultipleSheetsAsJsonObject(new List<ParsedSheet> { parsedSheet }, _parsersByName);
+                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
