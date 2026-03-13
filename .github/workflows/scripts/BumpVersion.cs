@@ -1,8 +1,9 @@
-﻿#!/usr/bin/env dotnet run
+#!/usr/bin/env dotnet run
 
 // https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/tutorials/file-based-programs
 
 using System.Text.Json.Nodes;
+using System.Xml.Linq;
 
 if (args.Length != 1)
     Fail("Incorrect args amount. Should be 1: semVer \'1.2.3\'");
@@ -16,9 +17,13 @@ if (!Directory.Exists(rootPath))
     Fail($"Incorrect root path: {(string.IsNullOrEmpty(rootPath) ? "EMPTY" : rootPath)}");
 
 var unityPackageJsonPath = Path.Combine(rootPath!, "C4G.Unity", "Assets", "C4G", "package.json");
+var standaloneCsprojPath = Path.Combine(rootPath!, "C4G.Standalone", "C4G.Standalone.csproj");
 
 if (!File.Exists(unityPackageJsonPath))
     Fail($"Incorrect package.json path: {unityPackageJsonPath}");
+
+if (!File.Exists(standaloneCsprojPath))
+    Fail($"Incorrect .csproj path: {standaloneCsprojPath}");
 
 var from = string.Empty;
 // package.json patch
@@ -29,6 +34,25 @@ var from = string.Empty;
         from = packageObject!["version"]!.GetValue<string>();
         packageObject["version"] = version!.ToString();
         File.WriteAllText(unityPackageJsonPath, packageObject.ToString());
+    }
+    catch (Exception e)
+    {
+        Fail(e.ToString());
+    }
+}
+
+// C4G.Standalone.csproj patch
+{
+    try
+    {
+        var doc = XDocument.Load(standaloneCsprojPath);
+        var versionElement = doc.Descendants("Version").FirstOrDefault();
+
+        if (versionElement == null)
+            Fail($"<Version> element not found in {standaloneCsprojPath}");
+
+        versionElement!.Value = version!.ToString();
+        doc.Save(standaloneCsprojPath);
     }
     catch (Exception e)
     {

@@ -17,3 +17,8 @@ Just provide correct package setup in tool folder to support tool integration as
 ## Consequences
 
 Users could easilly integrate tool to the project
+
+## See also
+
+- [CI Workflow Coordination](../0.0.5/ci-workflow-coordination.md) — CI/CD pipelines that were eventually introduced for test and release automation
+- [.NET Scripts in CI Workflows](../0.0.4/dotnet-scripts-for-ci.md) — why CI scripts are written in C# instead of Bash, Python, or Cake

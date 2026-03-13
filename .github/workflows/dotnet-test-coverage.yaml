@@ -1,0 +1,53 @@
+name: dotnet-test-coverage
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Run tests with coverage
+        run: dotnet test C4G.Standalone.Tests/C4G.Standalone.Tests.csproj --configuration Release
+
+      - name: Form comment message
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "### Standalone Test Coverage" > comment.md
+          echo "" >> comment.md
+          echo "**Commit:** ${{ github.event.pull_request.head.sha }}" >> comment.md
+          echo "" >> comment.md
+          echo "---" >> comment.md
+          echo "" >> comment.md
+          cat C4G.Unity/CodeCoverage/Summary.md >> comment.md
+
+      - name: Find comment
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/find-comment@v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: github-actions[bot]
+          body-includes: Standalone Test Coverage
+
+      - name: Create or update comment
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: comment.md
+          edit-mode: replace

@@ -37,7 +37,28 @@
 -->
 
     <ItemGroup>
-        <Compile Include="..\C4G.Unity\Assets\C4G\**\*.cs" />
+        <Compile Include="..\C4G.Unity\Assets\C4G\Core\**\*.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Google.Apis">
+        <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Google.Apis.dll</HintPath>
+      </Reference>
+      <Reference Include="Google.Apis.Auth">
+        <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Google.Apis.Auth.dll</HintPath>
+      </Reference>
+      <Reference Include="Google.Apis.Core">
+        <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Google.Apis.Core.dll</HintPath>
+      </Reference>
+      <Reference Include="Google.Apis.Sheets.v4">
+        <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Google.Apis.Sheets.v4.dll</HintPath>
+      </Reference>
+      <Reference Include="Newtonsoft.Json">
+        <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Newtonsoft.Json.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Threading.Tasks.Extensions">
+        <HintPath>..\C4G.Unity\Assets\C4G\Plugins\System.Threading.Tasks.Extensions.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
