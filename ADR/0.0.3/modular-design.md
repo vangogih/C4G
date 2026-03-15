@@ -46,5 +46,5 @@ The increased number of modules and interfaces may also introduce additional com
 
 ## See also
 
-- [CI Workflow Coordination](../0.0.5/ci-workflow-coordination.md) — CI pipelines ensuring test coverage across standalone and Unity modules
+- [CI Workflow Coordination](../ci-workflow-coordination.md) — CI pipelines ensuring test coverage across standalone and Unity modules
 - [.NET Scripts in CI Workflows](../0.0.4/dotnet-scripts-for-ci.md) — why CI scripts are written in C# instead of Bash, Python, or Cake

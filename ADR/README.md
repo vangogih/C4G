@@ -48,4 +48,4 @@ Each ADR should contain the context of the problem, alternatives considered, the
 | Status | ADR                                                                   | Version |
 |--------|-----------------------------------------------------------------------|---------|
 | ✅     | [.NET Scripts for CI Workflows](0.0.4/dotnet-scripts-for-ci.md)       | 0.0.4  |
-| 📝     | [CI Workflow Coordination](0.0.5/ci-workflow-coordination.md)         |        |
+| 📝     | [CI Workflow Coordination](ci-workflow-coordination.md)         |        |
