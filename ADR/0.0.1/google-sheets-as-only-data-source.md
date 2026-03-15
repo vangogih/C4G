@@ -1,4 +1,4 @@
-# Decision record for google sheets as only data source
+# Decision record for Google Sheets as only data source
 
 ## Status
 
@@ -6,14 +6,14 @@ accepted
 
 ## Context
 
-To simplify development at the moment we must start with only one data source
-Now we have to prove our ideas, not to make as much integrations as we want
+To simplify development at this stage, we must start with only one data source.
+We need to prove our ideas, not build as many integrations as we want.
 
 ## Decision
 
-Use google sheets as the only data source
+Use Google Sheets as the only data source.
 
 ## Consequences
 
-Clear and simple data flow
-No need for complicated integrations with a lot of tools
+Clear and simple data flow.
+No need for complicated integrations with many tools.

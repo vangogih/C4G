@@ -14,7 +14,7 @@ Inside each folder, a README.md file must be located with a header that contains
 
 Restructure ADRs following the pattern used in https://github.com/dotnet/csharplang/tree/main/proposals.
 Each accepted ADR will now be placed in the version folder corresponding to when it was accepted.
-Proposed adrs will now be placed in ADR folder
+Proposed ADRs will now be placed in the ADR folder.
 
 ## Consequences
 

@@ -1,4 +1,4 @@
-# Decision record for google sheets integration method
+# Decision record for Google Sheets integration method
 
 ## Status
 
@@ -6,14 +6,14 @@ accepted
 
 ## Context
 
-C4G logic rungs in context of unity project
-So we need to use google sheets API somehow
+C4G logic runs in the context of a Unity project.
+So we need to use the Google Sheets API somehow.
 
 ## Decision
 
-Use official dlls from google as unity plugins
+Use official DLLs from Google as Unity plugins.
 
 ## Consequences
 
-Ready to use tested API out of the box
-Updates must be performed manually
+Ready-to-use, tested API out of the box.
+Updates must be performed manually.

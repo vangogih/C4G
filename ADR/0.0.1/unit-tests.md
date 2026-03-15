@@ -1,4 +1,4 @@
-# Decision record for code generation
+# Decision record for unit tests
 
 ## Status
 
@@ -6,17 +6,17 @@ accepted
 
 ## Context
 
-As stated in MANIFEST.md we are to provide production ready solution
-And we must somehow be sure that there are no critical and other issues
+As stated in MANIFEST.md, we are to provide a production-ready solution.
+We must also ensure there are no critical issues.
 
 ## Decision
 
-Create and maintain automatic tests with 95+ percents of coverage
+Create and maintain automated tests with 95%+ code coverage.
 
 ## Consequences
 
-Early issues detection
-Better code-level architecture
+Early issue detection.
+Better code-level architecture.
 
 ## See also
 

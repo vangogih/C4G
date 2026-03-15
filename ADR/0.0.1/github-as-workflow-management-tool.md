@@ -1,4 +1,4 @@
-# Decision record for github as workflow management tool
+# Decision record for GitHub as workflow management tool
 
 ## Status
 
@@ -6,16 +6,16 @@ accepted
 
 ## Context
 
-We are small enthusiastic team and developing the project at our spare time
+We are a small enthusiastic team developing the project in our spare time.
 
 ## Decision
 
-Use only github as workflow framework
+Use only GitHub as the workflow framework.
 
 ## Consequences
 
-Easy to use workflow with tasks and repository management
-No need for excess administration
+Easy-to-use workflow with tasks and repository management.
+No need for excess administration.
 
 ## See also
 
