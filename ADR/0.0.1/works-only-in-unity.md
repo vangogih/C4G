@@ -4,6 +4,10 @@
 
 accepted
 
+## Related
+
+[Unity 2021 LTS Upgrade](../unity-2021-lts-upgrade.md)
+
 ## Context
 
 To release early and prove concept of the tool we must limit support of platforms
