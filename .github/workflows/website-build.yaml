@@ -1,0 +1,32 @@
+name: Website Build
+
+on:
+  workflow_call:
+  pull_request:
+    branches:
+      - master
+    # Review gh actions docs if you want to further define triggers, paths, etc
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
+
+jobs:
+  website-build:
+    name: Website Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: C4G.Docs
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: C4G.Docs/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+      - name: Build website
+        run: npm run build

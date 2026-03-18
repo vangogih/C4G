@@ -1,0 +1,26 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.Guides": {
+    "message": "Руководства",
+    "description": "The label for category 'Guides' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.API Reference": {
+    "message": "Справочник API",
+    "description": "The label for category 'API Reference' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.ADR": {
+    "message": "ADR",
+    "description": "The label for category 'ADR' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.0.0.1": {
+    "message": "0.0.1",
+    "description": "The label for category '0.0.1' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.0.0.3": {
+    "message": "0.0.3",
+    "description": "The label for category '0.0.3' in sidebar 'tutorialSidebar'"
+  }
+}

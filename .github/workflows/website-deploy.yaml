@@ -1,0 +1,21 @@
+name: Website Deploy
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'C4G.Docs/**'
+  workflow_dispatch:
+
+jobs:
+  website-build:
+    uses: ./.github/workflows/website-build.yaml
+    secrets: inherit
+
+  website-deploy:
+     needs: website-build
+     uses: peaceiris/actions-gh-pages@v4
+     with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: C4G.Docs/build

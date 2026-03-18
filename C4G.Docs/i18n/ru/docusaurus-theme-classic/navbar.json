@@ -1,0 +1,26 @@
+{
+  "title": {
+    "message": "C4G",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "C4G Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Docs": {
+    "message": "Документация",
+    "description": "Navbar item with label Docs"
+  },
+  "item.label.API": {
+    "message": "API",
+    "description": "Navbar item with label API"
+  },
+  "item.label.Help": {
+    "message": "Помощь",
+    "description": "Navbar item with label Help"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  }
+}
