@@ -2,6 +2,10 @@ name: Website Build
 
 on:
   workflow_call:
+    inputs:
+      upload-artifact:
+        type: boolean
+        default: false
   pull_request:
     branches:
       - master
@@ -30,3 +34,8 @@ jobs:
         run: npm ci
       - name: Build website
         run: npm run build
+      - uses: actions/upload-artifact@v4
+        if: inputs.upload-artifact
+        with:
+          name: website-build
+          path: C4G.Docs/build
