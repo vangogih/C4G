@@ -1,4 +1,4 @@
-# Decision record for json generation
+# Decision record for JSON generation
 
 ## Status
 
@@ -6,14 +6,14 @@ accepted
 
 ## Context
 
-We must provide porcessed and serialized data from the initial data source to user
-to provide flexibility in runtime configs data placement
+We must provide processed and serialized data from the initial data source to the user
+to provide flexibility in runtime config data placement.
 
 ## Decision
 
-Generate valid json with configs data according to specifically formatted input data
+Generate valid JSON with config data according to specifically formatted input data.
 
 ## Consequences
 
-User could put the json serialized configs whatever place they like
-User have to control json flow by himself
+Users can place the JSON-serialized configs wherever they like.
+Users have to manage the JSON flow themselves.

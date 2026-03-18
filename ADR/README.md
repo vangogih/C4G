@@ -20,8 +20,32 @@ Each ADR should contain the context of the problem, alternatives considered, the
 
 ✅ accepted · 📝 proposed · ❌ rejected · ⚪ inactive
 
-| Category | ADRs |
-|---|---|
-| **Organizational** | • ✅ [Why Use ADR](0.0.1/why-use-adr.md) `0.0.1`<br>• ✅ [GitHub as Workflow Management Tool](0.0.1/github-as-workflow-management-tool.md) `0.0.1`<br>• ✅ [Unit Tests](0.0.1/unit-tests.md) `0.0.1`<br>• ✅ [Simpler ADR Structure](0.0.3/simpler-adr-structure.md) `0.0.3` |
-| **Project** | • ✅ [Code Generation](0.0.1/code-generation.md) `0.0.1`<br>• ✅ [Google OAuth Secret Key in ScriptableObject](0.0.1/google-oauth-secret-key-in-scriptable-object.md) `0.0.1`<br>• ✅ [Google Sheets as Only Data Source](0.0.1/google-sheets-as-only-data-source.md) `0.0.1`<br>• ✅ [Google Sheets Integration Method](0.0.1/google-sheets-integration-method.md) `0.0.1`<br>• ✅ [Integration as Local Package](0.0.1/integration-as-local-package.md) `0.0.1`<br>• ✅ [JSON Generation](0.0.1/json-generation.md) `0.0.1`<br>• ✅ [Unity as the Only Entry Point](0.0.1/works-only-in-unity.md) `0.0.1`<br>• ✅ [Modular C4G Design](0.0.3/modular-design.md) `0.0.3` |
-| **Release** | • ✅ [.NET Scripts for CI Workflows](0.0.4/dotnet-scripts-for-ci.md) `0.0.4`<br>• 📝 [CI Workflow Coordination](0.0.5/ci-workflow-coordination.md) `0.0.5` |
+### Organizational
+
+| Status | ADR                                                                               | Version |
+|--------|-----------------------------------------------------------------------------------|---------|
+| ✅     | [Why Use ADR](0.0.1/why-use-adr.md)                                               | 0.0.1   |
+| ✅     | [GitHub as Workflow Management Tool](0.0.1/github-as-workflow-management-tool.md) | 0.0.1   |
+| ✅     | [Unit Tests](0.0.1/unit-tests.md)                                                 | 0.0.1   |
+| ✅     | [Simpler ADR Structure](0.0.3/simpler-adr-structure.md)                           | 0.0.3   |
+
+### Project
+
+| Status | ADR                                                                                                   | Version |
+|--------|-------------------------------------------------------------------------------------------------------|---------|
+| ✅     | [Code Generation](0.0.1/code-generation.md)                                                           | 0.0.1   |
+| ✅     | [Google OAuth Secret Key in ScriptableObject](0.0.1/google-oauth-secret-key-in-scriptable-object.md) | 0.0.1   |
+| ✅     | [Google Sheets as Only Data Source](0.0.1/google-sheets-as-only-data-source.md)                       | 0.0.1   |
+| ✅     | [Google Sheets Integration Method](0.0.1/google-sheets-integration-method.md)                         | 0.0.1   |
+| ✅     | [Integration as Local Package](0.0.1/integration-as-local-package.md)                                 | 0.0.1   |
+| ✅     | [JSON Generation](0.0.1/json-generation.md)                                                           | 0.0.1   |
+| ✅     | [Unity as the Only Entry Point](0.0.1/works-only-in-unity.md)                                         | 0.0.1   |
+| ✅     | [Modular C4G Design](0.0.3/modular-design.md)                                                         | 0.0.3   |
+| 📝     | [Unity 2021 LTS Upgrade](unity-2021-lts-upgrade.md)                                                   |         |
+
+### Release
+
+| Status | ADR                                                                   | Version |
+|--------|-----------------------------------------------------------------------|---------|
+| ✅     | [.NET Scripts for CI Workflows](0.0.4/dotnet-scripts-for-ci.md)       | 0.0.4  |
+| 📝     | [CI Workflow Coordination](ci-workflow-coordination.md)         |        |

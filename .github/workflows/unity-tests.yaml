@@ -12,12 +12,10 @@ jobs:
     strategy:
       matrix:
         unityVersion:
-          - 2019.4.40f1
-          - 2020.3.49f1
-          - 2021.3.58f1
-          - 2022.3.71f1
+          - 2021.3.45f2
+          - 2022.3.62f3
           - 2023.1.22f1
-          - 6000.3.1f1
+          - 6000.3.10f1
     steps:
       - name: Checkout
         uses: actions/checkout@v4
