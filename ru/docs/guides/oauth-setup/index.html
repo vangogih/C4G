@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ru-RU" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-guides/oauth-setup" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Настройка OAuth 2.0 | C4G</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://vangogih.github.io/C4G/ru/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://vangogih.github.io/C4G/ru/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://vangogih.github.io/C4G/ru/docs/guides/oauth-setup"><meta data-rh="true" property="og:locale" content="ru_RU"><meta data-rh="true" property="og:locale:alternate" content="en_US"><meta data-rh="true" name="docusaurus_locale" content="ru"><meta data-rh="true" name="docsearch:language" content="ru"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Настройка OAuth 2.0 | C4G"><meta data-rh="true" name="description" content="Это руководство поможет вам настроить учётные данные Google OAuth 2.0 для доступа C4G к вашим Google Sheets."><meta data-rh="true" property="og:description" content="Это руководство поможет вам настроить учётные данные Google OAuth 2.0 для доступа C4G к вашим Google Sheets."><link data-rh="true" rel="icon" href="/C4G/ru/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://vangogih.github.io/C4G/ru/docs/guides/oauth-setup"><link data-rh="true" rel="alternate" href="https://vangogih.github.io/C4G/docs/guides/oauth-setup" hreflang="en-US"><link data-rh="true" rel="alternate" href="https://vangogih.github.io/C4G/ru/docs/guides/oauth-setup" hreflang="ru-RU"><link data-rh="true" rel="alternate" href="https://vangogih.github.io/C4G/docs/guides/oauth-setup" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Настройка OAuth 2.0","item":"https://vangogih.github.io/C4G/ru/docs/guides/oauth-setup"}]}</script><link rel="stylesheet" href="/C4G/ru/assets/css/styles.a77a904f.css">
+<script src="/C4G/ru/assets/js/runtime~main.d562d31b.js" defer="defer"></script>
+<script src="/C4G/ru/assets/js/main.1b6f7fdb.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/C4G/ru/img/logo.svg"><div role="region" aria-label="Перейти к основному содержимому"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Перейти к основному содержимому</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Переключить навигационную панель" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/C4G/ru/"><div class="navbar__logo"><img src="/C4G/ru/img/logo.svg" alt="C4G Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/C4G/ru/img/logo.svg" alt="C4G Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">C4G</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/C4G/ru/docs/getting-started">Документация</a><a class="navbar__item navbar__link" href="/C4G/ru/docs/api/introduction">API</a><a class="navbar__item navbar__link" href="/C4G/ru/docs/help">Помощь</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href="#" aria-haspopup="true" aria-expanded="false" role="button" class="navbar__link"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="iconLanguage_nlXk"><path fill="currentColor" d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"></path></svg>Русский</a><ul class="dropdown__menu"><li><a href="/C4G/docs/guides/oauth-setup" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="en-US">English</a></li><li><a href="/C4G/ru/docs/guides/oauth-setup" target="_self" rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang="ru-RU">Русский</a></li></ul></div><a href="https://github.com/vangogih/C4G" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Переключить между темной и светлой темой (в данный момент system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Прокрутить к началу" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/C4G/ru/docs/getting-started"><span title="Начало работы" class="linkLabel_WmDU">Начало работы</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/C4G/ru/docs/installation"><span title="Установка" class="linkLabel_WmDU">Установка</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/C4G/ru/docs/guides/overview"><span title="Руководства" class="categoryLinkLabel_W154">Руководства</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/C4G/ru/docs/guides/overview"><span title="Обзор руководств" class="linkLabel_WmDU">Обзор руководств</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/C4G/ru/docs/guides/oauth-setup"><span title="Настройка OAuth 2.0" class="linkLabel_WmDU">Настройка OAuth 2.0</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/C4G/ru/docs/guides/google-sheets-setup"><span title="Настройка Google Sheets" class="linkLabel_WmDU">Настройка Google Sheets</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/C4G/ru/docs/guides/editor-workflow"><span title="Рабочий процесс в редакторе" class="linkLabel_WmDU">Рабочий процесс в редакторе</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/C4G/ru/docs/guides/supported-versions"><span title="Поддерживаемые версии" class="linkLabel_WmDU">Поддерживаемые версии</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/C4G/ru/docs/api/introduction"><span title="Справочник API" class="categoryLinkLabel_W154">Справочник API</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/C4G/ru/docs/category/001"><span title="ADR" class="categoryLinkLabel_W154">ADR</span></a></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/C4G/ru/docs/help"><span title="Помощь и поддержка" class="linkLabel_WmDU">Помощь и поддержка</span></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Навигационная цепочка"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Главная" class="breadcrumbs__link" href="/C4G/ru/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Руководства</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Настройка OAuth 2.0</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">Содержание этой страницы</button></div><div class="theme-doc-markdown markdown"><header><h1>Настройка OAuth 2.0</h1></header>
+<p>Это руководство поможет вам настроить учётные данные Google OAuth 2.0 для доступа C4G к вашим Google Sheets.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="обзор">Обзор<a href="#обзор" class="hash-link" aria-label="Прямая ссылка на Обзор" title="Прямая ссылка на Обзор" translate="no">​</a></h2>
+<p>C4G использует Google Sheets API для чтения данных конфигурации из ваших таблиц. Для доступа к этому API вам необходимо:</p>
+<ol>
+<li class="">Создать проект в Google Cloud</li>
+<li class="">Включить Google Sheets API</li>
+<li class="">Создать учётные данные OAuth 2.0</li>
+<li class="">Скачать файл с учётными данными</li>
+<li class="">Настроить C4G для использования учётных данных</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="пошаговая-настройка">Пошаговая настройка<a href="#пошаговая-настройка" class="hash-link" aria-label="Прямая ссылка на Пошаговая настройка" title="Прямая ссылка на Пошаговая настройка" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="шаг-1-создание-проекта-в-google-cloud">Шаг 1: Создание проекта в Google Cloud<a href="#шаг-1-создание-проекта-в-google-cloud" class="hash-link" aria-label="Прямая ссылка на Шаг 1: Создание проекта в Google Cloud" title="Прямая ссылка на Шаг 1: Создание проекта в Google Cloud" translate="no">​</a></h3>
+<ol>
+<li class="">
+<p>Перейдите в <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" class="">Google Cloud Console</a></p>
+</li>
+<li class="">
+<p>Войдите в свою учётную запись Google</p>
+</li>
+<li class="">
+<p>Нажмите на выпадающий список проектов вверху страницы</p>
+</li>
+<li class="">
+<p>Нажмите <strong>«Новый проект»</strong></p>
+</li>
+<li class="">
+<p>Введите данные проекта:</p>
+<ul>
+<li class=""><strong>Название проекта</strong>: <code>C4G Game Configs</code> (или любое другое)</li>
+<li class=""><strong>Организация</strong>: Оставьте по умолчанию (опционально)</li>
+<li class=""><strong>Местоположение</strong>: Оставьте по умолчанию (опционально)</li>
+</ul>
+</li>
+<li class="">
+<p>Нажмите <strong>«Создать»</strong></p>
+</li>
+<li class="">
+<p>Подождите, пока проект будет создан (обычно несколько секунд)</p>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="шаг-2-включение-google-sheets-api">Шаг 2: Включение Google Sheets API<a href="#шаг-2-включение-google-sheets-api" class="hash-link" aria-label="Прямая ссылка на Шаг 2: Включение Google Sheets API" title="Прямая ссылка на Шаг 2: Включение Google Sheets API" translate="no">​</a></h3>
+<ol>
+<li class="">
+<p>В Google Cloud Console убедитесь, что выбран ваш новый проект</p>
+</li>
+<li class="">
+<p>Перейдите в <strong>APIs &amp; Services → Библиотека</strong></p>
+<ul>
+<li class="">Или воспользуйтесь строкой поиска и введите «Google Sheets API»</li>
+</ul>
+</li>
+<li class="">
+<p>Найдите «Google Sheets API»</p>
+</li>
+<li class="">
+<p>Нажмите на <strong>«Google Sheets API»</strong></p>
+</li>
+<li class="">
+<p>Нажмите кнопку <strong>«Включить»</strong></p>
+</li>
+<li class="">
+<p>Подождите, пока API будет включён (несколько секунд)</p>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="шаг-3-создание-учётных-данных-oauth-20">Шаг 3: Создание учётных данных OAuth 2.0<a href="#шаг-3-создание-учётных-данных-oauth-20" class="hash-link" aria-label="Прямая ссылка на Шаг 3: Создание учётных данных OAuth 2.0" title="Прямая ссылка на Шаг 3: Создание учётных данных OAuth 2.0" translate="no">​</a></h3>
+<ol>
+<li class="">
+<p>Перейдите в <strong>APIs &amp; Services → Учётные данные</strong></p>
+</li>
+<li class="">
+<p>Нажмите <strong>«+ СОЗДАТЬ УЧЁТНЫЕ ДАННЫЕ»</strong> вверху</p>
+</li>
+<li class="">
+<p>Выберите <strong>«Идентификатор клиента OAuth»</strong></p>
+</li>
+<li class="">
+<p>Если будет предложено настроить экран согласия OAuth:</p>
+<ul>
+<li class="">Нажмите <strong>«Настроить экран согласия»</strong></li>
+<li class="">Выберите тип пользователя <strong>«Внешний»</strong></li>
+<li class="">Нажмите <strong>«Создать»</strong></li>
+</ul>
+<p>Заполните экран согласия OAuth:</p>
+<ul>
+<li class=""><strong>Название приложения</strong>: <code>C4G Game Configs</code></li>
+<li class=""><strong>Адрес электронной почты для поддержки</strong>: Ваш email</li>
+<li class=""><strong>Контактный email разработчика</strong>: Ваш email</li>
+<li class="">Нажмите <strong>«Сохранить и продолжить»</strong></li>
+<li class="">Пропустите «Области» (нажмите <strong>«Сохранить и продолжить»</strong>)</li>
+<li class="">Пропустите «Тестовых пользователей» (нажмите <strong>«Сохранить и продолжить»</strong>)</li>
+<li class="">Нажмите <strong>«Вернуться на панель управления»</strong></li>
+</ul>
+</li>
+<li class="">
+<p>Вернитесь в <strong>Учётные данные</strong> и снова нажмите <strong>«+ СОЗДАТЬ УЧЁТНЫЕ ДАННЫЕ»</strong></p>
+</li>
+<li class="">
+<p>Выберите <strong>«Идентификатор клиента OAuth»</strong></p>
+</li>
+<li class="">
+<p>Настройте клиент OAuth:</p>
+<ul>
+<li class=""><strong>Тип приложения</strong>: Выберите <strong>«Приложение для ПК»</strong></li>
+<li class=""><strong>Имя</strong>: <code>C4G Desktop Client</code> (или любое другое)</li>
+</ul>
+</li>
+<li class="">
+<p>Нажмите <strong>«Создать»</strong></p>
+</li>
+<li class="">
+<p>Появится диалог с вашим идентификатором клиента и секретом клиента</p>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="шаг-4-скачивание-файла-с-учётными-данными">Шаг 4: Скачивание файла с учётными данными<a href="#шаг-4-скачивание-файла-с-учётными-данными" class="hash-link" aria-label="Прямая ссылка на Шаг 4: Скачивание файла с учётными данными" title="Прямая ссылка на Шаг 4: Скачивание файла с учётными данными" translate="no">​</a></h3>
+<ol>
+<li class="">
+<p>В диалоговом окне нажмите <strong>«Скачать JSON»</strong></p>
+</li>
+<li class="">
+<p>Сохраните файл под понятным именем:</p>
+<ul>
+<li class="">Пример: <code>c4g_credentials.json</code></li>
+<li class="">Пример: <code>google_sheets_oauth.json</code></li>
+</ul>
+</li>
+<li class="">
+<p>Храните этот файл в безопасном месте — <strong>никогда не добавляйте его в систему контроля версий!</strong></p>
+</li>
+<li class="">
+<p>Рекомендуемое расположение:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">YourUnityProject/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">└── Credentials/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    └── c4g_credentials.json</span><br></span></code></pre></div></div>
+</li>
+<li class="">
+<p>Добавьте в <code>.gitignore</code>:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain"># Учётные данные Google OAuth</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Credentials/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">*_credentials.json</span><br></span></code></pre></div></div>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="шаг-5-настройка-c4g-с-учётными-данными">Шаг 5: Настройка C4G с учётными данными<a href="#шаг-5-настройка-c4g-с-учётными-данными" class="hash-link" aria-label="Прямая ссылка на Шаг 5: Настройка C4G с учётными данными" title="Прямая ссылка на Шаг 5: Настройка C4G с учётными данными" translate="no">​</a></h3>
+<ol>
+<li class="">
+<p>Откройте Unity Editor</p>
+</li>
+<li class="">
+<p>Откройте настройки C4G:</p>
+<ul>
+<li class=""><code>Window → C4G → Settings</code></li>
+</ul>
+</li>
+<li class="">
+<p>В окне настроек найдите поле <strong>«Client Secret»</strong></p>
+</li>
+<li class="">
+<p>Нажмите на значок папки или вставьте полный путь к JSON-файлу с учётными данными:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">C:/YourProject/Credentials/c4g_credentials.json</span><br></span></code></pre></div></div>
+</li>
+<li class="">
+<p>C4G проверит файл с учётными данными</p>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="формат-файла-учётных-данных">Формат файла учётных данных<a href="#формат-файла-учётных-данных" class="hash-link" aria-label="Прямая ссылка на Формат файла учётных данных" title="Прямая ссылка на Формат файла учётных данных" translate="no">​</a></h2>
+<p>Скачанный JSON-файл должен выглядеть следующим образом:</p>
+<div class="language-json codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-json codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token property" style="color:#36acaa">&quot;installed&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token property" style="color:#36acaa">&quot;client_id&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;YOUR_CLIENT_ID.apps.googleusercontent.com&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token property" style="color:#36acaa">&quot;project_id&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;your-project-id&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token property" style="color:#36acaa">&quot;auth_uri&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;https://accounts.google.com/o/oauth2/auth&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token property" style="color:#36acaa">&quot;token_uri&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;https://oauth2.googleapis.com/token&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token property" style="color:#36acaa">&quot;auth_provider_x509_cert_url&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;https://www.googleapis.com/oauth2/v1/certs&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token property" style="color:#36acaa">&quot;client_secret&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;YOUR_CLIENT_SECRET&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token property" style="color:#36acaa">&quot;redirect_uris&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">[</span><span class="token string" style="color:#e3116c">&quot;http://localhost&quot;</span><span class="token punctuation" style="color:#393A34">]</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">}</span><br></span></code></pre></div></div>
+<p><strong>Важно</strong>: C4G ищет раздел <code>&quot;installed&quot;</code> для настольных приложений.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="первичная-авторизация">Первичная авторизация<a href="#первичная-авторизация" class="hash-link" aria-label="Прямая ссылка на Первичная авторизация" title="Прямая ссылка на Первичная авторизация" translate="no">​</a></h2>
+<p>При первой генерации конфигов через C4G:</p>
+<ol>
+<li class="">
+<p>C4G откроет ваш браузер по умолчанию</p>
+</li>
+<li class="">
+<p>Google попросит вас войти в аккаунт (если вы ещё не вошли)</p>
+</li>
+<li class="">
+<p>Google покажет экран согласия:</p>
+<ul>
+<li class="">Может появиться предупреждение <strong>«Это приложение не проверено»</strong></li>
+<li class="">Нажмите <strong>«Дополнительные параметры»</strong></li>
+<li class="">Нажмите <strong>«Перейти на C4G Game Configs (небезопасно)»</strong> (это ваше собственное приложение, оно безопасно)</li>
+</ul>
+</li>
+<li class="">
+<p>Ознакомьтесь с разрешениями:</p>
+<ul>
+<li class="">C4G запрашивает: «Просмотр ваших таблиц Google»</li>
+<li class="">Это доступ только для чтения</li>
+</ul>
+</li>
+<li class="">
+<p>Нажмите <strong>«Разрешить»</strong></p>
+</li>
+<li class="">
+<p>В браузере появится сообщение об успешной авторизации</p>
+</li>
+<li class="">
+<p>Вернитесь в Unity — теперь C4G имеет доступ к вашим таблицам</p>
+</li>
+<li class="">
+<p>Токен авторизации сохраняется локально, повторная авторизация не потребуется, если вы не отзовёте доступ</p>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="рекомендации-по-безопасности">Рекомендации по безопасности<a href="#рекомендации-по-безопасности" class="hash-link" aria-label="Прямая ссылка на Рекомендации по безопасности" title="Прямая ссылка на Рекомендации по безопасности" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="делайте-">ДЕЛАЙТЕ ✅<a href="#делайте-" class="hash-link" aria-label="Прямая ссылка на ДЕЛАЙТЕ ✅" title="Прямая ссылка на ДЕЛАЙТЕ ✅" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Храните учётные данные за пределами папки Assets Unity</strong> — для удобного управления <code>.gitignore</code></li>
+<li class=""><strong>Сразу добавляйте файлы с учётными данными в <code>.gitignore</code></strong></li>
+<li class=""><strong>Используйте отдельный аккаунт Google</strong> для разработки игр при работе в команде</li>
+<li class=""><strong>Отзывайте и пересоздавайте учётные данные</strong> при случайном раскрытии</li>
+<li class=""><strong>Храните учётные данные в безопасном месте</strong> с ограниченным доступом</li>
+<li class=""><strong>Документируйте расположение учётных данных</strong> для команды (но не сам файл)</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="не-делайте-">НЕ ДЕЛАЙТЕ ❌<a href="#не-делайте-" class="hash-link" aria-label="Прямая ссылка на НЕ ДЕЛАЙТЕ ❌" title="Прямая ссылка на НЕ ДЕЛАЙТЕ ❌" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Никогда не добавляйте учётные данные в систему контроля версий</strong> (Git, SVN и т.д.)</li>
+<li class=""><strong>Никогда не передавайте файлы с учётными данными</strong> по email или в мессенджерах</li>
+<li class=""><strong>Никогда не встраивайте учётные данные</strong> в скрипты</li>
+<li class=""><strong>Не используйте личные аккаунты Google</strong> для продакшн/командных проектов</li>
+<li class=""><strong>Не давайте больше разрешений</strong>, чем доступ на чтение Google Sheets API</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="устранение-неполадок">Устранение неполадок<a href="#устранение-неполадок" class="hash-link" aria-label="Прямая ссылка на Устранение неполадок" title="Прямая ссылка на Устранение неполадок" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="ошибка-invalid-credentials">Ошибка «Invalid credentials»<a href="#ошибка-invalid-credentials" class="hash-link" aria-label="Прямая ссылка на Ошибка «Invalid credentials»" title="Прямая ссылка на Ошибка «Invalid credentials»" translate="no">​</a></h3>
+<p><strong>Причина</strong>: Файл с учётными данными имеет неверный формат</p>
+<p><strong>Решение</strong>:</p>
+<ul>
+<li class="">Повторно скачайте учётные данные из Google Cloud Console</li>
+<li class="">Убедитесь, что вы выбрали «Приложение для ПК» (не «Веб-приложение»)</li>
+<li class="">Убедитесь, что JSON-файл содержит раздел <code>&quot;installed&quot;</code></li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="ошибка-access-denied">Ошибка «Access denied»<a href="#ошибка-access-denied" class="hash-link" aria-label="Прямая ссылка на Ошибка «Access denied»" title="Прямая ссылка на Ошибка «Access denied»" translate="no">​</a></h3>
+<p><strong>Причина</strong>: Google Sheets API не включён</p>
+<p><strong>Решение</strong>:</p>
+<ul>
+<li class="">Перейдите в Google Cloud Console</li>
+<li class="">Откройте <strong>APIs &amp; Services → Библиотека</strong></li>
+<li class="">Найдите «Google Sheets API»</li>
+<li class="">Нажмите «Включить»</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="браузер-не-открывается-для-авторизации">«Браузер не открывается для авторизации»<a href="#браузер-не-открывается-для-авторизации" class="hash-link" aria-label="Прямая ссылка на «Браузер не открывается для авторизации»" title="Прямая ссылка на «Браузер не открывается для авторизации»" translate="no">​</a></h3>
+<p><strong>Причина</strong>: Браузер по умолчанию не задан или брандмауэр блокирует запрос</p>
+<p><strong>Решение</strong>:</p>
+<ul>
+<li class="">Вручную скопируйте URL авторизации из консоли Unity</li>
+<li class="">Вставьте его в браузер</li>
+<li class="">Завершите процесс авторизации</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="предупреждение-это-приложение-не-проверено">Предупреждение «Это приложение не проверено»<a href="#предупреждение-это-приложение-не-проверено" class="hash-link" aria-label="Прямая ссылка на Предупреждение «Это приложение не проверено»" title="Прямая ссылка на Предупреждение «Это приложение не проверено»" translate="no">​</a></h3>
+<p><strong>Причина</strong>: Ваше OAuth-приложение не прошло верификацию Google</p>
+<p><strong>Решение</strong>:</p>
+<ul>
+<li class="">Это нормально для личных/разрабатываемых приложений</li>
+<li class="">Нажмите «Дополнительные параметры» → «Перейти на [название приложения] (небезопасно)»</li>
+<li class="">Для продакшн-приложений рассмотрите прохождение верификации Google</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="ошибка-credentials-file-not-found">Ошибка «Credentials file not found»<a href="#ошибка-credentials-file-not-found" class="hash-link" aria-label="Прямая ссылка на Ошибка «Credentials file not found»" title="Прямая ссылка на Ошибка «Credentials file not found»" translate="no">​</a></h3>
+<p><strong>Причина</strong>: Неверный путь к файлу или файл был перемещён</p>
+<p><strong>Решение</strong>:</p>
+<ul>
+<li class="">Убедитесь, что файл находится по указанному пути</li>
+<li class="">Используйте абсолютные пути (не относительные)</li>
+<li class="">Проверьте правописание пути</li>
+<li class="">Убедитесь, что Unity имеет права на чтение файла</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="отзыв-доступа">Отзыв доступа<a href="#отзыв-доступа" class="hash-link" aria-label="Прямая ссылка на Отзыв доступа" title="Прямая ссылка на Отзыв доступа" translate="no">​</a></h2>
+<p>Если вам нужно отозвать доступ C4G к вашим Google Sheets:</p>
+<ol>
+<li class="">
+<p>Перейдите в <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" class="">Разрешения аккаунта Google</a></p>
+</li>
+<li class="">
+<p>Найдите приложение C4G в списке</p>
+</li>
+<li class="">
+<p>Нажмите на него и выберите <strong>«Удалить доступ»</strong></p>
+</li>
+<li class="">
+<p>При следующем использовании C4G потребуется повторная авторизация</p>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="настройка-для-команды">Настройка для команды<a href="#настройка-для-команды" class="hash-link" aria-label="Прямая ссылка на Настройка для команды" title="Прямая ссылка на Настройка для команды" translate="no">​</a></h2>
+<p>Для командных проектов:</p>
+<ol>
+<li class="">
+<p><strong>Вариант А</strong>: Каждый разработчик создаёт свои учётные данные</p>
+<ul>
+<li class="">Плюсы: Более высокий уровень безопасности, индивидуальный контроль доступа</li>
+<li class="">Минусы: Каждый должен настроить OAuth</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Вариант Б</strong>: Общий сервисный аккаунт (Продвинутый уровень)</p>
+<ul>
+<li class="">Используйте сервисный аккаунт Google вместо OAuth</li>
+<li class="">Безопасно передайте ключ сервисного аккаунта</li>
+<li class="">Не рассматривается в данном руководстве</li>
+</ul>
+</li>
+</ol>
+<p><strong>Рекомендация</strong>: Вариант А для небольших команд, Вариант Б для крупных организаций</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="следующие-шаги">Следующие шаги<a href="#следующие-шаги" class="hash-link" aria-label="Прямая ссылка на Следующие шаги" title="Прямая ссылка на Следующие шаги" translate="no">​</a></h2>
+<ul>
+<li class=""><a class="" href="/C4G/ru/docs/guides/google-sheets-setup">Настройка Google Sheets</a> — Создайте свою первую таблицу конфигов</li>
+<li class=""><a class="" href="/C4G/ru/docs/guides/editor-workflow">Рабочий процесс в редакторе</a> — Как генерировать конфиги в Unity</li>
+<li class=""><a class="" href="/C4G/ru/docs/help">Устранение неполадок</a> — Распространённые проблемы и решения</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/vangogih/C4G/tree/master/website/docs/guides/oauth-setup.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Редактировать эту страницу</a></div><div class="col lastUpdated_JAkA"><span class="theme-last-updated">Последнее обновление<!-- --> <b><time datetime="2026-03-18T16:10:09.000Z" itemprop="dateModified">18 мар. 2026 г.</time></b> <b>Evgenii Zaev</b></span></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Навигация по странице документа"><a class="pagination-nav__link pagination-nav__link--prev" href="/C4G/ru/docs/guides/overview"><div class="pagination-nav__sublabel">Назад</div><div class="pagination-nav__label">Обзор руководств</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/C4G/ru/docs/guides/google-sheets-setup"><div class="pagination-nav__sublabel">Далее</div><div class="pagination-nav__label">Настройка Google Sheets</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#обзор" class="table-of-contents__link toc-highlight">Обзор</a></li><li><a href="#пошаговая-настройка" class="table-of-contents__link toc-highlight">Пошаговая настройка</a><ul><li><a href="#шаг-1-создание-проекта-в-google-cloud" class="table-of-contents__link toc-highlight">Шаг 1: Создание проекта в Google Cloud</a></li><li><a href="#шаг-2-включение-google-sheets-api" class="table-of-contents__link toc-highlight">Шаг 2: Включение Google Sheets API</a></li><li><a href="#шаг-3-создание-учётных-данных-oauth-20" class="table-of-contents__link toc-highlight">Шаг 3: Создание учётных данных OAuth 2.0</a></li><li><a href="#шаг-4-скачивание-файла-с-учётными-данными" class="table-of-contents__link toc-highlight">Шаг 4: Скачивание файла с учётными данными</a></li><li><a href="#шаг-5-настройка-c4g-с-учётными-данными" class="table-of-contents__link toc-highlight">Шаг 5: Настройка C4G с учётными данными</a></li></ul></li><li><a href="#формат-файла-учётных-данных" class="table-of-contents__link toc-highlight">Формат файла учётных данных</a></li><li><a href="#первичная-авторизация" class="table-of-contents__link toc-highlight">Первичная авторизация</a></li><li><a href="#рекомендации-по-безопасности" class="table-of-contents__link toc-highlight">Рекомендации по безопасности</a><ul><li><a href="#делайте-" class="table-of-contents__link toc-highlight">ДЕЛАЙТЕ ✅</a></li><li><a href="#не-делайте-" class="table-of-contents__link toc-highlight">НЕ ДЕЛАЙТЕ ❌</a></li></ul></li><li><a href="#устранение-неполадок" class="table-of-contents__link toc-highlight">Устранение неполадок</a><ul><li><a href="#ошибка-invalid-credentials" class="table-of-contents__link toc-highlight">Ошибка «Invalid credentials»</a></li><li><a href="#ошибка-access-denied" class="table-of-contents__link toc-highlight">Ошибка «Access denied»</a></li><li><a href="#браузер-не-открывается-для-авторизации" class="table-of-contents__link toc-highlight">«Браузер не открывается для авторизации»</a></li><li><a href="#предупреждение-это-приложение-не-проверено" class="table-of-contents__link toc-highlight">Предупреждение «Это приложение не проверено»</a></li><li><a href="#ошибка-credentials-file-not-found" class="table-of-contents__link toc-highlight">Ошибка «Credentials file not found»</a></li></ul></li><li><a href="#отзыв-доступа" class="table-of-contents__link toc-highlight">Отзыв доступа</a></li><li><a href="#настройка-для-команды" class="table-of-contents__link toc-highlight">Настройка для команды</a></li><li><a href="#следующие-шаги" class="table-of-contents__link toc-highlight">Следующие шаги</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Документация</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/C4G/ru/docs/getting-started">Начало работы</a></li><li class="footer__item"><a class="footer__link-item" href="/C4G/ru/docs/guides/overview">Руководства</a></li><li class="footer__item"><a class="footer__link-item" href="/C4G/ru/docs/api/introduction">Справочник API</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Сообщество</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/c4g" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/vangogih/C4G/discussions" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub Discussions<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Ещё</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/vangogih/C4G" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/vangogih/C4G/releases" target="_blank" rel="noopener noreferrer" class="footer__link-item">Релизы<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 C4G. Создано с помощью Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

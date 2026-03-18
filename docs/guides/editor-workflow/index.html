@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en-US" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-guides/editor-workflow" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Editor Workflow | C4G</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://vangogih.github.io/C4G/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://vangogih.github.io/C4G/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://vangogih.github.io/C4G/docs/guides/editor-workflow"><meta data-rh="true" property="og:locale" content="en_US"><meta data-rh="true" property="og:locale:alternate" content="ru_RU"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Editor Workflow | C4G"><meta data-rh="true" name="description" content="Learn how to use C4G in the Unity Editor to generate configuration code and data from Google Sheets."><meta data-rh="true" property="og:description" content="Learn how to use C4G in the Unity Editor to generate configuration code and data from Google Sheets."><link data-rh="true" rel="icon" href="/C4G/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://vangogih.github.io/C4G/docs/guides/editor-workflow"><link data-rh="true" rel="alternate" href="https://vangogih.github.io/C4G/docs/guides/editor-workflow" hreflang="en-US"><link data-rh="true" rel="alternate" href="https://vangogih.github.io/C4G/ru/docs/guides/editor-workflow" hreflang="ru-RU"><link data-rh="true" rel="alternate" href="https://vangogih.github.io/C4G/docs/guides/editor-workflow" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Editor Workflow","item":"https://vangogih.github.io/C4G/docs/guides/editor-workflow"}]}</script><link rel="stylesheet" href="/C4G/assets/css/styles.a77a904f.css">
+<script src="/C4G/assets/js/runtime~main.2085de08.js" defer="defer"></script>
+<script src="/C4G/assets/js/main.f595e6e9.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/C4G/img/logo.svg"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/C4G/"><div class="navbar__logo"><img src="/C4G/img/logo.svg" alt="C4G Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/C4G/img/logo.svg" alt="C4G Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">C4G</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/C4G/docs/getting-started">Docs</a><a class="navbar__item navbar__link" href="/C4G/docs/api/introduction">API</a><a class="navbar__item navbar__link" href="/C4G/docs/help">Help</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href="#" aria-haspopup="true" aria-expanded="false" role="button" class="navbar__link"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="iconLanguage_nlXk"><path fill="currentColor" d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"></path></svg>English</a><ul class="dropdown__menu"><li><a href="/C4G/docs/guides/editor-workflow" target="_self" rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang="en-US">English</a></li><li><a href="/C4G/ru/docs/guides/editor-workflow" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="ru-RU">Русский</a></li></ul></div><a href="https://github.com/vangogih/C4G" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/C4G/docs/getting-started"><span title="Getting Started" class="linkLabel_WmDU">Getting Started</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/C4G/docs/installation"><span title="Installation" class="linkLabel_WmDU">Installation</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/C4G/docs/guides/overview"><span title="Guides" class="categoryLinkLabel_W154">Guides</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/C4G/docs/guides/overview"><span title="Guides Overview" class="linkLabel_WmDU">Guides Overview</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/C4G/docs/guides/oauth-setup"><span title="OAuth 2.0 Setup" class="linkLabel_WmDU">OAuth 2.0 Setup</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/C4G/docs/guides/google-sheets-setup"><span title="Google Sheets Setup" class="linkLabel_WmDU">Google Sheets Setup</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/C4G/docs/guides/editor-workflow"><span title="Editor Workflow" class="linkLabel_WmDU">Editor Workflow</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/C4G/docs/guides/supported-versions"><span title="Supported Versions" class="linkLabel_WmDU">Supported Versions</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/C4G/docs/api/introduction"><span title="API Reference" class="categoryLinkLabel_W154">API Reference</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/C4G/docs/category/001"><span title="ADR" class="categoryLinkLabel_W154">ADR</span></a></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/C4G/docs/help"><span title="Help &amp; Support" class="linkLabel_WmDU">Help &amp; Support</span></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/C4G/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Guides</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Editor Workflow</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Editor Workflow</h1></header>
+<p>Learn how to use C4G in the Unity Editor to generate configuration code and data from Google Sheets.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="overview">Overview<a href="#overview" class="hash-link" aria-label="Direct link to Overview" title="Direct link to Overview" translate="no">​</a></h2>
+<p>The C4G Editor workflow involves:</p>
+<ol>
+<li class="">Configuring settings (one-time setup)</li>
+<li class="">Generating C# classes and JSON configs</li>
+<li class="">Using the generated configs in your game code</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="opening-c4g-windows">Opening C4G Windows<a href="#opening-c4g-windows" class="hash-link" aria-label="Direct link to Opening C4G Windows" title="Direct link to Opening C4G Windows" translate="no">​</a></h2>
+<p>C4G provides two main Editor windows:</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="c4g-settings-window">C4G Settings Window<a href="#c4g-settings-window" class="hash-link" aria-label="Direct link to C4G Settings Window" title="Direct link to C4G Settings Window" translate="no">​</a></h3>
+<p><strong>Menu</strong>: <code>Window → C4G → Settings</code></p>
+<p>Use this window to configure:</p>
+<ul>
+<li class="">Google Sheets connection</li>
+<li class="">Output folders</li>
+<li class="">Custom type parsers</li>
+<li class="">Sheet definitions</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="c4g-generation-window">C4G Generation Window<a href="#c4g-generation-window" class="hash-link" aria-label="Direct link to C4G Generation Window" title="Direct link to C4G Generation Window" translate="no">​</a></h3>
+<p><strong>Menu</strong>: <code>Window → C4G → Generate</code></p>
+<p>Use this window to:</p>
+<ul>
+<li class="">Generate configs from Google Sheets</li>
+<li class="">View generation progress</li>
+<li class="">See errors and warnings</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="first-time-setup">First-Time Setup<a href="#first-time-setup" class="hash-link" aria-label="Direct link to First-Time Setup" title="Direct link to First-Time Setup" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="step-1-configure-basic-settings">Step 1: Configure Basic Settings<a href="#step-1-configure-basic-settings" class="hash-link" aria-label="Direct link to Step 1: Configure Basic Settings" title="Direct link to Step 1: Configure Basic Settings" translate="no">​</a></h3>
+<ol>
+<li class="">
+<p>Open <code>Window → C4G → Settings</code></p>
+</li>
+<li class="">
+<p>Configure the following required fields:</p>
+</li>
+</ol>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="google-sheets-id">Google Sheets ID<a href="#google-sheets-id" class="hash-link" aria-label="Direct link to Google Sheets ID" title="Direct link to Google Sheets ID" translate="no">​</a></h4>
+<ul>
+<li class=""><strong>Label</strong>: &quot;Table ID&quot; or &quot;Spreadsheet ID&quot;</li>
+<li class=""><strong>Value</strong>: Your spreadsheet ID from the Google Sheets URL</li>
+<li class=""><strong>Example</strong>: <code>1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms</code></li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="client-secret">Client Secret<a href="#client-secret" class="hash-link" aria-label="Direct link to Client Secret" title="Direct link to Client Secret" translate="no">​</a></h4>
+<ul>
+<li class=""><strong>Label</strong>: &quot;Client Secret&quot;</li>
+<li class=""><strong>Value</strong>: Path to your OAuth credentials JSON file</li>
+<li class=""><strong>Example</strong>: <code>C:/Projects/MyGame/Credentials/c4g_credentials.json</code></li>
+<li class=""><strong>Note</strong>: Use absolute paths</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="root-config-name">Root Config Name<a href="#root-config-name" class="hash-link" aria-label="Direct link to Root Config Name" title="Direct link to Root Config Name" translate="no">​</a></h4>
+<ul>
+<li class=""><strong>Label</strong>: &quot;Root Config Name&quot;</li>
+<li class=""><strong>Value</strong>: Name for the main config container class</li>
+<li class=""><strong>Example</strong>: <code>GameConfig</code></li>
+<li class=""><strong>Default</strong>: <code>RootConfig</code></li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="generated-code-folder">Generated Code Folder<a href="#generated-code-folder" class="hash-link" aria-label="Direct link to Generated Code Folder" title="Direct link to Generated Code Folder" translate="no">​</a></h4>
+<ul>
+<li class=""><strong>Label</strong>: &quot;Generated Code Folder&quot;</li>
+<li class=""><strong>Value</strong>: Where C# classes will be generated</li>
+<li class=""><strong>Example</strong>: <code>Assets/Scripts/Generated/</code></li>
+<li class=""><strong>Best Practice</strong>: Keep generated code in a dedicated folder</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="serialized-configs-folder">Serialized Configs Folder<a href="#serialized-configs-folder" class="hash-link" aria-label="Direct link to Serialized Configs Folder" title="Direct link to Serialized Configs Folder" translate="no">​</a></h4>
+<ul>
+<li class=""><strong>Label</strong>: &quot;Serialized Configs Folder&quot;</li>
+<li class=""><strong>Value</strong>: Where JSON files will be saved</li>
+<li class=""><strong>Example</strong>: <code>Assets/Resources/Configs/</code></li>
+<li class=""><strong>Best Practice</strong>: Use <code>Resources/</code> for runtime loading</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="step-2-define-sheet-parsers">Step 2: Define Sheet Parsers<a href="#step-2-define-sheet-parsers" class="hash-link" aria-label="Direct link to Step 2: Define Sheet Parsers" title="Direct link to Step 2: Define Sheet Parsers" translate="no">​</a></h3>
+<p>Sheet parsers tell C4G which sheets to read from your spreadsheet.</p>
+<ol>
+<li class="">
+<p>In the Settings window, find the <strong>&quot;Sheet Parsers&quot;</strong> section</p>
+</li>
+<li class="">
+<p>Click <strong>&quot;+&quot;</strong> to add a new sheet</p>
+</li>
+<li class="">
+<p>Configure each sheet:</p>
+<ul>
+<li class=""><strong>Sheet Name</strong>: Must match the exact name in Google Sheets (case-sensitive)</li>
+<li class=""><strong>Parser Type</strong>: Usually &quot;Default&quot; (advanced users can create custom parsers)</li>
+</ul>
+</li>
+<li class="">
+<p>Example configuration:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">Sheet Name: Items</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Parser Type: Default Sheet Parser</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Sheet Name: Enemies</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Parser Type: Default Sheet Parser</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Sheet Name: LevelConfigs</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Parser Type: Default Sheet Parser</span><br></span></code></pre></div></div>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="step-3-configure-custom-type-parsers-optional">Step 3: Configure Custom Type Parsers (Optional)<a href="#step-3-configure-custom-type-parsers-optional" class="hash-link" aria-label="Direct link to Step 3: Configure Custom Type Parsers (Optional)" title="Direct link to Step 3: Configure Custom Type Parsers (Optional)" translate="no">​</a></h3>
+<p>If you&#x27;re using enums or custom types:</p>
+<ol>
+<li class="">
+<p>Find the <strong>&quot;Alias Parsers&quot;</strong> section</p>
+</li>
+<li class="">
+<p>Click <strong>&quot;+&quot;</strong> to add a custom type</p>
+</li>
+<li class="">
+<p>Configure:</p>
+<ul>
+<li class=""><strong>Alias Name</strong>: The type name as it appears in Google Sheets</li>
+<li class=""><strong>Parser Type</strong>: Select the appropriate parser (Enum, Custom, etc.)</li>
+</ul>
+</li>
+<li class="">
+<p>Example for enums:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">Alias Name: ItemRarity</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Parser Type: Enum Parser</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Enum Type: MyGame.ItemRarity</span><br></span></code></pre></div></div>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="generating-configs">Generating Configs<a href="#generating-configs" class="hash-link" aria-label="Direct link to Generating Configs" title="Direct link to Generating Configs" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="basic-generation">Basic Generation<a href="#basic-generation" class="hash-link" aria-label="Direct link to Basic Generation" title="Direct link to Basic Generation" translate="no">​</a></h3>
+<ol>
+<li class="">
+<p>Open <code>Window → C4G → Generate</code></p>
+</li>
+<li class="">
+<p>Click the <strong>&quot;Generate Configs&quot;</strong> button</p>
+</li>
+<li class="">
+<p>C4G will:</p>
+<ul>
+<li class="">Connect to Google Sheets (may open browser for OAuth first time)</li>
+<li class="">Fetch sheet data</li>
+<li class="">Parse the data</li>
+<li class="">Generate C# classes</li>
+<li class="">Serialize JSON files</li>
+<li class="">Display results in the console</li>
+</ul>
+</li>
+<li class="">
+<p>Wait for the success message:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">C4G: Config generation successful!</span><br></span></code></pre></div></div>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="first-time-authorization">First-Time Authorization<a href="#first-time-authorization" class="hash-link" aria-label="Direct link to First-Time Authorization" title="Direct link to First-Time Authorization" translate="no">​</a></h3>
+<p>On first generation, you&#x27;ll need to authorize:</p>
+<ol>
+<li class="">
+<p>Your default browser will open automatically</p>
+</li>
+<li class="">
+<p>Sign in to Google (if not already)</p>
+</li>
+<li class="">
+<p>Review and accept the permissions</p>
+</li>
+<li class="">
+<p>Return to Unity - generation will continue automatically</p>
+</li>
+<li class="">
+<p>Authorization is saved - you won&#x27;t need to repeat this</p>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="generation-progress">Generation Progress<a href="#generation-progress" class="hash-link" aria-label="Direct link to Generation Progress" title="Direct link to Generation Progress" translate="no">​</a></h3>
+<p>During generation, watch the Console for progress:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">C4G: Starting config generation...</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">C4G: Connecting to Google Sheets...</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">C4G: Loading sheet &#x27;Items&#x27;...</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">C4G: Loading sheet &#x27;Enemies&#x27;...</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">C4G: Parsing sheet &#x27;Items&#x27;...</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">C4G: Parsing sheet &#x27;Enemies&#x27;...</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">C4G: Generating class &#x27;Items.cs&#x27;...</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">C4G: Generating class &#x27;Enemies.cs&#x27;...</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">C4G: Generating root config &#x27;GameConfig.cs&#x27;...</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">C4G: Serializing configs to JSON...</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">C4G: Config generation successful!</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="verifying-generated-files">Verifying Generated Files<a href="#verifying-generated-files" class="hash-link" aria-label="Direct link to Verifying Generated Files" title="Direct link to Verifying Generated Files" translate="no">​</a></h3>
+<p>After successful generation, verify the output:</p>
+<ol>
+<li class="">
+<p><strong>C# Classes</strong> (in Generated Code Folder):</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">Assets/Scripts/Generated/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">├── Items.cs</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">├── Enemies.cs</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">└── GameConfig.cs</span><br></span></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>JSON Configs</strong> (in Serialized Configs Folder):</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">Assets/Resources/Configs/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">└── GameConfig.json</span><br></span></code></pre></div></div>
+</li>
+<li class="">
+<p><strong>Check Unity Console</strong> for any warnings or errors</p>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="using-generated-configs-in-code">Using Generated Configs in Code<a href="#using-generated-configs-in-code" class="hash-link" aria-label="Direct link to Using Generated Configs in Code" title="Direct link to Using Generated Configs in Code" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="loading-configs-at-runtime">Loading Configs at Runtime<a href="#loading-configs-at-runtime" class="hash-link" aria-label="Direct link to Loading Configs at Runtime" title="Direct link to Loading Configs at Runtime" translate="no">​</a></h3>
+<div class="language-csharp codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-csharp codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">using UnityEngine;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">using Newtonsoft.Json;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">public class ConfigManager : MonoBehaviour</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    public GameConfig gameConfig;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    void Start()</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        LoadConfigs();</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    void LoadConfigs()</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        // Load from Resources folder</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        TextAsset configFile = Resources.Load&lt;TextAsset&gt;(&quot;Configs/GameConfig&quot;);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        if (configFile != null)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">            gameConfig = JsonConvert.DeserializeObject&lt;GameConfig&gt;(configFile.text);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">            Debug.Log($&quot;Loaded {gameConfig.items.Length} items&quot;);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        else</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">            Debug.LogError(&quot;Config file not found!&quot;);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="accessing-config-data">Accessing Config Data<a href="#accessing-config-data" class="hash-link" aria-label="Direct link to Accessing Config Data" title="Direct link to Accessing Config Data" translate="no">​</a></h3>
+<div class="language-csharp codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-csharp codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">// Access items</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">foreach (var item in gameConfig.items)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    Debug.Log($&quot;Item: {item.name}, Price: {item.price}&quot;);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// Find specific item by ID</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">var sword = System.Array.Find(gameConfig.items, i =&gt; i.id == 1);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">if (sword != null)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    Debug.Log($&quot;Found: {sword.name}&quot;);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// Access enemies</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">foreach (var enemy in gameConfig.enemies)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    Debug.Log($&quot;Enemy: {enemy.name}, Health: {enemy.health}&quot;);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="creating-a-config-singleton">Creating a Config Singleton<a href="#creating-a-config-singleton" class="hash-link" aria-label="Direct link to Creating a Config Singleton" title="Direct link to Creating a Config Singleton" translate="no">​</a></h3>
+<div class="language-csharp codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-csharp codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">public class ConfigManager : MonoBehaviour</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    private static ConfigManager _instance;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    public static ConfigManager Instance</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        get</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">            if (_instance == null)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">            {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">                _instance = FindObjectOfType&lt;ConfigManager&gt;();</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">            }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">            return _instance;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    public GameConfig Config { get; private set; }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    void Awake()</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        if (_instance != null &amp;&amp; _instance != this)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">            Destroy(gameObject);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">            return;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        _instance = this;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        DontDestroyOnLoad(gameObject);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        LoadConfigs();</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    void LoadConfigs()</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        TextAsset configFile = Resources.Load&lt;TextAsset&gt;(&quot;Configs/GameConfig&quot;);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        Config = JsonConvert.DeserializeObject&lt;GameConfig&gt;(configFile.text);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">// Usage in other scripts:</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">var itemConfig = ConfigManager.Instance.Config.items[0];</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="development-workflow">Development Workflow<a href="#development-workflow" class="hash-link" aria-label="Direct link to Development Workflow" title="Direct link to Development Workflow" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="recommended-workflow">Recommended Workflow<a href="#recommended-workflow" class="hash-link" aria-label="Direct link to Recommended Workflow" title="Direct link to Recommended Workflow" translate="no">​</a></h3>
+<ol>
+<li class=""><strong>Design configs</strong> in Google Sheets</li>
+<li class=""><strong>Test data</strong> with a few sample rows</li>
+<li class=""><strong>Generate configs</strong> in Unity (<code>Window → C4G → Generate</code>)</li>
+<li class=""><strong>Verify generated code</strong> compiles without errors</li>
+<li class=""><strong>Test in play mode</strong> with sample data</li>
+<li class=""><strong>Add full dataset</strong> to Google Sheets</li>
+<li class=""><strong>Regenerate configs</strong></li>
+<li class=""><strong>Commit generated JSON</strong> to version control</li>
+<li class=""><strong>Optionally commit C# classes</strong> (team preference)</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="when-to-regenerate">When to Regenerate<a href="#when-to-regenerate" class="hash-link" aria-label="Direct link to When to Regenerate" title="Direct link to When to Regenerate" translate="no">​</a></h3>
+<p>Regenerate configs when:</p>
+<ul>
+<li class="">✅ Adding new fields to a sheet</li>
+<li class="">✅ Adding new sheets</li>
+<li class="">✅ Changing data values</li>
+<li class="">✅ Modifying field types</li>
+<li class="">✅ Adding/removing data rows</li>
+</ul>
+<p>You don&#x27;t need to regenerate for:</p>
+<ul>
+<li class="">❌ Code-only changes</li>
+<li class="">❌ Unity scene changes</li>
+<li class="">❌ UI tweaks</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="version-control">Version Control<a href="#version-control" class="hash-link" aria-label="Direct link to Version Control" title="Direct link to Version Control" translate="no">​</a></h3>
+<p><strong>Recommended approach</strong>:</p>
+<ol>
+<li class="">
+<p><strong>Commit generated JSON files</strong>:</p>
+<ul>
+<li class="">These are your runtime configs</li>
+<li class="">Team members need them to run the game</li>
+<li class="">Small file sizes</li>
+</ul>
+</li>
+<li class="">
+<p><strong><code>.gitignore</code> generated C# classes</strong> (optional):</p>
+<ul>
+<li class="">They can be regenerated from sheets</li>
+<li class="">Reduces merge conflicts</li>
+<li class="">Each developer regenerates locally</li>
+</ul>
+</li>
+</ol>
+<p><strong>Alternative approach</strong>:</p>
+<ol>
+<li class=""><strong>Commit both JSON and C# files</strong>:<!-- -->
+<ul>
+<li class="">Useful if not all team members have OAuth access</li>
+<li class="">Provides full config snapshot</li>
+<li class="">More merge conflicts possible</li>
+</ul>
+</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="keyboard-shortcuts">Keyboard Shortcuts<a href="#keyboard-shortcuts" class="hash-link" aria-label="Direct link to Keyboard Shortcuts" title="Direct link to Keyboard Shortcuts" translate="no">​</a></h2>
+<p>C4G doesn&#x27;t have built-in shortcuts, but you can create your own:</p>
+<ol>
+<li class="">Create a script in <code>Assets/Editor/</code>:</li>
+</ol>
+<div class="language-csharp codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-csharp codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">using UnityEditor;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">using C4G.Editor;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">public class C4GShortcuts</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    [MenuItem(&quot;Tools/C4G/Generate Configs _g&quot;)]  // Alt+G</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    static void GenerateConfigs()</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        // Open C4G Generate window</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        EditorWindow.GetWindow&lt;C4GWindow&gt;();</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        // Trigger generation (you&#x27;ll need to access the window&#x27;s method)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    [MenuItem(&quot;Tools/C4G/Open Settings _s&quot;)]  // Alt+S</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    static void OpenSettings()</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        EditorWindow.GetWindow&lt;C4GSettingsProvider&gt;();</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="troubleshooting">Troubleshooting<a href="#troubleshooting" class="hash-link" aria-label="Direct link to Troubleshooting" title="Direct link to Troubleshooting" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="generation-failed-errors">&quot;Generation failed&quot; errors<a href="#generation-failed-errors" class="hash-link" aria-label="Direct link to &quot;Generation failed&quot; errors" title="Direct link to &quot;Generation failed&quot; errors" translate="no">​</a></h3>
+<p><strong>Check</strong>:</p>
+<ol>
+<li class="">Console for specific error messages</li>
+<li class="">Internet connection</li>
+<li class="">Google Sheets permissions</li>
+<li class="">OAuth credentials validity</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="generated-classes-have-compile-errors">Generated classes have compile errors<a href="#generated-classes-have-compile-errors" class="hash-link" aria-label="Direct link to Generated classes have compile errors" title="Direct link to Generated classes have compile errors" translate="no">​</a></h3>
+<p><strong>Common causes</strong>:</p>
+<ul>
+<li class="">Reserved C# keywords used as field names</li>
+<li class="">Invalid type names</li>
+<li class="">Circular dependencies</li>
+</ul>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li class="">Rename fields in Google Sheets</li>
+<li class="">Use valid C# type names</li>
+<li class="">Check field name spelling</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="json-file-not-found-at-runtime">JSON file not found at runtime<a href="#json-file-not-found-at-runtime" class="hash-link" aria-label="Direct link to JSON file not found at runtime" title="Direct link to JSON file not found at runtime" translate="no">​</a></h3>
+<p><strong>Causes</strong>:</p>
+<ul>
+<li class="">File not in <code>Resources/</code> folder</li>
+<li class="">Wrong file path in code</li>
+<li class="">File not committed (if cloning repo)</li>
+</ul>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li class="">Verify file is in <code>Assets/Resources/Configs/</code></li>
+<li class="">Check file name matches code</li>
+<li class="">Regenerate configs</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="oauth-authorization-keeps-prompting">OAuth authorization keeps prompting<a href="#oauth-authorization-keeps-prompting" class="hash-link" aria-label="Direct link to OAuth authorization keeps prompting" title="Direct link to OAuth authorization keeps prompting" translate="no">​</a></h3>
+<p><strong>Causes</strong>:</p>
+<ul>
+<li class="">Token expired</li>
+<li class="">Token file deleted</li>
+<li class="">Credentials changed</li>
+</ul>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li class="">Re-authorize (one-time)</li>
+<li class="">Check credentials file hasn&#x27;t moved</li>
+<li class="">Verify credentials are still valid in Google Cloud Console</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="advanced-tips">Advanced Tips<a href="#advanced-tips" class="hash-link" aria-label="Direct link to Advanced Tips" title="Direct link to Advanced Tips" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="batch-processing">Batch Processing<a href="#batch-processing" class="hash-link" aria-label="Direct link to Batch Processing" title="Direct link to Batch Processing" translate="no">​</a></h3>
+<p>For multiple config updates:</p>
+<ol>
+<li class="">Update all sheets in Google Sheets</li>
+<li class="">Generate once - C4G processes all sheets together</li>
+<li class="">Review all changes in one commit</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="config-validation">Config Validation<a href="#config-validation" class="hash-link" aria-label="Direct link to Config Validation" title="Direct link to Config Validation" translate="no">​</a></h3>
+<p>Add validation after loading:</p>
+<div class="language-csharp codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-csharp codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">void ValidateConfigs()</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    foreach (var item in gameConfig.items)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        if (item.price &lt; 0)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        {</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">            Debug.LogWarning($&quot;Item {item.name} has negative price!&quot;);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    }</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="hot-reloading-advanced">Hot Reloading (Advanced)<a href="#hot-reloading-advanced" class="hash-link" aria-label="Direct link to Hot Reloading (Advanced)" title="Direct link to Hot Reloading (Advanced)" translate="no">​</a></h3>
+<p>For rapid iteration during development:</p>
+<div class="language-csharp codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-csharp codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">#if UNITY_EDITOR</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">[UnityEditor.MenuItem(&quot;Tools/Reload Configs&quot;)]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">static void ReloadConfigs()</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    var manager = FindObjectOfType&lt;ConfigManager&gt;();</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    manager.LoadConfigs();</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    Debug.Log(&quot;Configs reloaded!&quot;);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">#endif</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="next-steps">Next Steps<a href="#next-steps" class="hash-link" aria-label="Direct link to Next Steps" title="Direct link to Next Steps" translate="no">​</a></h2>
+<ul>
+<li class=""><a class="" href="/C4G/docs/guides/supported-versions">Supported Versions</a> - Check compatibility</li>
+<li class=""><a class="" href="/C4G/docs/api/introduction">API Reference</a> - Understand C4G&#x27;s API</li>
+<li class=""><a class="" href="/C4G/docs/guides/overview">Custom Type Parsers</a> - Extend C4G functionality</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/vangogih/C4G/tree/master/website/docs/guides/editor-workflow.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"><span class="theme-last-updated">Last updated<!-- --> on <b><time datetime="2026-03-18T16:10:09.000Z" itemprop="dateModified">Mar 18, 2026</time></b> by <b>Evgenii Zaev</b></span></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/C4G/docs/guides/google-sheets-setup"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Google Sheets Setup</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/C4G/docs/guides/supported-versions"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Supported Versions</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#overview" class="table-of-contents__link toc-highlight">Overview</a></li><li><a href="#opening-c4g-windows" class="table-of-contents__link toc-highlight">Opening C4G Windows</a><ul><li><a href="#c4g-settings-window" class="table-of-contents__link toc-highlight">C4G Settings Window</a></li><li><a href="#c4g-generation-window" class="table-of-contents__link toc-highlight">C4G Generation Window</a></li></ul></li><li><a href="#first-time-setup" class="table-of-contents__link toc-highlight">First-Time Setup</a><ul><li><a href="#step-1-configure-basic-settings" class="table-of-contents__link toc-highlight">Step 1: Configure Basic Settings</a></li><li><a href="#step-2-define-sheet-parsers" class="table-of-contents__link toc-highlight">Step 2: Define Sheet Parsers</a></li><li><a href="#step-3-configure-custom-type-parsers-optional" class="table-of-contents__link toc-highlight">Step 3: Configure Custom Type Parsers (Optional)</a></li></ul></li><li><a href="#generating-configs" class="table-of-contents__link toc-highlight">Generating Configs</a><ul><li><a href="#basic-generation" class="table-of-contents__link toc-highlight">Basic Generation</a></li><li><a href="#first-time-authorization" class="table-of-contents__link toc-highlight">First-Time Authorization</a></li><li><a href="#generation-progress" class="table-of-contents__link toc-highlight">Generation Progress</a></li><li><a href="#verifying-generated-files" class="table-of-contents__link toc-highlight">Verifying Generated Files</a></li></ul></li><li><a href="#using-generated-configs-in-code" class="table-of-contents__link toc-highlight">Using Generated Configs in Code</a><ul><li><a href="#loading-configs-at-runtime" class="table-of-contents__link toc-highlight">Loading Configs at Runtime</a></li><li><a href="#accessing-config-data" class="table-of-contents__link toc-highlight">Accessing Config Data</a></li><li><a href="#creating-a-config-singleton" class="table-of-contents__link toc-highlight">Creating a Config Singleton</a></li></ul></li><li><a href="#development-workflow" class="table-of-contents__link toc-highlight">Development Workflow</a><ul><li><a href="#recommended-workflow" class="table-of-contents__link toc-highlight">Recommended Workflow</a></li><li><a href="#when-to-regenerate" class="table-of-contents__link toc-highlight">When to Regenerate</a></li><li><a href="#version-control" class="table-of-contents__link toc-highlight">Version Control</a></li></ul></li><li><a href="#keyboard-shortcuts" class="table-of-contents__link toc-highlight">Keyboard Shortcuts</a></li><li><a href="#troubleshooting" class="table-of-contents__link toc-highlight">Troubleshooting</a><ul><li><a href="#generation-failed-errors" class="table-of-contents__link toc-highlight">&quot;Generation failed&quot; errors</a></li><li><a href="#generated-classes-have-compile-errors" class="table-of-contents__link toc-highlight">Generated classes have compile errors</a></li><li><a href="#json-file-not-found-at-runtime" class="table-of-contents__link toc-highlight">JSON file not found at runtime</a></li><li><a href="#oauth-authorization-keeps-prompting" class="table-of-contents__link toc-highlight">OAuth authorization keeps prompting</a></li></ul></li><li><a href="#advanced-tips" class="table-of-contents__link toc-highlight">Advanced Tips</a><ul><li><a href="#batch-processing" class="table-of-contents__link toc-highlight">Batch Processing</a></li><li><a href="#config-validation" class="table-of-contents__link toc-highlight">Config Validation</a></li><li><a href="#hot-reloading-advanced" class="table-of-contents__link toc-highlight">Hot Reloading (Advanced)</a></li></ul></li><li><a href="#next-steps" class="table-of-contents__link toc-highlight">Next Steps</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/C4G/docs/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/C4G/docs/guides/overview">Guides</a></li><li class="footer__item"><a class="footer__link-item" href="/C4G/docs/api/introduction">API Reference</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://stackoverflow.com/questions/tagged/c4g" target="_blank" rel="noopener noreferrer" class="footer__link-item">Stack Overflow<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/vangogih/C4G/discussions" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub Discussions<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/vangogih/C4G" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/vangogih/C4G/releases" target="_blank" rel="noopener noreferrer" class="footer__link-item">Releases<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 C4G. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
