@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -74,11 +74,6 @@ namespace C4G.Core.CodeGeneration
             for(int i = 0; i < _indentLevel; i++)
                 _builder.Append(_indentString);
             _builder.AppendLine(line);
-        }
-
-        private void WriteEmptyLine()
-        {
-            _builder.AppendLine();
         }
 
         private void WriteBlock(string header, Action<CodeWriter> blockContent)

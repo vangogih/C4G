@@ -2,6 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using C4G.Core;
+using C4G.Core.GoogleInteraction;
+using C4G.Core.IO;
 using C4G.Core.Utils;
 using UnityEditor;
 using UnityEngine;
@@ -110,7 +112,7 @@ namespace C4G.Editor
 
             try
             {
-                C4GFacade c4gFacade = new C4GFacade(_settingsProvider);
+                C4GFacade c4gFacade = new C4GFacade(_settingsProvider, new GoogleInteraction(), new IO());
 
                 Task<Result<string>> c4gRunTask = c4gFacade.RunAsync(cts.Token);
                 while (!c4gRunTask.IsCompleted && !c4gRunTask.IsCanceled && !c4gRunTask.IsFaulted)

@@ -13,21 +13,20 @@ namespace C4G.Core
     public sealed class C4GFacade
     {
         private readonly IC4GSettingsProvider _settingsProvider;
-        private readonly GoogleInteraction.GoogleInteraction _googleInteraction;
+        private readonly GoogleInteraction.IGoogleInteraction _googleInteraction;
         private readonly CodeGenerator _codeGenerator;
         private readonly SheetsParsing.SheetsParsing _sheetsParsing;
         private readonly ConfigsSerializer _configsSerializer;
-        private readonly IO.IO _io;
+        private readonly IO.IIO _io;
 
-        public C4GFacade(IC4GSettingsProvider settingsProvider)
+        public C4GFacade(IC4GSettingsProvider settingsProvider, GoogleInteraction.IGoogleInteraction googleInteraction, IO.IIO io)
         {
             _settingsProvider = settingsProvider;
-
-            _googleInteraction = new GoogleInteraction.GoogleInteraction();
+            _googleInteraction = googleInteraction;
             _codeGenerator = new CodeGenerator();
             _sheetsParsing = new SheetsParsing.SheetsParsing();
             _configsSerializer = new ConfigsSerializer();
-            _io = new IO.IO();
+            _io = io;
         }
 
         public async Task<Result<string>> RunAsync(CancellationToken ct)

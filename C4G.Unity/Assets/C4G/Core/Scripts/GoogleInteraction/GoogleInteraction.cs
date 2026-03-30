@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -12,7 +13,8 @@ using Google.Apis.Util.Store;
 
 namespace C4G.Core.GoogleInteraction
 {
-    public sealed class GoogleInteraction
+    [ExcludeFromCodeCoverage]
+    public sealed class GoogleInteraction : IGoogleInteraction
     {
         public async Task<Result<IList<IList<object>>, string>> LoadSheetAsync(string sheetName, string tableId, string clientSecret, CancellationToken ct)
         {
