@@ -5,7 +5,7 @@ on:
 
 jobs:
   website-build:
-    uses: ./.github/workflows/jobs/website-build.yaml
+    uses: ./.github/workflows/job-website_build.yaml
     with:
       upload-artifact: true
 

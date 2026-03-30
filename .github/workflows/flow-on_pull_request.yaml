@@ -6,7 +6,7 @@ on:
 
 jobs:
   dotnet-test-coverage:
-    uses: ./.github/workflows/jobs/dotnet-test-coverage.yaml
+    uses: ./.github/workflows/job-dotnet_test_coverage.yaml
 
   website-build:
-    uses: ./.github/workflows/jobs/website-build.yaml
+    uses: ./.github/workflows/job-website_build.yaml
