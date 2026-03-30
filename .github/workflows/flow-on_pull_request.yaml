@@ -6,7 +6,9 @@ on:
 
 jobs:
   dotnet-test-coverage:
+    name: Run .NET test coverage
     uses: ./.github/workflows/job-dotnet_test_coverage.yaml
 
   website-build:
+    name: Build documentation website
     uses: ./.github/workflows/job-website_build.yaml

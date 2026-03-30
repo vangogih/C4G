@@ -6,19 +6,25 @@ on:
 
 jobs:
   dotnet-test-coverage:
+    name: Run .NET test coverage
     uses: ./.github/workflows/job-dotnet_test_coverage.yaml
 
   unity-tests:
+    name: Run Unity editmode tests
     uses: ./.github/workflows/job-unity_tests.yaml
     secrets: inherit
 
   check-docs-changes:
+    name: Check if documentation changed
     runs-on: ubuntu-latest
     outputs:
       docs-changed: ${{ steps.filter.outputs.docs }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Detect changes in C4G.Docs
+        uses: dorny/paths-filter@v3
         id: filter
         with:
           filters: |
@@ -26,6 +32,7 @@ jobs:
               - 'C4G.Docs/**'
 
   website-deploy:
+    name: Deploy documentation website
     needs: check-docs-changes
     if: needs.check-docs-changes.outputs.docs-changed == 'true'
     uses: ./.github/workflows/job-website_deploy.yaml

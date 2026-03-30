@@ -10,13 +10,14 @@ on:
 
 jobs:
   wait-for-action-status:
+    name: Wait for all checks to pass on ${{ inputs.sha }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - name: Wait for checks to be queued
+      - name: Wait 30s for checks to be queued
         run: sleep 30
 
-      - name: Wait for test workflows
+      - name: Poll GitHub Checks API until all workflows pass
         uses: lewagon/wait-on-check-action@v1.3.4
         with:
           ref: ${{ inputs.sha }}

@@ -5,19 +5,24 @@ on:
 
 jobs:
   website-build:
+    name: Build website for deployment
     uses: ./.github/workflows/job-website_build.yaml
     with:
       upload-artifact: true
 
   website-deploy:
+    name: Deploy website to GitHub Pages
     needs: website-build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download website build artifact
+        uses: actions/download-artifact@v4
         with:
           name: website-build
           path: build
-      - uses: peaceiris/actions-gh-pages@v4
+
+      - name: Publish to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: build

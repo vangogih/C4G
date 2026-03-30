@@ -5,6 +5,7 @@ on:
 
 jobs:
   unity-tests:
+    name: Run Unity ${{ matrix.unityVersion }} editmode tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -14,10 +15,10 @@ jobs:
           - 2023.1.22f1
           - 6000.3.10f1
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Cache Unity Library
+      - name: Restore Unity Library cache
         uses: actions/cache@v4
         with:
           path: C4G.Unity/Library
@@ -26,7 +27,7 @@ jobs:
             Library-C4G.Unity-
             Library-
 
-      - name: Unity Test Runner
+      - name: Run editmode tests on Unity ${{ matrix.unityVersion }}
         uses: game-ci/unity-test-runner@v4
         id: unity-test
         env:
@@ -39,7 +40,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           testMode: editmode
 
-      - name: Upload test results
+      - name: Upload test results for Unity ${{ matrix.unityVersion }}
         uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -10,14 +10,17 @@ on:
 
 jobs:
   create-release:
+    name: Create draft GitHub release v${{ inputs.tag }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: softprops/action-gh-release@v1
+      - name: Create draft prerelease on GitHub
+        uses: softprops/action-gh-release@v1
         id: create_release
         with:
           tag_name: ${{ inputs.tag }}

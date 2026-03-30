@@ -30,6 +30,20 @@ Every workflow YAML file in `.github/workflows/` must follow this naming scheme:
 | After the prefix (`flow` / `job`) | `-` (hyphen) | `flow-on_pull_request.yaml` |
 | Within the name | `_` (underscore) | `job-dotnet_test_coverage.yaml` |
 
+### Job and step names
+
+Every job and every step must have a human-readable `name:` that describes **what it does**, not what tool it uses.
+
+| Level | Rule | Good | Bad |
+|---|---|---|---|
+| Job (`name:` under `jobs.<id>`) | Required. Describe the purpose of the job. | `name: Run .NET tests with coverage` | _(missing)_ or `name: test-coverage` |
+| Step (`name:` on each step) | Required. Describe the action being performed. | `name: Build Docusaurus site` | `name: Checkout` or _(missing)_ |
+
+Guidelines:
+- Start with a verb: "Run ...", "Build ...", "Deploy ...", "Upload ...", "Check ...", etc.
+- Be specific enough to distinguish from other steps at a glance in the GitHub Actions UI.
+- For steps that use dynamic values, include them: `name: Bump version to ${{ inputs.tag }}`.
+
 ### Files
 
 | File | Type | Purpose |
