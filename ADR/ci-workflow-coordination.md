@@ -96,5 +96,6 @@ sequenceDiagram
 
 ## See also
 
+- [Code Coverage Threshold in CI](code-coverage-threshold.md) — automated enforcement of the 95% coverage threshold via `job-dotnet_test_coverage`
 - [CI Workflow Naming Convention](ci-workflow-naming-convention.md) — file naming rules (`flow-` / `job-` prefixes, separators)
 - [.NET Scripts for CI Workflows](0.0.4/dotnet-scripts-for-ci.md) — why CI scripts are written in C# instead of Bash

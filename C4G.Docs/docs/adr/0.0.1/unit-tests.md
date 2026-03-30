@@ -17,3 +17,7 @@ Create and maintain automatic tests with 95+ percents of coverage
 
 Early issues detection
 Better code-level architecture
+
+## See also
+
+- [Code Coverage Threshold in CI](../code-coverage-threshold.md) — automated enforcement of the 95% coverage target in GitHub workflows

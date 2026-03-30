@@ -23,7 +23,7 @@ jobs:
 
       - name: Enforce coverage threshold against Summary.json
         working-directory: .github/workflows/scripts
-        run: dotnet run --file ./CheckCoverageThreshold.cs -- --summary-path "${{ github.workspace }}/C4G.Unity/CodeCoverage/Summary.json" --threshold 97
+        run: dotnet run --file ./CheckCoverageThreshold.cs -- --summary-path "${{ github.workspace }}/C4G.Unity/CodeCoverage/Summary.json" --threshold 95
 
       - name: Build PR comment from coverage summary
         if: github.event_name == 'pull_request'

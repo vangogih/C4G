@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-const double DefaultThresholdPercent = 97.0;
+const double DefaultThresholdPercent = 95.0;
 
 var argsDict = ParseNamedArgs(args);
 if (!argsDict.TryGetValue("summary-path", out string? summaryPath) || string.IsNullOrWhiteSpace(summaryPath))

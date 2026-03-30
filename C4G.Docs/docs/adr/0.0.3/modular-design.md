@@ -43,3 +43,7 @@ This modular architecture will enable easier testing of individual components in
 Extension points become well-defined through module interfaces, facilitating future feature additions without breaking existing functionality.
 However, this restructuring will require significant refactoring effort and may temporarily slow development velocity.
 The increased number of modules and interfaces may also introduce additional complexity in dependency management and configuration.
+
+## See also
+
+- [Code Coverage Threshold in CI](../code-coverage-threshold.md) — automated enforcement of the coverage target in GitHub workflows
