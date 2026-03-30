@@ -65,7 +65,7 @@ sequenceDiagram
     participant DotNet as job-dotnet_test_coverage
     participant Unity as job-unity_tests
     participant Wait as job-wait_for_action_status
-    participant Create as job-create_release
+    participant GHRelease as job-create_release
 
     User->>Release: workflow_dispatch (tag)
     Release->>Patch: workflow_call
@@ -77,8 +77,8 @@ sequenceDiagram
     Wait->>Wait: polls GitHub Checks API
     DotNet-->>Wait: checks pass
     Unity-->>Wait: checks pass
-    Release->>Create: workflow_call (tag)
-    Create->>Create: draft prerelease
+    Release->>GHRelease: workflow_call (tag)
+    GHRelease->>GHRelease: draft prerelease
 ```
 
 ## Consequences
