@@ -1,0 +1,25 @@
+name: Wait For Action Status
+
+on:
+  workflow_call:
+    inputs:
+      sha:
+        description: "Git commit SHA to wait for checks on."
+        required: true
+        type: string
+
+jobs:
+  wait-for-action-status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Wait for checks to be queued
+        run: sleep 30
+
+      - name: Wait for test workflows
+        uses: lewagon/wait-on-check-action@v1.3.4
+        with:
+          ref: ${{ inputs.sha }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 30
+          allowed-conclusions: success,skipped

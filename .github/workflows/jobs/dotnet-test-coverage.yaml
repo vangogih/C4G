@@ -1,12 +1,7 @@
 name: dotnet-test-coverage
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+  workflow_call:
 
 jobs:
   test-coverage:

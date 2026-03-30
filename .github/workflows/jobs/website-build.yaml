@@ -6,11 +6,6 @@ on:
       upload-artifact:
         type: boolean
         default: false
-  pull_request:
-    branches:
-      - master
-    # Review gh actions docs if you want to further define triggers, paths, etc
-    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
 jobs:
   website-build:

@@ -1,0 +1,31 @@
+name: Push Master
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  dotnet-test-coverage:
+    uses: ./.github/workflows/jobs/dotnet-test-coverage.yaml
+
+  unity-tests:
+    uses: ./.github/workflows/jobs/unity-tests.yaml
+    secrets: inherit
+
+  check-docs-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      docs-changed: ${{ steps.filter.outputs.docs }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            docs:
+              - 'C4G.Docs/**'
+
+  website-deploy:
+    needs: check-docs-changes
+    if: needs.check-docs-changes.outputs.docs-changed == 'true'
+    uses: ./.github/workflows/jobs/website-deploy.yaml

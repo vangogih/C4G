@@ -8,44 +8,23 @@ on:
         required: true
 
 jobs:
-  update-version-number:
-    uses: ./.github/workflows/patch-versions.yaml
+  patch-versions:
+    uses: ./.github/workflows/jobs/patch-versions.yaml
     with:
       tag: ${{ github.event.inputs.tag }}
     secrets: inherit
 
-  wait-for-tests:
-    needs: [update-version-number]
-    if: needs.update-version-number.outputs.sha != ''
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - name: Wait for checks to be queued
-        run: sleep 30
-
-      - name: Wait for test workflows
-        uses: lewagon/wait-on-check-action@v1.3.4
-        with:
-          ref: ${{ needs.update-version-number.outputs.sha }}
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 30
-          allowed-conclusions: success,skipped
+  wait-for-action-status:
+    needs: [patch-versions]
+    if: needs.patch-versions.outputs.sha != ''
+    uses: ./.github/workflows/jobs/wait-for-action-status.yaml
+    with:
+      sha: ${{ needs.patch-versions.outputs.sha }}
+    secrets: inherit
 
   create-release:
-    needs: [update-version-number, wait-for-tests]
+    needs: [patch-versions, wait-for-action-status]
     if: ${{ !failure() && !cancelled() }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    timeout-minutes: 10
-    steps:
-    - uses: actions/checkout@v4
-
-    - uses: softprops/action-gh-release@v1
-      id: create_release
-      with:
-        tag_name: ${{ github.event.inputs.tag }}
-        name: v${{ github.event.inputs.tag }}
-        draft: true
-        prerelease: true
-        generate_release_notes: true
+    uses: ./.github/workflows/jobs/create-release.yaml
+    with:
+      tag: ${{ github.event.inputs.tag }}

@@ -1,16 +1,11 @@
 name: Website Deploy
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'C4G.Docs/**'
-  workflow_dispatch:
+  workflow_call:
 
 jobs:
   website-build:
-    uses: ./.github/workflows/website-build.yaml
+    uses: ./.github/workflows/jobs/website-build.yaml
     with:
       upload-artifact: true
 
