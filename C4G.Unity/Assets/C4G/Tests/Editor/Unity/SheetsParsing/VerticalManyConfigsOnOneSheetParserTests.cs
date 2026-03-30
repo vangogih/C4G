@@ -7,12 +7,12 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
     [TestFixture]
     public class VerticalManyConfigsOnOneSheetParserTests
     {
-        private Core.SheetsParsing.SheetsParsing _sheetsParsing;
+        private SheetsParsingFacade _sheetsParsingFacade;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            _sheetsParsing = new Core.SheetsParsing.SheetsParsing();
+            _sheetsParsingFacade = new SheetsParsingFacade();
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -96,7 +96,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -156,7 +156,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -215,7 +215,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -320,7 +320,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -356,7 +356,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -379,7 +379,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -411,7 +411,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk, $"Expected success but got error: {result.Error}");
@@ -437,7 +437,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -460,7 +460,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -479,7 +479,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -501,7 +501,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -524,7 +524,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -548,7 +548,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -571,7 +571,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -596,7 +596,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -619,7 +619,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -639,7 +639,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -662,7 +662,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk);
@@ -684,7 +684,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk, "Expected error for null property name");
@@ -706,7 +706,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalManyConfigsOnOneSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsFalse(result.IsOk, "Expected error for null property type");

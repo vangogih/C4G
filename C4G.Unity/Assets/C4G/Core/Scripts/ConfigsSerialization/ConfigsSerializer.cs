@@ -10,8 +10,33 @@ using EntitiesList = System.Collections.Generic.IReadOnlyList<System.Collections
 
 namespace C4G.Core.ConfigsSerialization
 {
-    public sealed class ConfigsSerializer
+    public sealed class ConfigsSerializer : IConfigsSerializer
     {
+        private static readonly Dictionary<string, IC4GTypeParser> SimpleTypeParsers
+            = new Dictionary<string, IC4GTypeParser>
+            {
+                { "int", new IntParser() },
+                { "float", new FloatParser() },
+                { "double", new DoubleParser() },
+                { "bool", new BoolParser() },
+                { "string", new StringParser() }
+            };
+
+        private static readonly List<(Regex typePattern, char separator)> DefaultCollectionParsers =
+            new List<(Regex typePattern, char separator)>
+            {
+                (new Regex("^List<(.+)>$", RegexOptions.Compiled | RegexOptions.IgnoreCase), ',')
+            };
+
+        private readonly List<(Regex typePattern, char separator)> _collectionParsers;
+
+        public ConfigsSerializer() : this(DefaultCollectionParsers) { }
+
+        internal ConfigsSerializer(List<(Regex typePattern, char separator)> collectionParsers)
+        {
+            _collectionParsers = collectionParsers;
+        }
+        
         public Result<EntitiesList, string> ParseToEntitiesList(
             ParsedConfig parsedConfig,
             IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
@@ -82,22 +107,6 @@ namespace C4G.Core.ConfigsSerialization
             return Result<Entity, string>.FromValue(entityDataDict);
         }
 
-        private static readonly Dictionary<string, IC4GTypeParser> SimpleTypeParsers
-            = new Dictionary<string, IC4GTypeParser>
-            {
-                { "int", new IntParser() },
-                { "float", new FloatParser() },
-                { "double", new DoubleParser() },
-                { "bool", new BoolParser() },
-                { "string", new StringParser() }
-            };
-
-        private static readonly List<(Regex typePattern, char separator)> CollectionParsers =
-            new List<(Regex typePattern, char separator)>
-            {
-                (new Regex("^List<(.+)>$", RegexOptions.Compiled | RegexOptions.IgnoreCase), ',')
-            };
-
         private Result<object, string> GetPropertyValue(
             ParsedPropertyInfo property,
             string serializedPropertyValue,
@@ -108,7 +117,7 @@ namespace C4G.Core.ConfigsSerialization
                 return simpleTypeParser.Parse(serializedPropertyValue);
             }
 
-            foreach ((Regex typePattern, char separator) in CollectionParsers)
+            foreach ((Regex typePattern, char separator) in _collectionParsers)
             {
                 Match match = typePattern.Match(property.Type);
 

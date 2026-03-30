@@ -47,7 +47,7 @@ namespace C4G.Core.Utils
             {
                 result.AppendLine($"{nameof(Error)} - {Error}");
                 result.AppendLine($"{nameof(StackTrace)}:");
-                result.AppendLine($"{StackTrace}");
+                result.AppendLine(StackTrace);
             }
             return result.ToString();
         }
@@ -97,7 +97,7 @@ namespace C4G.Core.Utils
             {
                 result.AppendLine($"{nameof(Error)} - {Error}");
                 result.AppendLine($"{nameof(StackTrace)}:");
-                result.AppendLine($"{StackTrace}");
+                result.AppendLine(StackTrace);
             }
             return result.ToString();
         }

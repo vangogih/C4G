@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using C4G.Core;
+using C4G.Core.CodeGeneration;
 using C4G.Core.ConfigsSerialization;
 using C4G.Core.GoogleInteraction;
 using C4G.Core.IO;
@@ -20,6 +21,8 @@ namespace C4G.Tests.Editor.Unity
 		private IC4GSettingsProvider _settingsProvider;
 		private IGoogleInteraction _googleInteraction;
 		private IIO _io;
+		private ICodeGenerator _codeGenerator;
+		private IConfigsSerializer _configsSerializer;
 		private C4GFacade _facade;
 		private string _tempGenDir;
 		private string _tempSerDir;
@@ -30,7 +33,9 @@ namespace C4G.Tests.Editor.Unity
 			_settingsProvider = Substitute.For<IC4GSettingsProvider>();
 			_googleInteraction = Substitute.For<IGoogleInteraction>();
 			_io = Substitute.For<IIO>();
-			_facade = new C4GFacade(_settingsProvider, _googleInteraction, _io);
+			_codeGenerator = new CodeGenerator();
+			_configsSerializer = new ConfigsSerializer();
+			_facade = new C4GFacade(_settingsProvider, _googleInteraction, _io, _codeGenerator, _configsSerializer);
 
 			_tempGenDir = Path.Combine(Path.GetTempPath(), "C4G_Facade_Gen_" + System.Guid.NewGuid().ToString("N"));
 			_tempSerDir = Path.Combine(Path.GetTempPath(), "C4G_Facade_Ser_" + System.Guid.NewGuid().ToString("N"));
@@ -551,6 +556,104 @@ namespace C4G.Tests.Editor.Unity
 			Result<string> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsTrue(result.IsOk);
+		}
+
+		[Test]
+		public async Task RunAsync_DTOClassGenerationFails_ReturnsError()
+		{
+			var mockCodeGen = Substitute.For<ICodeGenerator>();
+			mockCodeGen.GenerateDTOClass(Arg.Any<ParsedConfig>(), Arg.Any<IReadOnlyDictionary<string, IC4GTypeParser>>())
+				.Returns(Result<string, string>.FromError("dto gen failed"));
+			var facade = new C4GFacade(_settingsProvider, _googleInteraction, _io, mockCodeGen, _configsSerializer);
+
+			var sheetParsers = new Dictionary<string, SheetParserBase>
+			{
+				{ "Sheet1", new VerticalSheetParser() }
+			};
+			var settings = CreateValidSettings(sheetParsers);
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+
+			IList<IList<object>> sheetData = new List<IList<object>>
+			{
+				new List<object> { "Id" },
+				new List<object> { "int" },
+				new List<object> { "1" }
+			};
+			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
+				.Returns(Task.FromResult(Result<IList<IList<object>>, string>.FromValue(sheetData)));
+
+			Result<string> result = await facade.RunAsync(CancellationToken.None);
+
+			Assert.IsFalse(result.IsOk);
+			Assert.That(result.Error, Does.Contain("dto gen failed"));
+		}
+
+		[Test]
+		public async Task RunAsync_RootConfigGenerationFails_ReturnsError()
+		{
+			var mockCodeGen = Substitute.For<ICodeGenerator>();
+			mockCodeGen.GenerateDTOClass(Arg.Any<ParsedConfig>(), Arg.Any<IReadOnlyDictionary<string, IC4GTypeParser>>())
+				.Returns(Result<string, string>.FromValue("class Sheet1 {}"));
+			mockCodeGen.GenerateRootConfigClass(Arg.Any<string>(), Arg.Any<List<ParsedConfig>>())
+				.Returns(Result<string, string>.FromError("root gen failed"));
+			var facade = new C4GFacade(_settingsProvider, _googleInteraction, _io, mockCodeGen, _configsSerializer);
+
+			var sheetParsers = new Dictionary<string, SheetParserBase>
+			{
+				{ "Sheet1", new VerticalSheetParser() }
+			};
+			var settings = CreateValidSettings(sheetParsers);
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+
+			IList<IList<object>> sheetData = new List<IList<object>>
+			{
+				new List<object> { "Id" },
+				new List<object> { "int" },
+				new List<object> { "1" }
+			};
+			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
+				.Returns(Task.FromResult(Result<IList<IList<object>>, string>.FromValue(sheetData)));
+
+			_io.WriteToFile(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
+				.Returns(Result<string>.Ok);
+
+			Result<string> result = await facade.RunAsync(CancellationToken.None);
+
+			Assert.IsFalse(result.IsOk);
+			Assert.That(result.Error, Does.Contain("root gen failed"));
+		}
+
+		[Test]
+		public async Task RunAsync_SerializationFails_ReturnsError()
+		{
+			var mockSerializer = Substitute.For<IConfigsSerializer>();
+			mockSerializer.SerializeParsedConfigsAsJsonObject(Arg.Any<List<ParsedConfig>>(), Arg.Any<IReadOnlyDictionary<string, IC4GTypeParser>>())
+				.Returns(Result<string, string>.FromError("serialization failed"));
+			var facade = new C4GFacade(_settingsProvider, _googleInteraction, _io, _codeGenerator, mockSerializer);
+
+			var sheetParsers = new Dictionary<string, SheetParserBase>
+			{
+				{ "Sheet1", new VerticalSheetParser() }
+			};
+			var settings = CreateValidSettings(sheetParsers);
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+
+			IList<IList<object>> sheetData = new List<IList<object>>
+			{
+				new List<object> { "Id" },
+				new List<object> { "int" },
+				new List<object> { "1" }
+			};
+			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
+				.Returns(Task.FromResult(Result<IList<IList<object>>, string>.FromValue(sheetData)));
+
+			_io.WriteToFile(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
+				.Returns(Result<string>.Ok);
+
+			Result<string> result = await facade.RunAsync(CancellationToken.None);
+
+			Assert.IsFalse(result.IsOk);
+			Assert.That(result.Error, Does.Contain("serialization failed"));
 		}
 	}
 }

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using C4G.Core.ConfigsSerialization;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
@@ -79,6 +81,58 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 				var result = _configsSerializer.ParseToEntitiesList(config, _parsersByName);
 
 				Assert.IsFalse(result.IsOk);
+			}
+
+			[Test]
+			public void GetPropertyValue_PartialRegexMatch_ReturnsError()
+			{
+				var brokenParsers = new List<(Regex, char)>
+				{
+					(new Regex("List<(.+)>", RegexOptions.Compiled), ',')
+				};
+				var serializer = new ConfigsSerializer(brokenParsers);
+
+				var properties = new List<ParsedPropertyInfo>
+				{
+					new ParsedPropertyInfo("Items", "xList<int>y")
+				};
+				var entities = new List<List<string>>
+				{
+					new List<string> { "1,2" }
+				};
+				var config = new ParsedConfig("Sheet", properties, entities);
+
+				var result = serializer.SerializeParsedConfigsAsJsonObject(
+					new List<ParsedConfig> { config }, _parsersByName);
+
+				Assert.IsFalse(result.IsOk);
+				Assert.That(result.Error, Does.Contain("matches only part"));
+			}
+
+			[Test]
+			public void GetPropertyValue_WrongGroupCount_ReturnsError()
+			{
+				var brokenParsers = new List<(Regex, char)>
+				{
+					(new Regex("^List<.+>$", RegexOptions.Compiled), ',')
+				};
+				var serializer = new ConfigsSerializer(brokenParsers);
+
+				var properties = new List<ParsedPropertyInfo>
+				{
+					new ParsedPropertyInfo("Items", "List<int>")
+				};
+				var entities = new List<List<string>>
+				{
+					new List<string> { "1,2" }
+				};
+				var config = new ParsedConfig("Sheet", properties, entities);
+
+				var result = serializer.SerializeParsedConfigsAsJsonObject(
+					new List<ParsedConfig> { config }, _parsersByName);
+
+				Assert.IsFalse(result.IsOk);
+				Assert.That(result.Error, Does.Contain("captures"));
 			}
 		}
 	}

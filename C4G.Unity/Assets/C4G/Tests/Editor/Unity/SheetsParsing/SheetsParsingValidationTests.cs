@@ -8,12 +8,12 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 	[TestFixture]
 	public class SheetsParsingValidationTests
 	{
-		private C4G.Core.SheetsParsing.SheetsParsing _sheetsParsing;
+		private SheetsParsingFacade _sheetsParsingFacade;
 
 		[OneTimeSetUp]
 		public void OneTimeSetUp()
 		{
-			_sheetsParsing = new C4G.Core.SheetsParsing.SheetsParsing();
+			_sheetsParsingFacade = new SheetsParsingFacade();
 		}
 
 		[Test]
@@ -23,7 +23,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			var parser = new VerticalSheetParser();
 			var data = new List<IList<object>>();
 
-			Result<string> result = _sheetsParsing.ParseSheetToList(null, data, parser, configs);
+			Result<string> result = _sheetsParsingFacade.ParseSheetToList(null, data, parser, configs);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -35,7 +35,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			var parser = new VerticalSheetParser();
 			var data = new List<IList<object>>();
 
-			Result<string> result = _sheetsParsing.ParseSheetToList(string.Empty, data, parser, configs);
+			Result<string> result = _sheetsParsingFacade.ParseSheetToList(string.Empty, data, parser, configs);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -46,7 +46,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			var configs = new List<ParsedConfig>();
 			var data = new List<IList<object>>();
 
-			Result<string> result = _sheetsParsing.ParseSheetToList("Sheet1", data, null, configs);
+			Result<string> result = _sheetsParsingFacade.ParseSheetToList("Sheet1", data, null, configs);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -57,7 +57,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			var configs = new List<ParsedConfig>();
 			var parser = new VerticalSheetParser();
 
-			Result<string> result = _sheetsParsing.ParseSheetToList("Sheet1", null, parser, configs);
+			Result<string> result = _sheetsParsingFacade.ParseSheetToList("Sheet1", null, parser, configs);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -68,7 +68,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			var parser = new VerticalSheetParser();
 			var data = new List<IList<object>>();
 
-			Result<string> result = _sheetsParsing.ParseSheetToList("Sheet1", data, parser, null);
+			Result<string> result = _sheetsParsingFacade.ParseSheetToList("Sheet1", data, parser, null);
 
 			Assert.IsFalse(result.IsOk);
 		}

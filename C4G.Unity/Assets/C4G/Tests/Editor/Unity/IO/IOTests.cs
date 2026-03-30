@@ -52,7 +52,7 @@ namespace C4G.Tests.Editor.Unity.IO
 		[Test]
 		public void WriteToFile_InvalidPath_ReturnsError()
 		{
-			string invalidFolder = Path.Combine(_tempRoot, new string('\0', 1));
+			string invalidFolder = _tempRoot + Path.DirectorySeparatorChar + "::??**";
 
 			Result<string> result = _io.WriteToFile(invalidFolder, "f.txt", "x");
 
