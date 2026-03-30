@@ -1,4 +1,4 @@
-name: Push Master
+name: Push Master Flow
 
 on:
   push:

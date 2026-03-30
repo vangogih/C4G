@@ -1,4 +1,4 @@
-name: dotnet-test-coverage
+name: .NET Test Coverage
 
 on:
   workflow_call:
@@ -13,10 +13,16 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: |
+            9.0.x
+            10.0.x
 
       - name: Run tests with coverage
         run: dotnet test C4G.Standalone.Tests/C4G.Standalone.Tests.csproj --configuration Release
+
+      - name: Enforce coverage threshold
+        working-directory: .github/workflows/scripts
+        run: dotnet run --file ./CheckCoverageThreshold.cs -- --summary-path "${{ github.workspace }}/C4G.Unity/CodeCoverage/Summary.json" --threshold 97
 
       - name: Form comment message
         if: github.event_name == 'pull_request'

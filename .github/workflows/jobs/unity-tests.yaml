@@ -1,4 +1,4 @@
-name: unity-tests
+name: Unity Tests
 
 on:
   workflow_call:
