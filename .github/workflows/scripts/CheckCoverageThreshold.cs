@@ -28,7 +28,7 @@ if (!File.Exists(summaryFilePath))
 SummaryJsonRoot? doc = null;
 try
 {
-	doc = JsonSerializer.Deserialize<SummaryJsonRoot>(File.ReadAllText(summaryFilePath));
+	doc = JsonSerializer.Deserialize(File.ReadAllText(summaryFilePath), SummaryJsonContext.Default.SummaryJsonRoot);
 }
 catch (Exception ex)
 {
@@ -175,5 +175,10 @@ public sealed class Summary
 }
 
 public sealed class Coverage
+{
+}
+
+[JsonSerializable(typeof(SummaryJsonRoot))]
+internal sealed partial class SummaryJsonContext : JsonSerializerContext
 {
 }
