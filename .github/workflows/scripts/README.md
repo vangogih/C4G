@@ -18,4 +18,4 @@ Requires: `dotnet SDK 10.0.100+`, see: [tutorial](https://learn.microsoft.com/en
 
 Where:
 - `--summary-path` (required): path to [ReportGenerator](https://github.com/danielpalme/ReportGenerator) `Summary.json`
-- `--threshold` (optional): minimum percent for `linecoverage`, `branchcoverage`, `methodcoverage`. Default: **97**
+- `--threshold` (optional): minimum percent for `linecoverage`, `branchcoverage`, `methodcoverage`. Default: **95**
