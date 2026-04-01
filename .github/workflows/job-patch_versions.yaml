@@ -31,34 +31,36 @@ on:
 
 jobs:
   update-version-number:
+    name: Bump version to ${{ inputs.tag }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
       sha: ${{ steps.commit.outputs.sha }}
     steps:
-      - name: Configure Output variables
+      - name: Store tag in output variable
         id: configure
         run: |
           echo "git-tag=${{ inputs.tag }}" | tee -a "$GITHUB_OUTPUT"
 
-      - uses: actions/checkout@v4
+      - name: Checkout repository with push token
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.ADMIN_TOKEN }}
 
-      - name: Setup .NET SDK
+      - name: Setup .NET 10 SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
 
-      - name: Update version number ${{ steps.configure.outputs.git-tag }}
+      - name: Run BumpVersion script for ${{ steps.configure.outputs.git-tag }}
         working-directory: .github/workflows/scripts
         run: dotnet run --file ./BumpVersion.cs ${{ inputs.tag }}
 
-      - name: Check update on git
+      - name: Check if files were modified
         id: check_update
         run: git diff --exit-code || echo "changed=1" | tee -a "$GITHUB_OUTPUT"
 
-      - name: Commit files
+      - name: Commit version bump
         id: commit
         if: ${{ steps.check_update.outputs.changed == '1' }}
         run: |
@@ -67,11 +69,11 @@ jobs:
           git commit -m "${{ steps.configure.outputs.git-tag }}" -a
           echo "sha=$(git rev-parse HEAD)" | tee -a "$GITHUB_OUTPUT"
 
-      - name: Create Tag
+      - name: Create git tag ${{ steps.configure.outputs.git-tag }}
         if: ${{ steps.check_update.outputs.changed == '1' && inputs.push-tag }}
         run: git tag ${{ steps.configure.outputs.git-tag }}
 
-      - name: Push changes
+      - name: Push commit and tags to remote
         if: ${{ steps.check_update.outputs.changed == '1' }}
         run: |
           git push

@@ -48,4 +48,6 @@ Each ADR should contain the context of the problem, alternatives considered, the
 | Status | ADR                                                                   | Version |
 |--------|-----------------------------------------------------------------------|---------|
 | ✅     | [.NET Scripts for CI Workflows](0.0.4/dotnet-scripts-for-ci.md)       | 0.0.4  |
-| 📝     | [CI Workflow Coordination](ci-workflow-coordination.md)         |        |
+| 📝     | [Code Coverage Threshold in CI](code-coverage-threshold.md)           |        |
+| 📝     | [CI Workflow Coordination](ci-workflow-coordination.md)                |        |
+| 📝     | [CI Workflow Naming Convention](ci-workflow-naming-convention.md)      |        |

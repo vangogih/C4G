@@ -3,7 +3,7 @@ using C4G.Core.Utils;
 
 namespace C4G.Core.SheetsParsing
 {
-    public sealed class SheetsParsing
+    public sealed class SheetsParsingFacade
     {
         public Result<string> ParseSheetToList(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, List<ParsedConfig> parsedConfigs)
         {

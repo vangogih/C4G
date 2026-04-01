@@ -1,29 +1,31 @@
-name: dotnet-test-coverage
+name: .NET Test Coverage
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+  workflow_call:
 
 jobs:
   test-coverage:
+    name: Run .NET tests with coverage
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup .NET
+      - name: Setup .NET 9 and 10 SDKs
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: |
+            9.0.x
+            10.0.x
 
-      - name: Run tests with coverage
+      - name: Run standalone tests in Release mode
         run: dotnet test C4G.Standalone.Tests/C4G.Standalone.Tests.csproj --configuration Release
 
-      - name: Form comment message
+      - name: Enforce coverage threshold against Summary.json
+        working-directory: .github/workflows/scripts
+        run: dotnet run --file ./CheckCoverageThreshold.cs -- --summary-path "${{ github.workspace }}/C4G.Unity/CodeCoverage/Summary.json" --threshold 95
+
+      - name: Build PR comment from coverage summary
         if: github.event_name == 'pull_request'
         run: |
           echo "### Standalone Test Coverage" > comment.md
@@ -34,7 +36,7 @@ jobs:
           echo "" >> comment.md
           cat C4G.Unity/CodeCoverage/Summary.md >> comment.md
 
-      - name: Find comment
+      - name: Find existing coverage comment on PR
         if: github.event_name == 'pull_request'
         uses: peter-evans/find-comment@v3
         id: fc
@@ -43,7 +45,7 @@ jobs:
           comment-author: github-actions[bot]
           body-includes: Standalone Test Coverage
 
-      - name: Create or update comment
+      - name: Post or update coverage comment on PR
         if: github.event_name == 'pull_request'
         uses: peter-evans/create-or-update-comment@v4
         with:

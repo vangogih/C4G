@@ -4,7 +4,7 @@ using C4G.Core.Utils;
 
 namespace C4G.Core.IO
 {
-    public class IO
+    public class IO : IIO
     {
         public Result<string> WriteToFile(string folderPath, string fileName, string fileContents)
         {

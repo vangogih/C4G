@@ -7,12 +7,12 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
     [TestFixture]
     public class HorizontalSheetParserTests
     {
-        private Core.SheetsParsing.SheetsParsing _sheetsParsing;
+        private SheetsParsingFacade _sheetsParsingFacade;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            _sheetsParsing = new Core.SheetsParsing.SheetsParsing();
+            _sheetsParsingFacade = new SheetsParsingFacade();
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new HorizontalSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new HorizontalSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -75,10 +75,10 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             var parsedConfigsBuffer = new List<ParsedConfig>();
 
             // Act
-            var invalidDataLengthResult = _sheetsParsing.ParseSheetToList(validSheetName, invalidDataLengthData, parser, parsedConfigsBuffer);
-            var nullSheetNameResult = _sheetsParsing.ParseSheetToList(null, validSheetData, parser, parsedConfigsBuffer);
-            var nullSheetDataResult = _sheetsParsing.ParseSheetToList(validSheetName, null, parser, parsedConfigsBuffer);
-            var emptySheetResult = _sheetsParsing.ParseSheetToList(validSheetName, emptySheetData, parser, parsedConfigsBuffer);
+            var invalidDataLengthResult = _sheetsParsingFacade.ParseSheetToList(validSheetName, invalidDataLengthData, parser, parsedConfigsBuffer);
+            var nullSheetNameResult = _sheetsParsingFacade.ParseSheetToList(null, validSheetData, parser, parsedConfigsBuffer);
+            var nullSheetDataResult = _sheetsParsingFacade.ParseSheetToList(validSheetName, null, parser, parsedConfigsBuffer);
+            var emptySheetResult = _sheetsParsingFacade.ParseSheetToList(validSheetName, emptySheetData, parser, parsedConfigsBuffer);
 
             // Assert
             Assert.IsFalse(invalidDataLengthResult.IsOk);

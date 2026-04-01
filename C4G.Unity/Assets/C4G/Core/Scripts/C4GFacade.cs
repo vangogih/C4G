@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using C4G.Core.CodeGeneration;
 using C4G.Core.ConfigsSerialization;
+using C4G.Core.GoogleInteraction;
 using C4G.Core.Settings;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
@@ -13,21 +14,25 @@ namespace C4G.Core
     public sealed class C4GFacade
     {
         private readonly IC4GSettingsProvider _settingsProvider;
-        private readonly GoogleInteraction.GoogleInteraction _googleInteraction;
-        private readonly CodeGenerator _codeGenerator;
-        private readonly SheetsParsing.SheetsParsing _sheetsParsing;
-        private readonly ConfigsSerializer _configsSerializer;
-        private readonly IO.IO _io;
+        private readonly IGoogleInteraction _googleInteraction;
+        private readonly ICodeGenerator _codeGenerator;
+        private readonly SheetsParsingFacade _sheetsParsingFacade;
+        private readonly IConfigsSerializer _configsSerializer;
+        private readonly IO.IIO _io;
 
-        public C4GFacade(IC4GSettingsProvider settingsProvider)
+        public C4GFacade(
+            IC4GSettingsProvider settingsProvider,
+            IGoogleInteraction googleInteraction,
+            IO.IIO io,
+            ICodeGenerator codeGenerator,
+            IConfigsSerializer configsSerializer)
         {
             _settingsProvider = settingsProvider;
-
-            _googleInteraction = new GoogleInteraction.GoogleInteraction();
-            _codeGenerator = new CodeGenerator();
-            _sheetsParsing = new SheetsParsing.SheetsParsing();
-            _configsSerializer = new ConfigsSerializer();
-            _io = new IO.IO();
+            _googleInteraction = googleInteraction;
+            _codeGenerator = codeGenerator;
+            _sheetsParsingFacade = new SheetsParsingFacade();
+            _configsSerializer = configsSerializer;
+            _io = io;
         }
 
         public async Task<Result<string>> RunAsync(CancellationToken ct)
@@ -66,7 +71,7 @@ namespace C4G.Core
             {
                 cycleParsedConfigsBuffer.Clear();
 
-                var sheetParsingResult = _sheetsParsing.ParseSheetToList(parserByName.Key, sheet, parserByName.Value, cycleParsedConfigsBuffer);
+                var sheetParsingResult = _sheetsParsingFacade.ParseSheetToList(parserByName.Key, sheet, parserByName.Value, cycleParsedConfigsBuffer);
                 if (!sheetParsingResult.IsOk)
                     return sheetParsingResult;
 
