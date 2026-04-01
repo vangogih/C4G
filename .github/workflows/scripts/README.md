@@ -7,7 +7,7 @@ Requires: `dotnet SDK 10.0.100+`, see: [tutorial](https://learn.microsoft.com/en
 
 Where:
 - `/usr/absolute_path_to_c4g/` you must replace with absolute path to C4G root folder
-- `version` - version you want to patch in sematic versioning format. Like: `0.0.1`, `1.2.3`
+- `version` - version you want to patch in semantic versioning format. Like: `0.0.1`, `1.2.3`
 
 ## CheckCoverageThreshold.cs
 
