@@ -28,7 +28,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { "2", "Bob", "6.6", "35.1", "5,6,8" },
                 new List<object> { "3", "Charlie", "3.5", "33", "3,5" }
             };
-            var expectedProperties = new List<ParsedPropertyInfo>
+            var expectedProperties = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("Id", "int"),
                 new ParsedPropertyInfo("Name", "string"),
@@ -67,7 +67,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { "int", "string" },
                 new List<object> { "100", "Test" }
             };
-            var expectedProperties = new List<ParsedPropertyInfo>
+            var expectedProperties = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("Id", "int"),
                 new ParsedPropertyInfo("Name", "string")
@@ -103,7 +103,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { "2" },
                 new List<object> { "3" }
             };
-            var expectedProperties = new List<ParsedPropertyInfo>
+            var expectedProperties = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("Id", "int")
             };
@@ -154,7 +154,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             Assert.IsTrue(result.IsOk);
             Assert.AreEqual(1, parsedConfigs.Count);
             var parsedConfig = parsedConfigs[0];
-            Assert.AreEqual(10, parsedConfig.Properties.Count);
+            Assert.AreEqual(10, parsedConfig.Properties.Length);
             Assert.AreEqual(2, parsedConfig.Entities.Count);
             Assert.AreEqual(10, parsedConfig.Entities[0].Count);
             Assert.AreEqual(10, parsedConfig.Entities[1].Count);
@@ -185,7 +185,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             Assert.IsTrue(result.IsOk);
             Assert.AreEqual(1, parsedConfigs.Count);
             var parsedConfig = parsedConfigs[0];
-            Assert.AreEqual(2, parsedConfig.Properties.Count);
+            Assert.AreEqual(2, parsedConfig.Properties.Length);
             Assert.AreEqual(100, parsedConfig.Entities.Count);
         }
 

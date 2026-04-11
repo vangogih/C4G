@@ -43,7 +43,7 @@ public partial class ClassName
 }}
 ";
             var className = "ClassName";
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new[]
             {
                 new ParsedPropertyInfo("Id", "int"),
                 new ParsedPropertyInfo("BaseHp", "int")
@@ -63,10 +63,10 @@ public partial class ClassName
         public void GenerateDTOClass_WrongInputLeadsToError()
         {
             // Arrange
-            var parsedConfigWithNullName = new ParsedConfig(null, new List<ParsedPropertyInfo>(), new List<List<string>>());
-            var parsedConfigWithEmptyName = new ParsedConfig(string.Empty, new List<ParsedPropertyInfo>(), new List<List<string>>());
+            var parsedConfigWithNullName = new ParsedConfig(null, Array.Empty<ParsedPropertyInfo>(), new List<List<string>>());
+            var parsedConfigWithEmptyName = new ParsedConfig(string.Empty, Array.Empty<ParsedPropertyInfo>(), new List<List<string>>());
             var parsedConfigWithNullProps = new ParsedConfig("ClassName", null, new List<List<string>>());
-            var parsedConfigWithNullEntities = new ParsedConfig("ClassName", new List<ParsedPropertyInfo>(), null);
+            var parsedConfigWithNullEntities = new ParsedConfig("ClassName", Array.Empty<ParsedPropertyInfo>(), null);
 
             // Act
             Result<string, string> nullNameOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithNullName, _parsersByName);
@@ -99,10 +99,7 @@ public partial class Character
             IC4GTypeParser parser = CreateParserForType(typeof(int));
             _parsersByName.Add("Health", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
-            {
-                new ParsedPropertyInfo("Health", "Health")
-            };
+            var propertyInfos = new[] { new ParsedPropertyInfo("Health", "Health") };
             var parsedConfig = new ParsedConfig("Character", propertyInfos, new List<List<string>>());
 
             // Act
@@ -130,10 +127,7 @@ public partial class Item
             IC4GTypeParser parser = CreateParserForType(typeof(TestEnum));
             _parsersByName.Add("TestEnum", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
-            {
-                new ParsedPropertyInfo("TestEnum", "TestEnum")
-            };
+            var propertyInfos = new[] { new ParsedPropertyInfo("TestEnum", "TestEnum") };
             var parsedConfig = new ParsedConfig("Item", propertyInfos, new List<List<string>>());
 
             // Act
@@ -162,10 +156,7 @@ public partial class Container
             IC4GTypeParser parser = CreateParserForType(typeof(List<int>));
             _parsersByName.Add("IntList", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
-            {
-                new ParsedPropertyInfo("Items", "IntList")
-            };
+            var propertyInfos = new[] { new ParsedPropertyInfo("Items", "IntList") };
             var parsedConfig = new ParsedConfig("Container", propertyInfos, new List<List<string>>());
 
             // Act
@@ -193,10 +184,7 @@ public partial class Data
             IC4GTypeParser parser = CreateParserForType(typeof(int[]));
             _parsersByName.Add("IntArray", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
-            {
-                new ParsedPropertyInfo("Values", "IntArray")
-            };
+            var propertyInfos = new[] { new ParsedPropertyInfo("Values", "IntArray") };
             var parsedConfig = new ParsedConfig("Data", propertyInfos, new List<List<string>>());
 
             // Act
@@ -225,10 +213,7 @@ public partial class Grid
             IC4GTypeParser parser = CreateParserForType(typeof(int[,]));
             _parsersByName.Add("IntMatrix", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
-            {
-                new ParsedPropertyInfo("Matrix", "IntMatrix")
-            };
+            var propertyInfos = new[] { new ParsedPropertyInfo("Matrix", "IntMatrix") };
             var parsedConfig = new ParsedConfig("Grid", propertyInfos, new List<List<string>>());
 
             // Act
@@ -257,10 +242,7 @@ public partial class Mapping
             IC4GTypeParser parser = CreateParserForType(typeof(Dictionary<int, string>));
             _parsersByName.Add("IntToStringMap", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
-            {
-                new ParsedPropertyInfo("IntToStringMap", "IntToStringMap")
-            };
+            var propertyInfos = new[] { new ParsedPropertyInfo("IntToStringMap", "IntToStringMap") };
             var parsedConfig = new ParsedConfig("Mapping", propertyInfos, new List<List<string>>());
 
             // Act
@@ -288,10 +270,7 @@ public partial class ComplexData
             IC4GTypeParser parser = CreateParserForType(typeof(Dictionary<string, List<int>>));
             _parsersByName.Add("ComplexMap", parser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
-            {
-                new ParsedPropertyInfo("ComplexMap", "ComplexMap")
-            };
+            var propertyInfos = new[] { new ParsedPropertyInfo("ComplexMap", "ComplexMap") };
             var parsedConfig = new ParsedConfig("ComplexData", propertyInfos, new List<List<string>>());
 
             // Act
@@ -324,7 +303,7 @@ public partial class MixedClass
             _parsersByName.Add("Health", healthParser);
             _parsersByName.Add("IntArray", intArrayParser);
 
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new[]
             {
                 new ParsedPropertyInfo("Health", "Health"),
                 new ParsedPropertyInfo("Level", "int"),
@@ -355,10 +334,7 @@ public partial class TestClass
 }}
 ";
 
-            var propertyInfos = new List<ParsedPropertyInfo>
-            {
-                new ParsedPropertyInfo("Value", "UnknownType")
-            };
+            var propertyInfos = new[] { new ParsedPropertyInfo("Value", "UnknownType") };
             var parsedConfig = new ParsedConfig("TestClass", propertyInfos, new List<List<string>>());
 
             // Act
@@ -385,12 +361,126 @@ public partial class TestClass
 }}
 ";
 
-            var propertyInfos = new List<ParsedPropertyInfo>
+            var propertyInfos = new[]
             {
                 new ParsedPropertyInfo("Hp", "Health"),
                 new ParsedPropertyInfo("Items", "IntList")
             };
             var parsedConfig = new ParsedConfig("TestClass", propertyInfos, new List<List<string>>());
+
+            // Act
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+
+            // Assert
+            Assert.IsTrue(output.IsOk);
+            Assert.AreEqual(expectedOutput, output.Value);
+        }
+
+        [Test]
+        public void GenerateDTOClass_WithOneSubClass()
+        {
+            // Arrange
+            string expectedOutput =
+$@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
+
+using System.Collections.Generic;
+
+public partial class TestClass
+{{
+    public partial class Address
+    {{
+        public string Street {{ get; set; }}
+        public string City {{ get; set; }}
+    }}
+    public int Id {{ get; set; }}
+    public Address Address_Instance {{ get; set; }}
+}}
+";
+            var propertyInfos = new ParsedPropertyInfo[]
+            {
+                new ParsedPropertyInfo("Id", "int"),
+                new ParsedPropertyInfo("Street", "string") { SubTypeIndex = 0 },
+                new ParsedPropertyInfo("City", "string") { SubTypeIndex = 0 }
+            };
+            var parsedConfig = new ParsedConfig("TestClass", propertyInfos, new List<List<string>>());
+            parsedConfig.SubTypes.Add("Address");
+
+            // Act
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+
+            // Assert
+            Assert.IsTrue(output.IsOk);
+            Assert.AreEqual(expectedOutput, output.Value);
+        }
+
+        [Test]
+        public void GenerateDTOClass_WithMultipleSubClasses()
+        {
+            // Arrange
+            string expectedOutput =
+$@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
+
+using System.Collections.Generic;
+
+public partial class TestClass
+{{
+    public partial class Address
+    {{
+        public string Street {{ get; set; }}
+    }}
+    public partial class Phone
+    {{
+        public string Number {{ get; set; }}
+    }}
+    public int Id {{ get; set; }}
+    public Address Address_Instance {{ get; set; }}
+    public Phone Phone_Instance {{ get; set; }}
+}}
+";
+            var propertyInfos = new ParsedPropertyInfo[]
+            {
+                new ParsedPropertyInfo("Id", "int"),
+                new ParsedPropertyInfo("Street", "string") { SubTypeIndex = 0 },
+                new ParsedPropertyInfo("Number", "string") { SubTypeIndex = 1 }
+            };
+            var parsedConfig = new ParsedConfig("TestClass", propertyInfos, new List<List<string>>());
+            parsedConfig.SubTypes.Add("Address");
+            parsedConfig.SubTypes.Add("Phone");
+
+            // Act
+            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+
+            // Assert
+            Assert.IsTrue(output.IsOk);
+            Assert.AreEqual(expectedOutput, output.Value);
+        }
+
+        [Test]
+        public void GenerateDTOClass_OnlySubClassProperties()
+        {
+            // Arrange
+            string expectedOutput =
+$@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
+
+using System.Collections.Generic;
+
+public partial class TestClass
+{{
+    public partial class Address
+    {{
+        public string Street {{ get; set; }}
+        public string City {{ get; set; }}
+    }}
+    public Address Address_Instance {{ get; set; }}
+}}
+";
+            var propertyInfos = new ParsedPropertyInfo[]
+            {
+                new ParsedPropertyInfo("Street", "string") { SubTypeIndex = 0 },
+                new ParsedPropertyInfo("City", "string") { SubTypeIndex = 0 }
+            };
+            var parsedConfig = new ParsedConfig("TestClass", propertyInfos, new List<List<string>>());
+            parsedConfig.SubTypes.Add("Address");
 
             // Act
             Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);

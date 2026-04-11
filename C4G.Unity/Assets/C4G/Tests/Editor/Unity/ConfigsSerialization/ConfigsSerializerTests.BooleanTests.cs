@@ -14,7 +14,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "BoolVariationsSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Bool1", "bool"),
                     new ParsedPropertyInfo("Bool2", "bool"),
@@ -40,7 +40,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "BoolListSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Id", "int"),
                     new ParsedPropertyInfo("Flags", "List<bool>")
