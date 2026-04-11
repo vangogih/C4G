@@ -24,8 +24,8 @@ namespace C4G.Core.SheetsParsing
                     int dotIndex = property.Name.IndexOf('.');
                     if (dotIndex < 0)
                         continue;
-                    string subType = property.Name.Substring(0, dotIndex);
-                    string subName = property.Name.Substring(dotIndex + 1, property.Name.Length - dotIndex - 1);
+                    string subType = property.Name[..dotIndex];
+                    string subName = property.Name[(dotIndex + 1)..];
                     int subTypeIndex = -1;
                     for (int k = 0; k < config.SubTypes.Count; k++)
                     {
