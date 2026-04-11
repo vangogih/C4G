@@ -24,7 +24,7 @@ namespace C4G.Core.ConfigsSerialization
 
             foreach (IReadOnlyCollection<string> entityData in parsedConfig.Entities)
             {
-                Result<Entity, string> entityDataDictResult = GetEntityDataDict(entityData, parsedConfig.Properties, aliasParsersByName);
+                Result<Entity, string> entityDataDictResult = GetEntityDataDict(entityData, parsedConfig.Properties, parsedConfig.SubTypes, aliasParsersByName);
                 if (!entityDataDictResult.IsOk)
                     return Result<EntitiesList, string>.FromError(entityDataDictResult.Error);
                 entities.Add(entityDataDictResult.Value);
@@ -62,6 +62,7 @@ namespace C4G.Core.ConfigsSerialization
         private Result<Entity, string> GetEntityDataDict(
             IReadOnlyCollection<string> entityData,
             IReadOnlyList<ParsedPropertyInfo> properties,
+            List<string> subTypes,
             IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
         {
             var entityDataDict = new Dictionary<string, object>();
@@ -70,13 +71,36 @@ namespace C4G.Core.ConfigsSerialization
 
             foreach (ParsedPropertyInfo property in properties)
             {
-                string serializedPropertyValue = entityData.ElementAt(index);
-                Result<object, string> propertyValueResult = GetPropertyValue(property, serializedPropertyValue, aliasParsersByName);
-                if (!propertyValueResult.IsOk)
-                    return Result<Entity, string>.FromError(propertyValueResult.Error);
+                if (property.SubTypeIndex < 0)
+                {
+                    string serializedPropertyValue = entityData.ElementAt(index);
+                    Result<object, string> propertyValueResult = GetPropertyValue(property, serializedPropertyValue, aliasParsersByName);
+                    if (!propertyValueResult.IsOk)
+                        return Result<Entity, string>.FromError(propertyValueResult.Error);
 
-                entityDataDict[property.Name] = propertyValueResult.Value;
+                    entityDataDict[property.Name] = propertyValueResult.Value;
+                }
                 index++;
+            }
+            for (int i = 0; i < subTypes.Count; i++)
+            {
+                string subType = subTypes[i];
+                var subTypeDataDict = new Dictionary<string, object>();
+                index = 0;
+                foreach (ParsedPropertyInfo property in properties)
+                {
+                    if (property.SubTypeIndex == i)
+                    {
+                        string serializedPropertyValue = entityData.ElementAt(index);
+                        Result<object, string> propertyValueResult = GetPropertyValue(property, serializedPropertyValue, aliasParsersByName);
+                        if (!propertyValueResult.IsOk)
+                            return Result<Entity, string>.FromError(propertyValueResult.Error);
+
+                        subTypeDataDict[property.Name] = propertyValueResult.Value;
+                    }
+                    index++;
+                }
+                entityDataDict[$"{subType}_Instance"] = subTypeDataDict;
             }
 
             return Result<Entity, string>.FromValue(entityDataDict);
@@ -184,7 +208,7 @@ namespace C4G.Core.ConfigsSerialization
                 HashSet<string> propertyNamesHashSet = new HashSet<string>();
                 foreach (ParsedPropertyInfo parsedPropertyInfo in parsedConfig.Properties)
                 {
-                    if (!propertyNamesHashSet.Add(parsedPropertyInfo.Name))
+                    if (parsedPropertyInfo.SubTypeIndex < 0 && !propertyNamesHashSet.Add(parsedPropertyInfo.Name))
                     {
                         error = "Configs serialization error. ParsedConfig has duplicated property names";
                         break;
@@ -193,9 +217,25 @@ namespace C4G.Core.ConfigsSerialization
 
                 if (string.IsNullOrEmpty(error))
                 {
+                    for (int i = 0; i < parsedConfig.SubTypes.Count; i++)
+                    {
+                        propertyNamesHashSet.Clear();
+                        foreach (ParsedPropertyInfo parsedPropertyInfo in parsedConfig.Properties)
+                        {
+                            if (parsedPropertyInfo.SubTypeIndex == i && !propertyNamesHashSet.Add(parsedPropertyInfo.Name))
+                            {
+                                error = "Configs serialization error. ParsedConfig has duplicated property names";
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (string.IsNullOrEmpty(error))
+                {
                     foreach (IReadOnlyCollection<string> entity in parsedConfig.Entities)
                     {
-                        if (entity.Count != parsedConfig.Properties.Count)
+                        if (entity.Count != parsedConfig.Properties.Length)
                         {
                             error = "Configs serialization error. Entity count doesn't match properties count";
                             break;

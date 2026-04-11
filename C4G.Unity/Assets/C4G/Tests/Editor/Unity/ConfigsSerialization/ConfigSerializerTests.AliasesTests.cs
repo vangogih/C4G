@@ -19,7 +19,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                 IC4GTypeParser parser = CreateParser("100", 100);
                 _parsersByName.Add("Health", parser);
 
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Health", "Health")
                 };
@@ -53,7 +53,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                 IC4GTypeParser parser = CreateParser("John", "John");
                 _parsersByName.Add("PlayerName", parser);
 
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Name", "PlayerName")
                 };
@@ -87,7 +87,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                 IC4GTypeParser parser = CreateParser("Rare", TestRarity.Rare);
                 _parsersByName.Add("Rarity", parser);
 
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("ItemRarity", "Rarity")
                 };
@@ -121,7 +121,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                 IC4GTypeParser parser = CreateParser("1,2,3", new List<object> { 1, 2, 3 });
                 _parsersByName.Add("IntList", parser);
 
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Values", "IntList")
                 };
@@ -159,7 +159,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                 IC4GTypeParser parser = CreateParser("4,5,6", new object[] { 4, 5, 6 });
                 _parsersByName.Add("IntArray", parser);
 
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Scores", "IntArray")
                 };
@@ -198,7 +198,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                     new Dictionary<object, object> { { 1, "one" }, { 2, "two" } });
                 _parsersByName.Add("IntToStringMap", parser);
 
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Mapping", "IntToStringMap")
                 };
@@ -237,7 +237,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                 _parsersByName.Add("Health", healthParser);
                 _parsersByName.Add("PlayerName", playerNameParser);
 
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Id", "int"),
                     new ParsedPropertyInfo("Health", "Health"),
@@ -279,7 +279,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 
                 _parsersByName.Add("Health", parser);
 
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Health", "Health")
                 };
@@ -325,7 +325,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                 _parsersByName.Add("Rarity", rarityParser);
                 _parsersByName.Add("IntList", intListParser);
 
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Health", "Health"),
                     new ParsedPropertyInfo("ItemRarity", "Rarity"),
@@ -364,7 +364,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             public void Serialize_NonExistentAlias_ReturnsError()
             {
                 // Arrange
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Value", "UnknownAlias")
                 };
@@ -388,7 +388,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                 // Arrange
                 _parsersByName.Add("NullParserAlias", null);
 
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Value", "NullParserAlias")
                 };
@@ -411,7 +411,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 
                 _parsersByName.Add("FailingAlias", parser);
 
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Value", "FailingAlias")
                 };

@@ -14,7 +14,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "ExtremeValuesSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("MaxInt", "int"),
                     new ParsedPropertyInfo("MinInt", "int"),
@@ -50,7 +50,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "OverflowSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("TooBig", "int")
                 };
@@ -72,7 +72,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "InvalidSimpleTypeSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Id", "int"),
                     new ParsedPropertyInfo("IsActive", "bool"),

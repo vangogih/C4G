@@ -14,7 +14,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "SpecialFloatSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Infinity", "float"),
                     new ParsedPropertyInfo("NegInfinity", "float"),
@@ -52,7 +52,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "FloatListSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Name", "string"),
                     new ParsedPropertyInfo("Scores", "List<float>")

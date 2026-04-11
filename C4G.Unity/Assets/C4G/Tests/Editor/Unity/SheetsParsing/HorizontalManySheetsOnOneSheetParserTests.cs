@@ -29,7 +29,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { ""              , ""     , ""       , ""     , ""     , ""          , "end.users" }
             };
 
-            var expectedProperties = new List<ParsedPropertyInfo>
+            var expectedProperties = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("id", "int"),
                 new ParsedPropertyInfo("name", "string"),
@@ -76,7 +76,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { ""          , "name" , "string" , "X"  , "Y"  , "Z" },
                 new List<object> { ""          , ""     , ""       , ""   , ""   , ""     , "end.B" }
             };
-            var expectedPropertiesA = new List<ParsedPropertyInfo>
+            var expectedPropertiesA = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("field1", "type1")
             };
@@ -85,7 +85,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<string> { "val1" },
                 new List<string> { "val2" }
             };
-            var expectedPropertiesB = new List<ParsedPropertyInfo>
+            var expectedPropertiesB = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("id", "int"),
                 new ParsedPropertyInfo("name", "string")
@@ -129,7 +129,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { ""          , ""    , ""    , ""   , ""    , ""        , ""         , "y"    , "string" , "alpha" , "beta" },
                 new List<object> { ""          , ""    , ""    , ""   , ""    , ""        , ""         , ""     , ""       , ""      , ""       , "end.B" }
             };
-            var expectedPropertiesA = new List<ParsedPropertyInfo>
+            var expectedPropertiesA = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("x", "int")
             };
@@ -138,7 +138,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<string> { "1" },
                 new List<string> { "2" }
             };
-            var expectedPropertiesB = new List<ParsedPropertyInfo>
+            var expectedPropertiesB = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("y", "string")
             };
@@ -184,7 +184,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { ""          , ""    , ""    , ""         , "active" , "bool"   , "true" , "false" },
                 new List<object> { ""          , ""    , ""    , ""         , ""       , ""       , ""     , ""       , "end.B" }
             };
-            var expectedPropertiesA = new List<ParsedPropertyInfo>
+            var expectedPropertiesA = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("id", "int")
             };
@@ -192,7 +192,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             {
                 new List<string> { "100" }
             };
-            var expectedPropertiesB = new List<ParsedPropertyInfo>
+            var expectedPropertiesB = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("name", "string"),
                 new ParsedPropertyInfo("active", "bool")
@@ -257,7 +257,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { ""             , ""        , ""       , ""      , ""          , ""             , "value"  , "float"  , "45.2" , "78.9" , "12.3" },
                 new List<object> { ""             , ""        , ""       , ""      , ""          , ""             , ""       , ""       , ""     , ""     , ""       , "end.stats" }
             };
-            var expectedPropertiesUsers = new List<ParsedPropertyInfo>
+            var expectedPropertiesUsers = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("id", "int"),
                 new ParsedPropertyInfo("name", "string"),
@@ -270,7 +270,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<string> { "2", "Bob", "30", "75.3" },
                 new List<string> { "3", "Charlie", "35", "90.1" }
             };
-            var expectedPropertiesSettings = new List<ParsedPropertyInfo>
+            var expectedPropertiesSettings = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("key", "string"),
                 new ParsedPropertyInfo("value", "string")
@@ -280,7 +280,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<string> { "theme", "dark" },
                 new List<string> { "lang", "en" }
             };
-            var expectedPropertiesMeta = new List<ParsedPropertyInfo>
+            var expectedPropertiesMeta = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("version", "string")
             };
@@ -288,7 +288,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
             {
                 new List<string> { "1.0" }
             };
-            var expectedPropertiesStats = new List<ParsedPropertyInfo>
+            var expectedPropertiesStats = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("metric", "string"),
                 new ParsedPropertyInfo("value", "float")
@@ -380,7 +380,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { ""          , ""      , ""     , ""        , "end.A" }
             };
 
-            var expectedProperties = new List<ParsedPropertyInfo>
+            var expectedProperties = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("field", "type")
             };

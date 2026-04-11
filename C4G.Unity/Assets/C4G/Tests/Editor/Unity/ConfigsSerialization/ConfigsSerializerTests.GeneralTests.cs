@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
@@ -14,7 +15,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "TestSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Id", "int"),
                     new ParsedPropertyInfo("Name", "string")
@@ -53,7 +54,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "EmptyEntitiesSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Id", "int"),
                     new ParsedPropertyInfo("Name", "string")
@@ -79,7 +80,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "EmptyPropertiesSheet";
-                var properties = new List<ParsedPropertyInfo>();
+                var properties = Array.Empty<ParsedPropertyInfo>();
                 var entities = new List<List<string>> { new List<string>(), new List<string>() };
                 var parsedConfig = new ParsedConfig(name, properties, entities);
 
@@ -104,12 +105,12 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var parsedConfigWithNullName =
-                    new ParsedConfig(null, new List<ParsedPropertyInfo>(), new List<List<string>>());
+                    new ParsedConfig(null, Array.Empty<ParsedPropertyInfo>(), new List<List<string>>());
                 var parsedConfigWithNullProperties = new ParsedConfig("TestSheet", null, new List<List<string>>());
-                var parsedConfigWithNullEntities = new ParsedConfig("TestSheet", new List<ParsedPropertyInfo>(), null);
+                var parsedConfigWithNullEntities = new ParsedConfig("TestSheet", Array.Empty<ParsedPropertyInfo>(), null);
 
                 var parsedConfigWithMismatchedData = new ParsedConfig("MismatchedDataSheet",
-                    new List<ParsedPropertyInfo>
+                    new ParsedPropertyInfo[]
                     {
                         new ParsedPropertyInfo("Id", "int"),
                         new ParsedPropertyInfo("Name", "string")
@@ -141,7 +142,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             {
                 // Arrange
                 var name = "UnknownTypeSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Id", "int"),
                     new ParsedPropertyInfo("CustomProperty", "UnknownType")
@@ -160,11 +161,140 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             }
 
             [Test]
+            public void Serialize_WithOneSubClass()
+            {
+                // Arrange
+                var name = "TestSheet";
+                var properties = new ParsedPropertyInfo[]
+                {
+                    new ParsedPropertyInfo("Id", "int"),
+                    new ParsedPropertyInfo("Name", "string"),
+                    new ParsedPropertyInfo("Street", "string") { SubTypeIndex = 0 },
+                    new ParsedPropertyInfo("City", "string") { SubTypeIndex = 0 }
+                };
+                var entities = new List<List<string>>
+                {
+                    new List<string> { "1", "Alice", "Main St", "Springfield" }
+                };
+                var parsedConfig = new ParsedConfig(name, properties, entities);
+                parsedConfig.SubTypes.Add("Address");
+
+                string expectedOutput =
+                    @"{
+  ""TestSheet"": [
+    {
+      ""Id"": 1,
+      ""Name"": ""Alice"",
+      ""Address_Instance"": {
+        ""Street"": ""Main St"",
+        ""City"": ""Springfield""
+      }
+    }
+  ]
+}";
+
+                // Act
+                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
+
+                // Assert
+                Assert.IsTrue(output.IsOk);
+                Assert.AreEqual(expectedOutput, output.Value);
+            }
+
+            [Test]
+            public void Serialize_WithMultipleSubClasses()
+            {
+                // Arrange
+                var name = "TestSheet";
+                var properties = new ParsedPropertyInfo[]
+                {
+                    new ParsedPropertyInfo("Id", "int"),
+                    new ParsedPropertyInfo("Name", "string"),
+                    new ParsedPropertyInfo("Street", "string") { SubTypeIndex = 0 },
+                    new ParsedPropertyInfo("City", "string") { SubTypeIndex = 0 },
+                    new ParsedPropertyInfo("Number", "string") { SubTypeIndex = 1 }
+                };
+                var entities = new List<List<string>>
+                {
+                    new List<string> { "1", "Alice", "Main St", "Springfield", "555-1234" }
+                };
+                var parsedConfig = new ParsedConfig(name, properties, entities);
+                parsedConfig.SubTypes.Add("Address");
+                parsedConfig.SubTypes.Add("Phone");
+
+                string expectedOutput =
+                    @"{
+  ""TestSheet"": [
+    {
+      ""Id"": 1,
+      ""Name"": ""Alice"",
+      ""Address_Instance"": {
+        ""Street"": ""Main St"",
+        ""City"": ""Springfield""
+      },
+      ""Phone_Instance"": {
+        ""Number"": ""555-1234""
+      }
+    }
+  ]
+}";
+
+                // Act
+                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
+
+                // Assert
+                Assert.IsTrue(output.IsOk);
+                Assert.AreEqual(expectedOutput, output.Value);
+            }
+
+            [Test]
+            public void Serialize_SamePropertyNameInDifferentSubTypes()
+            {
+                // Arrange: Address.Name and Phone.Name share the same short name — must not cause duplicate error
+                var name = "TestSheet";
+                var properties = new ParsedPropertyInfo[]
+                {
+                    new ParsedPropertyInfo("Id", "int"),
+                    new ParsedPropertyInfo("Name", "string") { SubTypeIndex = 0 },
+                    new ParsedPropertyInfo("Name", "string") { SubTypeIndex = 1 }
+                };
+                var entities = new List<List<string>>
+                {
+                    new List<string> { "1", "Maple Street", "John" }
+                };
+                var parsedConfig = new ParsedConfig(name, properties, entities);
+                parsedConfig.SubTypes.Add("Address");
+                parsedConfig.SubTypes.Add("Phone");
+
+                string expectedOutput =
+                    @"{
+  ""TestSheet"": [
+    {
+      ""Id"": 1,
+      ""Address_Instance"": {
+        ""Name"": ""Maple Street""
+      },
+      ""Phone_Instance"": {
+        ""Name"": ""John""
+      }
+    }
+  ]
+}";
+
+                // Act
+                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
+
+                // Assert
+                Assert.IsTrue(output.IsOk);
+                Assert.AreEqual(expectedOutput, output.Value);
+            }
+
+            [Test]
             public void Serialize_MixedTypesWithLists()
             {
                 // Arrange
                 var name = "MixedTypesSheet";
-                var properties = new List<ParsedPropertyInfo>
+                var properties = new ParsedPropertyInfo[]
                 {
                     new ParsedPropertyInfo("Id", "int"),
                     new ParsedPropertyInfo("Name", "string"),
