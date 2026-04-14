@@ -14,6 +14,10 @@ Welcome to the C4G guides! These guides will help you understand and utilize C4G
 - **[Google Sheets Setup](./google-sheets-setup)** - Learn how to structure your sheets, supported types, and best practices
 - **[Editor Workflow](./editor-workflow)** - Complete guide to using C4G in Unity Editor
 
+### Advanced Types
+
+- **[Inlined Subclasses](./inlined-subclasses)** - Declare nested sub-objects inline within a single sheet row using dot notation
+
 ### Compatibility
 
 - **[Supported Versions](./supported-versions)** - Unity versions, .NET compatibility, and dependencies
@@ -26,7 +30,6 @@ Additional guides in development:
 
 - **Type Parsers** - Understanding and creating custom type parsers
 - **Code Generation** - Deep dive into the code generation process
-- **Advanced Types** - Working with nested objects and complex data structures
 
 #### Integration
 
