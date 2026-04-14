@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using C4G.Core.ConfigsSerialization;
@@ -7,7 +7,7 @@ using C4G.Core.Utils;
 
 namespace C4G.Core.CodeGeneration
 {
-    public sealed class CodeGenerator
+    public sealed class CodeGenerator : ICodeGenerator
     {
         private readonly CodeWriter _codeWriter = new CodeWriter("    ");
 
@@ -90,14 +90,14 @@ namespace C4G.Core.CodeGeneration
 
                     if (!currentType.IsGenericType)
                     {
-                        result.Append(currentType.FullName ?? currentType.Name);
+                        result.Append(GetTypeName(currentType));
                         continue;
                     }
 
                     var genericTypeDef = currentType.GetGenericTypeDefinition();
                     var genericArgs = currentType.GetGenericArguments();
 
-                    var fullName = genericTypeDef.FullName ?? genericTypeDef.Name;
+                    var fullName = GetTypeName(genericTypeDef);
                     var baseName = fullName.Split('`')[0];
 
                     stack.Push(">");
@@ -117,6 +117,13 @@ namespace C4G.Core.CodeGeneration
             }
 
             return type;
+        }
+
+        private static string GetTypeName(Type type)
+        {
+            if (type.FullName != null)
+                return type.FullName;
+            return type.Name;
         }
 
         private static bool ValidateParsedConfig(ParsedConfig parsedConfig, out string error)

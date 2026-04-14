@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using C4G.Core.Utils;
 
@@ -205,15 +205,13 @@ namespace C4G.Core.SheetsParsing
                         if (!nameValid)
                             return Result<List<ConfigFrame>, string>.FromError($"{errorPrefix}Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has invalid name");
 
-                        int matches = 0;
+                        bool found = false;
                         for (int configFrameIndex = configFrameStarts.Count - 1; configFrameIndex >= 0; --configFrameIndex)
                         {
                             ConfigFrame configFrame = configFrameStarts[configFrameIndex];
-                            if (rowIndex >= configFrame.StartRowIndex && columnIndex >= configFrame.StartColumnIndex)
+                            if (rowIndex >= configFrame.StartRowIndex)
+                            if (columnIndex >= configFrame.StartColumnIndex)
                             {
-                                if (++matches > 1)
-                                    return Result<List<ConfigFrame>, string>.FromError($"{errorPrefix}Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has end with more than one matching starts");
-
                                 if (!name.Equals(configFrame.Name, StringComparison.Ordinal))
                                     return Result<List<ConfigFrame>, string>.FromError($"{errorPrefix}Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has end with geometrically matching start cell [{configFrame.StartRowIndex + 1}][{configFrame.StartColumnIndex + 1}] but with different name '{configFrame.Name}'");
 
@@ -221,11 +219,12 @@ namespace C4G.Core.SheetsParsing
                                 configFrame.EndColumnIndex = columnIndex;
                                 configFrameStarts.RemoveAt(configFrameIndex);
                                 configFrames.Add(configFrame);
+                                found = true;
                                 break;
                             }
                         }
 
-                        if (matches == 0)
+                        if (!found)
                             return Result<List<ConfigFrame>, string>.FromError($"{errorPrefix}Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has end but there are no matching starts");
                     }
                 }

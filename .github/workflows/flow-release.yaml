@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "tag: git tag you want create. (sample 1.0.0)"
+        required: true
+
+jobs:
+  patch-versions:
+    name: Bump version numbers
+    uses: ./.github/workflows/job-patch_versions.yaml
+    with:
+      tag: ${{ github.event.inputs.tag }}
+    secrets: inherit
+
+  wait-for-action-status:
+    name: Wait for CI checks to pass
+    needs: [patch-versions]
+    if: needs.patch-versions.outputs.sha != ''
+    uses: ./.github/workflows/job-wait_for_action_status.yaml
+    with:
+      sha: ${{ needs.patch-versions.outputs.sha }}
+    secrets: inherit
+
+  create-release:
+    name: Create GitHub release
+    needs: [patch-versions, wait-for-action-status]
+    if: ${{ !failure() && !cancelled() }}
+    uses: ./.github/workflows/job-create_release.yaml
+    with:
+      tag: ${{ github.event.inputs.tag }}

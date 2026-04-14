@@ -9,6 +9,7 @@
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <ImplicitUsings>false</ImplicitUsings>
 
         <!-- Package information -->
         <Version>0.1.0</Version>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
@@ -33,12 +33,29 @@ namespace C4G.Core.Utils
                     fileName = fileName.Substring(assetsIndex);
 
                 MethodBase method = frame.GetMethod();
-                string methodName = $"{method?.DeclaringType?.Name ?? "Unknown type"}.{method?.Name ?? "Unknown method"}";
+                string methodName = FormatMethodName(method);
 
                 result.AppendLine($"{methodName} () (at {fileName}:{lineNumber})");
             }
 
             return result.ToString();
+        }
+
+        internal static string FormatMethodName(MethodBase method)
+        {
+            string typeName;
+            if (method != null && method.DeclaringType != null)
+                typeName = method.DeclaringType.Name;
+            else
+                typeName = "Unknown type";
+
+            string name;
+            if (method != null)
+                name = method.Name;
+            else
+                name = "Unknown method";
+
+            return $"{typeName}.{name}";
         }
     }
 }

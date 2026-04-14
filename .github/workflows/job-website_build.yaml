@@ -6,35 +6,36 @@ on:
       upload-artifact:
         type: boolean
         default: false
-  pull_request:
-    branches:
-      - master
-    # Review gh actions docs if you want to further define triggers, paths, etc
-    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
 jobs:
   website-build:
-    name: Website Build
+    name: Build Docusaurus site
     runs-on: ubuntu-latest
     timeout-minutes: 10
     defaults:
       run:
         working-directory: C4G.Docs
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository with full history
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+
+      - name: Setup Node.js 20 with npm cache
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
           cache-dependency-path: C4G.Docs/package-lock.json
 
-      - name: Install dependencies
+      - name: Install npm dependencies
         run: npm ci
-      - name: Build website
+
+      - name: Build Docusaurus site
         run: npm run build
-      - uses: actions/upload-artifact@v4
+
+      - name: Upload website build artifact
+        uses: actions/upload-artifact@v4
         if: inputs.upload-artifact
         with:
           name: website-build
