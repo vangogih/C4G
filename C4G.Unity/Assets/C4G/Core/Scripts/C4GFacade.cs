@@ -7,6 +7,7 @@ using C4G.Core.ConfigsSerialization;
 using C4G.Core.Settings;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
+using C4G.Unity.Assets.C4G.Core.Scripts.Utils;
 
 namespace C4G.Core
 {
@@ -30,18 +31,18 @@ namespace C4G.Core
             _io = new IO.IO();
         }
 
-        public async Task<Result<string>> RunAsync(CancellationToken ct)
+        public async Task<Result<C4GError>> RunAsync(CancellationToken ct)
         {
             if (ct.IsCancellationRequested)
-                return Result<string>.FromError("C4G Error. Task cancelled");
+                return Result<C4GError>.FromError(C4GError.Cancelled.Instance);
 
-            Result<C4GSettings, string> settingsResult = _settingsProvider.GetSettings();
+            Result<C4GSettings, C4GError> settingsResult = _settingsProvider.GetSettings();
             if (!settingsResult.IsOk)
-                return Result<string>.FromError(settingsResult.Error);
+                return settingsResult.WithoutValue();
 
             C4GSettings settings = settingsResult.Value;
 
-            var aliasesValidationResult = ValidateAliases(settings);
+            Result<C4GError> aliasesValidationResult = ValidateAliases(settings);
             if (!aliasesValidationResult.IsOk)
                 return aliasesValidationResult;
 
@@ -51,9 +52,9 @@ namespace C4G.Core
 
             foreach (KeyValuePair<string, SheetParserBase> parserByName in settings.SheetParsersByName)
             {
-                Result<IList<IList<object>>, string> loadSheetResult = await _googleInteraction.LoadSheetAsync(parserByName.Key, settings.TableId, settings.ClientSecret, ct);
+                Result<IList<IList<object>>, C4GError> loadSheetResult = await _googleInteraction.LoadSheetAsync(parserByName.Key, settings.TableId, settings.ClientSecret, ct);
                 if (ct.IsCancellationRequested)
-                    return Result<string>.FromError("C4G Error. Task cancelled");
+                    return Result<C4GError>.FromError(C4GError.Cancelled.Instance);
                 if (!loadSheetResult.IsOk)
                     return loadSheetResult.WithoutValue();
                 sheets.Add((sheetName: parserByName, sheet: loadSheetResult.Value));
@@ -113,69 +114,69 @@ namespace C4G.Core
             return Result<string>.Ok;
         }
 
-        private Result<string> ValidateAliases(in C4GSettings settings)
+        private Result<C4GError> ValidateAliases(in C4GSettings settings)
         {
             if (string.IsNullOrEmpty(settings.TableId))
             {
-                return Result<string>.FromError("C4G Error. Table id is null or empty");
+                return Result<C4GError>.FromError(new C4GError.Settings($"Table id is null or empty"));
             }
 
             if (string.IsNullOrEmpty(settings.ClientSecret))
             {
-                return Result<string>.FromError("C4G Error. Client secret is null or empty");
+                return Result<C4GError>.FromError(new C4GError.Settings($"Client secret is null or empty"));
             }
 
             if (string.IsNullOrEmpty(settings.RootConfigName))
             {
-                return Result<string>.FromError("C4G Error. Root config name is null or empty");
+                return Result<C4GError>.FromError(new C4GError.Settings($"Root config name is null or empty"));
             }
 
             if (string.IsNullOrEmpty(settings.GeneratedCodeFolderFullPath))
             {
-                return Result<string>.FromError("C4G Error. Generated code folder full path is null or empty");
+                return Result<C4GError>.FromError(new C4GError.Settings($"Generated code folder full path is null or empty"));
             }
 
             if (!Directory.Exists(settings.GeneratedCodeFolderFullPath))
             {
-                return Result<string>.FromError($"C4G Error. Generated code folder '{settings.GeneratedCodeFolderFullPath}' is not exist");
+                return Result<C4GError>.FromError(new C4GError.Settings($"Generated code folder '{settings.GeneratedCodeFolderFullPath}' is not exist"));
             }
 
             if (string.IsNullOrEmpty(settings.SerializedConfigsFolderFullPath))
             {
-                return Result<string>.FromError("C4G Error. Serialized configs folder full path is null or empty");
+                return Result<C4GError>.FromError(new C4GError.Settings($"Serialized configs folder full path is null or empty"));
             }
 
             if (!Directory.Exists(settings.SerializedConfigsFolderFullPath))
             {
-                return Result<string>.FromError($"C4G Error. Serialized configs folder '{settings.SerializedConfigsFolderFullPath}' is not exist");
+                return Result<C4GError>.FromError(new C4GError.Settings($"Serialized configs folder '{settings.SerializedConfigsFolderFullPath}' is not exist"));
             }
 
             if (settings.SheetParsersByName == null)
             {
-                return Result<string>.FromError("C4G Error. Sheet parsers by name is null or empty");
+                return Result<C4GError>.FromError(new C4GError.Settings($"Sheet parsers by name is null or empty"));
             }
 
             foreach (KeyValuePair<string, SheetParserBase> sheetParserByName in settings.SheetParsersByName)
             {
                 if (string.IsNullOrEmpty(sheetParserByName.Key))
-                    return Result<string>.FromError($"C4G Error. Sheet name is null or empty");
+                    return Result<C4GError>.FromError(new C4GError.Settings($"Sheet name is null or empty"));
 
                 if (sheetParserByName.Value == null)
-                    return Result<string>.FromError($"C4G Error. Sheet parser for sheet name '{sheetParserByName.Key}' is null");
+                    return Result<C4GError>.FromError(new C4GError.Settings($"Sheet parser for sheet name '{sheetParserByName.Key}' is null"));
             }
 
             if (settings.AliasParsersByName == null)
             {
-                return Result<string>.FromError("C4G Error. Alias parser by name is null or empty");
+                return Result<C4GError>.FromError(new C4GError.Settings($"Alias parser by name is null or empty"));
             }
 
             foreach (KeyValuePair<string, IC4GTypeParser> parserByName in settings.AliasParsersByName)
             {
                 if (parserByName.Value == null)
-                    return Result<string>.FromError($"C4G Error. Alias parser with name '{parserByName.Key}' is null or empty'");
+                    return Result<C4GError>.FromError(new C4GError.Settings($"Alias parser with name '{parserByName.Key}' is null or empty'"));
             }
 
-            return Result<string>.Ok;
+            return Result<C4GError>.Ok;
         }
     }
 }

@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using C4G.Core.Utils;
+using C4G.Unity.Assets.C4G.Core.Scripts.Utils;
 
 namespace C4G.Core.SheetsParsing
 {
     [System.Serializable]
     public sealed class VerticalSheetParser : SheetParserBase
     {
-        public override Result<string> ParseToList(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
+        public override Result<C4GError> ParseToList(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
         {
             if (sheetData.Count < 3)
-                return Result<string>.FromError($"C4G Error. Sheet name '{sheetName}'. Rows amount '{sheetData.Count}' < 3");
+                return Result<C4GError>.FromError(new C4GError.SheetsParsing($"Rows amount '{sheetData.Count}' < 3", sheetName));
 
             if (sheetData[0].Count < 1)
-                return Result<string>.FromError($"C4G Error. Sheet name '{sheetName}'. Columns amount '{sheetData[0].Count}' < 1");
+                return Result<C4GError>.FromError(new C4GError.SheetsParsing($"Columns amount '{sheetData[0].Count}' < 1", sheetName));
 
             int dataRowLength = sheetData[0].Count;
 

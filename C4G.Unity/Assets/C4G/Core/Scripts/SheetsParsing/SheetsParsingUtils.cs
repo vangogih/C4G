@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using C4G.Core.Utils;
+using C4G.Unity.Assets.C4G.Core.Scripts.Utils;
 
 namespace C4G.Core.SheetsParsing
 {
@@ -83,7 +84,7 @@ namespace C4G.Core.SheetsParsing
             return string.Empty;
         }
 
-        internal static Result<ParsedConfig, string> ParseVertical(string sheetName, IList<IList<object>> sheetData, int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
+        internal static Result<ParsedConfig, C4GError> ParseVertical(string sheetName, IList<IList<object>> sheetData, int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
         {
             string errorPrefix = $"C4G Error. Sheet name '{sheetName}'. ";
 

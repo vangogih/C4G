@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using C4G.Core.Utils;
+using C4G.Unity.Assets.C4G.Core.Scripts.Utils;
 
 namespace C4G.Core.SheetsParsing
 {
     [System.Serializable]
     public sealed class HorizontalSheetParser : SheetParserBase
     {
-        public override Result<string> ParseToList(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
+        public override Result<C4GError> ParseToList(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
         {
             if (sheetData.Count < 1)
                 return Result<string>.FromError($"C4G Error. Sheet name '{sheetName}'. Rows amount '{sheetData.Count}' < 1");

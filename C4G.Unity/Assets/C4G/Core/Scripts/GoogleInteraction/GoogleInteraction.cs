@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using C4G.Core.Utils;
+using C4G.Unity.Assets.C4G.Core.Scripts.Utils;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
@@ -14,10 +15,10 @@ namespace C4G.Core.GoogleInteraction
 {
     public sealed class GoogleInteraction
     {
-        public async Task<Result<IList<IList<object>>, string>> LoadSheetAsync(string sheetName, string tableId, string clientSecret, CancellationToken ct)
+        public async Task<Result<IList<IList<object>>, C4GError>> LoadSheetAsync(string sheetName, string tableId, string clientSecret, CancellationToken ct)
         {
             if (ct.IsCancellationRequested)
-                return Result<IList<IList<object>>, string>.FromError("Google interaction. Task cancelled");
+                return Result<IList<IList<object>>, C4GError>.FromError(C4GError.Cancelled.Instance);
 
             byte[] clientSecretBytes = Encoding.UTF8.GetBytes(clientSecret);
             MemoryStream clientSecretMemoryStream = new MemoryStream(clientSecretBytes);
@@ -38,7 +39,7 @@ namespace C4G.Core.GoogleInteraction
             SpreadsheetsResource.ValuesResource.GetRequest request = sheetsService.Spreadsheets.Values.Get(tableId, sheetName);
             ValueRange response = await request.ExecuteAsync(ct);
 
-            return Result<IList<IList<object>>, string>.FromValue(response.Values);
+            return Result<IList<IList<object>>, C4GError>.FromValue(response.Values);
         }
     }
 }

@@ -18,21 +18,21 @@ MonoBehaviour:
   _generatedCodeFolderPath: Assets/Scripts/C4GGenerated
   _serializedConfigsFolderPath: Assets/Scripts/C4GGenerated
   _sheetDefinitions:
-  - _name: Sheet1
+  - _name: 
     _parser:
-      id: 0
+      rid: 0
   - _name: Sheet4
     _parser:
-      id: 1
+      rid: 1
   - _name: VerticalSheet
     _parser:
-      id: 2
+      rid: 2
   - _name: HorizontalManySheetsOnOne
     _parser:
-      id: 3
+      rid: 3
   - _name: VerticalManySheetsOnOne
     _parser:
-      id: 4
+      rid: 4
   _aliasDefinitions:
   - _name: MyEnum
     _parser:
@@ -43,16 +43,22 @@ MonoBehaviour:
       _parserTypeFullName: RewardsParser, Runtime, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: HorizontalSheetParser, ns: C4G.Core.SheetsParsing, asm: C4G.Core}
-    00000001:
+      data: 
+    - rid: 1
       type: {class: HorizontalSheetParser, ns: C4G.Core.SheetsParsing, asm: C4G.Core}
-    00000002:
+      data: 
+    - rid: 2
       type: {class: VerticalSheetParser, ns: C4G.Core.SheetsParsing, asm: C4G.Core}
-    00000003:
+      data: 
+    - rid: 3
       type: {class: HorizontalManyConfigsOnOneSheetParser, ns: C4G.Core.SheetsParsing,
         asm: C4G.Core}
-    00000004:
+      data: 
+    - rid: 4
       type: {class: VerticalManyConfigsOnOneSheetParser, ns: C4G.Core.SheetsParsing,
         asm: C4G.Core}
+      data: 
