@@ -23,11 +23,35 @@ namespace C4G.Core.CodeGeneration
                 .AddUsing("System.Collections.Generic")
                 .WritePublicClass(name: parsedConfig.Name, isPartial: true, baseClass: string.Empty, w =>
                 {
-                    for (int propertyIndex = 0; propertyIndex < parsedConfig.Properties.Count; propertyIndex++)
+                    for (int i = 0; i < parsedConfig.SubTypes.Count; i++)
+                    {
+                        string subType = parsedConfig.SubTypes[i];
+                        w.WritePublicClass(name: subType, isPartial: true, baseClass: string.Empty, w1 =>
+                        {
+                            for (int j = 0; j < parsedConfig.Properties.Length; j++)
+                            {
+                                ParsedPropertyInfo property = parsedConfig.Properties[j];
+                                if (property.SubTypeIndex == i)
+                                {
+                                    string actualType = ResolveType(property.Type, aliasParsersByName);
+                                    w1.WritePublicProperty(property.Name, actualType);
+                                }
+                            }
+                        });
+                    }
+                    for (int propertyIndex = 0; propertyIndex < parsedConfig.Properties.Length; propertyIndex++)
                     {
                         ParsedPropertyInfo property = parsedConfig.Properties[propertyIndex];
-                        string actualType = ResolveType(property.Type, aliasParsersByName);
-                        w.WritePublicProperty(property.Name, actualType);
+                        if (property.SubTypeIndex < 0)
+                        {
+                            string actualType = ResolveType(property.Type, aliasParsersByName);
+                            w.WritePublicProperty(property.Name, actualType);
+                        }
+                    }
+                    for (int i = 0; i < parsedConfig.SubTypes.Count; i++)
+                    {
+                        string subType = parsedConfig.SubTypes[i];
+                        w.WritePublicProperty($"{subType}_Instance", subType);
                     }
                 });
 

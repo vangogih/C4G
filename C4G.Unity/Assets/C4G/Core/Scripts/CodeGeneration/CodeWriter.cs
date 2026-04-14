@@ -49,11 +49,11 @@ namespace C4G.Core.CodeGeneration
         {
             var result = new StringBuilder();
 
-            result.AppendLine(GENERATED_CODE_DISCLAIMER);
+            result.Append(GENERATED_CODE_DISCLAIMER).AppendLine();
             result.AppendLine();
 
             foreach (var directive in _usings)
-                result.AppendLine($"using {directive};");
+                result.Append($"using {directive};").AppendLine();
 
             if (_usings.Count > 0)
                 result.AppendLine();
@@ -73,7 +73,7 @@ namespace C4G.Core.CodeGeneration
         {
             for(int i = 0; i < _indentLevel; i++)
                 _builder.Append(_indentString);
-            _builder.AppendLine(line);
+            _builder.Append(line).AppendLine();
         }
 
         private void WriteEmptyLine()
