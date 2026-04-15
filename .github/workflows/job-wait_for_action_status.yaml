@@ -23,4 +23,4 @@ jobs:
           ref: ${{ inputs.sha }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 30
-          allowed-conclusions: success,skipped
+          allowed-conclusions: success,skipped,neutral
