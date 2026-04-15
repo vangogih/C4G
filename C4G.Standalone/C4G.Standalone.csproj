@@ -1,34 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <RootNamespace>C4G.Runtime</RootNamespace>
-
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <ImplicitUsings>false</ImplicitUsings>
-
-        <!-- Package information -->
-        <Version>0.1.0</Version>
-        <PackageId>C4G</PackageId>
-        <Title>Vangogih.C4G</Title>
-        <Product>C4G</Product>
-        <Description>Easy to use, production ready remote game configuration toolset for games made with unity.</Description>
-
-        <PackageTags>config, configs, remote</PackageTags>
-        <!--<PackageReadmeFile>TODO</PackageReadmeFile>-->
-        <!--<PackageIcon>TODO</PackageIcon>-->
-        <!--<PackageProjectUrl>TODO</PackageProjectUrl>-->
-        <RepositoryUrl>https://github.com/vangogih/C4G</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <Authors>Aleksei Kozorezov aka @vangogih</Authors>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    </PropertyGroup>
-
-<!--
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>C4G.Runtime</RootNamespace>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <ImplicitUsings>false</ImplicitUsings>
+    <!-- Package information -->
+    <Version>0.0.5</Version>
+    <PackageId>C4G</PackageId>
+    <Title>Vangogih.C4G</Title>
+    <Product>C4G</Product>
+    <Description>Easy to use, production ready remote game configuration toolset for games made with unity.</Description>
+    <PackageTags>config, configs, remote</PackageTags>
+    <!--<PackageReadmeFile>TODO</PackageReadmeFile>-->
+    <!--<PackageIcon>TODO</PackageIcon>-->
+    <!--<PackageProjectUrl>TODO</PackageProjectUrl>-->
+    <RepositoryUrl>https://github.com/vangogih/C4G</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Authors>Aleksei Kozorezov aka @vangogih</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+  <!--
     TODO
     <ItemGroup>
         <None Include="..\LICENSE.md" Pack="true" PackagePath="\" />
@@ -36,30 +32,27 @@
         <None Include="..\README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 -->
-
-    <ItemGroup>
-        <Compile Include="..\C4G.Unity\Assets\C4G\Core\**\*.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Google.Apis">
-        <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Google.Apis.dll</HintPath>
-      </Reference>
-      <Reference Include="Google.Apis.Auth">
-        <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Google.Apis.Auth.dll</HintPath>
-      </Reference>
-      <Reference Include="Google.Apis.Core">
-        <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Google.Apis.Core.dll</HintPath>
-      </Reference>
-      <Reference Include="Google.Apis.Sheets.v4">
-        <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Google.Apis.Sheets.v4.dll</HintPath>
-      </Reference>
-      <Reference Include="Newtonsoft.Json">
-        <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Newtonsoft.Json.dll</HintPath>
-      </Reference>
-      <Reference Include="System.Threading.Tasks.Extensions">
-        <HintPath>..\C4G.Unity\Assets\C4G\Plugins\System.Threading.Tasks.Extensions.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
+  <ItemGroup>
+    <Compile Include="..\C4G.Unity\Assets\C4G\Core\**\*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Google.Apis">
+      <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Google.Apis.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth">
+      <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Google.Apis.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Core">
+      <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Google.Apis.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Sheets.v4">
+      <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Google.Apis.Sheets.v4.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\C4G.Unity\Assets\C4G\Plugins\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions">
+      <HintPath>..\C4G.Unity\Assets\C4G\Plugins\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
