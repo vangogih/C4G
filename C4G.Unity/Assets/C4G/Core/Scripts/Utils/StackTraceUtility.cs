@@ -35,7 +35,7 @@ namespace C4G.Core.Utils
                 MethodBase method = frame.GetMethod();
                 string methodName = FormatMethodName(method);
 
-                result.AppendLine($"{methodName} () (at {fileName}:{lineNumber})");
+                result.Append($"{methodName} () (at <a href=\"{fileName}\" line=\"{lineNumber}\">{fileName}:{lineNumber}</a>)\n");
             }
 
             return result.ToString();
