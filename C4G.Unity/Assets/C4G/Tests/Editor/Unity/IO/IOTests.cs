@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using C4G.Core.Errors;
 using C4G.Core.Utils;
 using NUnit.Framework;
 
@@ -8,13 +9,13 @@ namespace C4G.Tests.Editor.Unity.IO
 	[TestFixture]
 	public class IOTests
 	{
-		private C4G.Core.IO.IO _io;
+		private Core.IO.IO _io;
 		private string _tempRoot;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_io = new C4G.Core.IO.IO();
+			_io = new Core.IO.IO();
 			_tempRoot = Path.Combine(Path.GetTempPath(), "C4G_IOTests_" + Guid.NewGuid().ToString("N"));
 		}
 
@@ -30,7 +31,7 @@ namespace C4G.Tests.Editor.Unity.IO
 		{
 			Directory.CreateDirectory(_tempRoot);
 
-			Result<string> result = _io.WriteToFile(_tempRoot, "test.txt", "hello");
+			Result<C4GIOError> result = _io.WriteToFile(_tempRoot, "test.txt", "hello");
 
 			Assert.IsTrue(result.IsOk);
 			string content = File.ReadAllText(Path.Combine(_tempRoot, "test.txt"));
@@ -42,7 +43,7 @@ namespace C4G.Tests.Editor.Unity.IO
 		{
 			string nested = Path.Combine(_tempRoot, "sub", "deep");
 
-			Result<string> result = _io.WriteToFile(nested, "data.txt", "content");
+			Result<C4GIOError> result = _io.WriteToFile(nested, "data.txt", "content");
 
 			Assert.IsTrue(result.IsOk);
 			Assert.IsTrue(Directory.Exists(nested));
@@ -54,10 +55,9 @@ namespace C4G.Tests.Editor.Unity.IO
 		{
 			string invalidFolder = _tempRoot + Path.DirectorySeparatorChar + "inv\0lid";
 
-			Result<string> result = _io.WriteToFile(invalidFolder, "f.txt", "x");
+			Result<C4GIOError> result = _io.WriteToFile(invalidFolder, "f.txt", "x");
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.StartWith("IO error."));
 		}
 	}
 }

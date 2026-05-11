@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using C4G.Core;
 using C4G.Core.CodeGeneration;
 using C4G.Core.ConfigsSerialization;
+using C4G.Core.Errors;
 using C4G.Core.GoogleInteraction;
 using C4G.Core.IO;
 using C4G.Core.Utils;
@@ -116,7 +117,7 @@ namespace C4G.Editor
             {
                 C4GFacade c4gFacade = new C4GFacade(_settingsProvider, new GoogleInteraction(), new IO(), new CodeGenerator(), new ConfigsSerializer());
 
-                Task<Result<string>> c4gRunTask = c4gFacade.RunAsync(cts.Token);
+                Task<Result<C4GErrorBase>> c4gRunTask = c4gFacade.RunAsync(cts.Token);
                 while (!c4gRunTask.IsCompleted && !c4gRunTask.IsCanceled && !c4gRunTask.IsFaulted)
                 {
                     if (EditorUtility.DisplayCancelableProgressBar("C4G", "Loading...", 0.5f))
@@ -125,7 +126,7 @@ namespace C4G.Editor
                     await Task.Delay(50, cts.Token);
                 }
 
-                Result<string> c4gRunResult = await c4gRunTask;
+                Result<C4GErrorBase> c4gRunResult = await c4gRunTask;
 
                 if (c4gRunResult.IsOk)
                     Debug.Log($"{LOG_TAG} Successful Run");

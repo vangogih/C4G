@@ -1,4 +1,5 @@
 ﻿using System;
+using C4G.Core.Errors;
 using C4G.Core.Utils;
 
 namespace C4G.Core.ConfigsSerialization.SimpleTypeParsers
@@ -8,9 +9,9 @@ namespace C4G.Core.ConfigsSerialization.SimpleTypeParsers
     {
         Type IC4GTypeParser.ParsingType { get; } =  typeof(string);
 
-        Result<object, string> IC4GTypeParser.Parse(string value)
+        Result<object, C4GConfigsSerializationError> IC4GTypeParser.Parse(string value)
         {
-            return Result<object, string>.FromValue(value);
+            return Result<object, C4GConfigsSerializationError>.FromValue(value);
         }
     }
 }

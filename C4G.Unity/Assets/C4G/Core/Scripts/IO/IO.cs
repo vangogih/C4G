@@ -1,12 +1,13 @@
 using System;
 using System.IO;
+using C4G.Core.Errors;
 using C4G.Core.Utils;
 
 namespace C4G.Core.IO
 {
     public class IO : IIO
     {
-        public Result<string> WriteToFile(string folderPath, string fileName, string fileContents)
+        public Result<C4GIOError> WriteToFile(string folderPath, string fileName, string fileContents)
         {
             try
             {
@@ -18,10 +19,10 @@ namespace C4G.Core.IO
             }
             catch (Exception e)
             {
-                return Result<string>.FromError($"IO error. {e}");
+                return Result<C4GIOError>.FromError(new C4GIOError($"Exception during C4G IO.\n{e}", null));
             }
 
-            return Result<string>.Ok;
+            return Result<C4GIOError>.Ok;
         }
     }
 }

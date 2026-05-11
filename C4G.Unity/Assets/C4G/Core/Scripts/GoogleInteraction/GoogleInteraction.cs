@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using C4G.Core.Errors;
 using C4G.Core.Utils;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Responses;
@@ -17,10 +18,10 @@ namespace C4G.Core.GoogleInteraction
 	[ExcludeFromCodeCoverage]
 	public sealed class GoogleInteraction : IGoogleInteraction
 	{
-		public async Task<Result<IList<IList<object>>, string>> LoadSheetAsync(string sheetName, string tableId, string clientSecret, CancellationToken ct)
+		public async Task<Result<IList<IList<object>>, C4GGoogleInteractionError>> LoadSheetAsync(string sheetName, string tableId, string clientSecret, CancellationToken ct)
 		{
 			if (ct.IsCancellationRequested)
-				return Result<IList<IList<object>>, string>.FromError("Google interaction. Task cancelled");
+				return Result<IList<IList<object>>, C4GGoogleInteractionError>.FromError(new C4GGoogleInteractionError("Google load sheet called with already cancelled token", null));
 
 			var clientSecretBytes = Encoding.UTF8.GetBytes(clientSecret);
 			var clientSecretMemoryStream = new MemoryStream(clientSecretBytes);
@@ -51,7 +52,7 @@ namespace C4G.Core.GoogleInteraction
 				dataStore);
 		}
 
-		private static async Task<Result<IList<IList<object>>, string>> ExecuteSheetRequestAsync(UserCredential credential, string tableId, string sheetName, CancellationToken ct)
+		private static async Task<Result<IList<IList<object>>, C4GGoogleInteractionError>> ExecuteSheetRequestAsync(UserCredential credential, string tableId, string sheetName, CancellationToken ct)
 		{
 			var sheetsService = new SheetsService(new BaseClientService.Initializer
 			{
@@ -62,7 +63,7 @@ namespace C4G.Core.GoogleInteraction
 			SpreadsheetsResource.ValuesResource.GetRequest request = sheetsService.Spreadsheets.Values.Get(tableId, sheetName);
 			ValueRange response = await request.ExecuteAsync(ct);
 
-			return Result<IList<IList<object>>, string>.FromValue(response.Values);
+			return Result<IList<IList<object>>, C4GGoogleInteractionError>.FromValue(response.Values);
 		}
 	}
 }

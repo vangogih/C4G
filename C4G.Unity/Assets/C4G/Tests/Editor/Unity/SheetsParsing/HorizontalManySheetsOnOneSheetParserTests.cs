@@ -419,7 +419,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("invalid name"));
+            Assert.IsTrue(result.Error.Message.Contains("invalid name"));
         }
 
         [Test]
@@ -440,7 +440,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("invalid name"));
+            Assert.IsTrue(result.Error.Message.Contains("invalid name"));
         }
 
         [Test]
@@ -459,7 +459,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("no matching starts"));
+            Assert.IsTrue(result.Error.Message.Contains("no matching starts"));
         }
 
         [Test]
@@ -479,7 +479,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("no matching ends"));
+            Assert.IsTrue(result.Error.Message.Contains("no matching ends"));
         }
 
         [Test]
@@ -500,7 +500,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("different name"));
+            Assert.IsTrue(result.Error.Message.Contains("different name"));
         }
 
         [Test]
@@ -523,7 +523,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("< expected"));
+            Assert.IsTrue(result.Error.Message.Contains("< expected"));
         }
 
         [Test]
@@ -546,7 +546,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("with different name"));
+            Assert.IsTrue(result.Error.Message.Contains("with different name"));
         }
 
         [Test]
@@ -569,7 +569,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("no matching starts"));
+            Assert.IsTrue(result.Error.Message.Contains("no matching starts"));
         }
 
         [Test]
@@ -591,7 +591,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("no matching ends"));
+            Assert.IsTrue(result.Error.Message.Contains("no matching ends"));
         }
 
         [Test]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using C4G.Core.Errors;
 using C4G.Core.Utils;
 
 namespace C4G.Core.SheetsParsing
@@ -7,9 +8,9 @@ namespace C4G.Core.SheetsParsing
     [Serializable]
     public sealed class VerticalManyConfigsOnOneSheetParser : SheetParserBase
     {
-        public override Result<string> ParseToList(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
+        public override Result<C4GSheetsParsingError> ParseToList(string sheetName, IList<IList<object>> sheetData, List<ParsedConfig> parsedConfigs)
         {
-            Result<List<ConfigFrame>, string> parseConfigFramesResult = SheetsParsingUtils.ParseConfigFrames(sheetName, sheetData);
+            Result<List<ConfigFrame>, C4GSheetsParsingError> parseConfigFramesResult = SheetsParsingUtils.ParseConfigFrames(sheetName, sheetData);
             if (!parseConfigFramesResult.IsOk)
                 return parseConfigFramesResult.WithoutValue();
 
@@ -19,7 +20,7 @@ namespace C4G.Core.SheetsParsing
             {
                 ConfigFrame configFrame = configFrames[sheetIndex];
 
-                var parseVerticalResult = SheetsParsingUtils.ParseVertical(
+                Result<ParsedConfig, C4GSheetsParsingError> parseVerticalResult = SheetsParsingUtils.ParseVertical(
                     configFrame.Name,
                     sheetData,
                     startRowIndex: configFrame.StartRowIndex + 1,
@@ -28,12 +29,12 @@ namespace C4G.Core.SheetsParsing
                     endColumnIndex: configFrame.EndColumnIndex - 1);
 
                 if (!parseVerticalResult.IsOk)
-                    return Result<string>.FromError(parseVerticalResult.Error);
+                    return parseVerticalResult.WithoutValue();
 
                 parsedConfigs.Add(parseVerticalResult.Value);
             }
 
-            return Result<string>.Ok;
+            return Result<C4GSheetsParsingError>.Ok;
         }
     }
 }

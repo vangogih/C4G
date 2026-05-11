@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
+using C4G.Core.Errors;
 using C4G.Core.Utils;
 
 namespace C4G.Core.SheetsParsing
 {
     public sealed class SheetsParsingFacade
     {
-        public Result<string> ParseSheetToList(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, List<ParsedConfig> parsedConfigs)
+        public Result<C4GSheetsParsingError> ParseSheetToList(string sheetName, IList<IList<object>> sheetData, SheetParserBase parserBase, List<ParsedConfig> parsedConfigs)
         {
             if (!ValidateParameters(sheetName, sheetData, parserBase, parsedConfigs, out string error))
-                return Result<string>.FromError(error);
+                return Result<C4GSheetsParsingError>.FromError(new C4GSheetsParsingError(error, null));
 
-            Result<string> result = parserBase.ParseToList(sheetName, sheetData, parsedConfigs);
+            Result<C4GSheetsParsingError> result = parserBase.ParseToList(sheetName, sheetData, parsedConfigs);
             if (!result.IsOk)
                 return result;
 
@@ -59,25 +60,25 @@ namespace C4G.Core.SheetsParsing
 
             if (string.IsNullOrEmpty(sheetName))
             {
-                error = "Sheets parsing error. Sheet name must be not null or empty";
+                error = "Sheet name must be not null or empty";
                 return false;
             }
 
             if (parserBase == null)
             {
-                error = $"Sheets parsing error '{sheetName}'. Parser must be provided";
+                error = $"'{sheetName}'. Parser must be provided";
                 return false;
             }
 
             if (sheetData == null)
             {
-                error = $"Sheets parsing error '{sheetName}'. Sheet data must be not null";
+                error = $"'{sheetName}'. Sheet data must be not null";
                 return false;
             }
 
             if (parsedConfigs == null)
             {
-                error = $"Sheets parsing error '{sheetName}'. Parsed configs list must not be null";
+                error = $" '{sheetName}'. Parsed configs list must not be null";
                 return false;
             }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using C4G.Core.Errors;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
@@ -42,7 +43,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 }";
 
                 // Act
-                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
+                Result<string, C4GConfigsSerializationError> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -68,7 +69,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 }";
 
                 // Act
-                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
+                Result<string, C4GConfigsSerializationError> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -93,7 +94,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 }";
 
                 // Act
-                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
+                Result<string, C4GConfigsSerializationError> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -122,12 +123,12 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                     });
 
                 // Act
-                Result<string, string> nullNameResult = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfigWithNullName }, _parsersByName);
-                Result<string, string> nullPropertiesResult =
+                Result<string, C4GConfigsSerializationError> nullNameResult = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfigWithNullName }, _parsersByName);
+                Result<string, C4GConfigsSerializationError> nullPropertiesResult =
                     _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfigWithNullProperties }, _parsersByName);
-                Result<string, string> nullEntitiesResult =
+                Result<string, C4GConfigsSerializationError> nullEntitiesResult =
                     _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfigWithNullEntities }, _parsersByName);
-                Result<string, string> mismatchedDataResult =
+                Result<string, C4GConfigsSerializationError> mismatchedDataResult =
                     _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfigWithMismatchedData }, _parsersByName);
 
                 // Assert
@@ -154,7 +155,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
                 var parsedConfig = new ParsedConfig(name, properties, entities);
 
                 // Act
-                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
+                Result<string, C4GConfigsSerializationError> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
 
                 // Assert
                 Assert.IsFalse(output.IsOk);
@@ -194,7 +195,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 }";
 
                 // Act
-                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
+                Result<string, C4GConfigsSerializationError> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -240,7 +241,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 }";
 
                 // Act
-                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
+                Result<string, C4GConfigsSerializationError> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -282,7 +283,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 }";
 
                 // Act
-                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
+                Result<string, C4GConfigsSerializationError> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);
@@ -343,7 +344,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 }";
 
                 // Act
-                Result<string, string> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
+                Result<string, C4GConfigsSerializationError> output = _configsSerializer.SerializeParsedConfigsAsJsonObject(new List<ParsedConfig> { parsedConfig }, _parsersByName);
 
                 // Assert
                 Assert.IsTrue(output.IsOk);

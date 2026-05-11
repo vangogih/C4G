@@ -207,7 +207,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("< 3"));
+            Assert.IsTrue(result.Error.Message.Contains("< 3"));
         }
 
         [Test]
@@ -229,7 +229,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("< 1"));
+            Assert.IsTrue(result.Error.Message.Contains("< 1"));
         }
 
         [Test]
@@ -251,7 +251,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("< expected"));
+            Assert.IsTrue(result.Error.Message.Contains("< expected"));
         }
 
         [Test]
@@ -272,7 +272,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("must contain property name"));
+            Assert.IsTrue(result.Error.Message.Contains("must contain property name"));
         }
 
         [Test]
@@ -293,7 +293,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("must contain property type"));
+            Assert.IsTrue(result.Error.Message.Contains("must contain property type"));
         }
 
         [Test]
@@ -314,7 +314,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("must contain property name"));
+            Assert.IsTrue(result.Error.Message.Contains("must contain property name"));
         }
 
         [Test]
@@ -335,7 +335,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.IsTrue(result.Error.Contains("must contain property type"));
+            Assert.IsTrue(result.Error.Message.Contains("must contain property type"));
         }
     }
 }

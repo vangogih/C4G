@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using C4G.Core.Errors;
 using C4G.Core.Utils;
 
 namespace C4G.Core.ConfigsSerialization.SimpleTypeParsers
@@ -9,11 +10,11 @@ namespace C4G.Core.ConfigsSerialization.SimpleTypeParsers
     {
         Type IC4GTypeParser.ParsingType { get; } = typeof(double);
 
-        Result<object, string> IC4GTypeParser.Parse(string value)
+        Result<object, C4GConfigsSerializationError> IC4GTypeParser.Parse(string value)
         {
             return double.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double doubleValue)
-                ? Result<object, string>.FromValue(doubleValue)
-                : Result<object, string>.FromError($"Could not parse '{value}' as double");
+                ? Result<object, C4GConfigsSerializationError>.FromValue(doubleValue)
+                : Result<object, C4GConfigsSerializationError>.FromError(new C4GConfigsSerializationError($"Could not parse '{value}' as double", null));
         }
     }
 }

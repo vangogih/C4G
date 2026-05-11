@@ -20,7 +20,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 				startRowIndex: -1, startColumnIndex: 0, endRowIndex: 0, endColumnIndex: 2);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Start row index"));
+			Assert.That(result.Error.Message, Does.Contain("Start row index"));
 		}
 
 		[Test]
@@ -35,7 +35,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 				startRowIndex: 0, startColumnIndex: -1, endRowIndex: 0, endColumnIndex: 2);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Start column index"));
+			Assert.That(result.Error.Message, Does.Contain("Start column index"));
 		}
 
 		[Test]
@@ -50,7 +50,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 				startRowIndex: 0, startColumnIndex: 0, endRowIndex: 5, endColumnIndex: 2);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Rows amount"));
+			Assert.That(result.Error.Message, Does.Contain("Rows amount"));
 		}
 
 		[Test]
@@ -67,7 +67,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 				startRowIndex: -1, startColumnIndex: 0, endRowIndex: 2, endColumnIndex: 0);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Start row index"));
+			Assert.That(result.Error.Message, Does.Contain("Start row index"));
 		}
 
 		[Test]
@@ -84,7 +84,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 				startRowIndex: 0, startColumnIndex: -1, endRowIndex: 2, endColumnIndex: 0);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Start column index"));
+			Assert.That(result.Error.Message, Does.Contain("Start column index"));
 		}
 
 		[Test]
@@ -101,7 +101,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 				startRowIndex: 0, startColumnIndex: 0, endRowIndex: 10, endColumnIndex: 0);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Rows amount"));
+			Assert.That(result.Error.Message, Does.Contain("Rows amount"));
 		}
 
 		[Test]
@@ -116,7 +116,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			var result = SheetsParsingUtils.ParseConfigFrames("S", sheetData);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("no matching starts"));
+			Assert.That(result.Error.Message, Does.Contain("no matching starts"));
 		}
 	}
 }
