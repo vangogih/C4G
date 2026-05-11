@@ -29,7 +29,7 @@ namespace C4G.Tests.Editor.Unity
 		{
 			var configs = new List<ParsedConfig>
 			{
-				new ParsedConfig("Monster", new List<ParsedPropertyInfo>(), new List<List<string>>())
+				new ParsedConfig("Monster", new ParsedPropertyInfo[0], new List<List<string>>())
 			};
 
 			Result<string, string> output = _codeGenerator.GenerateRootConfigClass("GameConfig", configs);
@@ -44,8 +44,8 @@ namespace C4G.Tests.Editor.Unity
 		{
 			var configs = new List<ParsedConfig>
 			{
-				new ParsedConfig("Hero", new List<ParsedPropertyInfo>(), new List<List<string>>()),
-				new ParsedConfig("Item", new List<ParsedPropertyInfo>(), new List<List<string>>())
+				new ParsedConfig("Hero", new ParsedPropertyInfo[0], new List<List<string>>()),
+				new ParsedConfig("Item", new ParsedPropertyInfo[0], new List<List<string>>())
 			};
 
 			Result<string, string> output = _codeGenerator.GenerateRootConfigClass("Root", configs);
@@ -74,7 +74,7 @@ namespace C4G.Tests.Editor.Unity
 			parser.ParsingType.Returns(typeof(DateTime));
 			_parsersByName = new Dictionary<string, IC4GTypeParser> { { "Timestamp", parser } };
 
-			var propertyInfos = new List<ParsedPropertyInfo>
+			var propertyInfos = new ParsedPropertyInfo[]
 			{
 				new ParsedPropertyInfo("CreatedAt", "Timestamp")
 			};
@@ -89,7 +89,7 @@ namespace C4G.Tests.Editor.Unity
 		[Test]
 		public void GenerateDTOClass_WithBaseClass_ViaCodeWriter()
 		{
-			var propertyInfos = new List<ParsedPropertyInfo>
+			var propertyInfos = new ParsedPropertyInfo[]
 			{
 				new ParsedPropertyInfo("Id", "int")
 			};
@@ -127,7 +127,7 @@ namespace C4G.Tests.Editor.Unity
 			parser.ParsingType.Returns(typeParam);
 			var aliases = new Dictionary<string, IC4GTypeParser> { { "NullFullName", parser } };
 
-			var props = new List<ParsedPropertyInfo>
+			var props = new ParsedPropertyInfo[]
 			{
 				new ParsedPropertyInfo("Val", "NullFullName")
 			};
@@ -153,7 +153,7 @@ namespace C4G.Tests.Editor.Unity
 			parser.ParsingType.Returns(constructedGeneric);
 			var aliases = new Dictionary<string, IC4GTypeParser> { { "GenAlias", parser } };
 
-			var props = new List<ParsedPropertyInfo>
+			var props = new ParsedPropertyInfo[]
 			{
 				new ParsedPropertyInfo("Val", "GenAlias")
 			};

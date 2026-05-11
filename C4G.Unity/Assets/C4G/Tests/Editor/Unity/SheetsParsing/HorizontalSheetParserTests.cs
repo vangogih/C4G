@@ -28,7 +28,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
                 new List<object> { "Range", "double", "8.5", "35.1", "33" },
                 new List<object> { "Slots", "List<int>", "1,2,3", "5,6,8", "3,5" }
             };
-            var expectedProperties = new List<ParsedPropertyInfo>
+            var expectedProperties = new ParsedPropertyInfo[]
             {
                 new ParsedPropertyInfo("Id", "int"),
                 new ParsedPropertyInfo("Name", "string"),

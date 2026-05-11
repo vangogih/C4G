@@ -22,8 +22,8 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 			[Test]
 			public void SerializeParsedConfigs_DuplicateSheetName_ReturnsError()
 			{
-				var config1 = new ParsedConfig("Dup", new List<ParsedPropertyInfo>(), new List<List<string>>());
-				var config2 = new ParsedConfig("Dup", new List<ParsedPropertyInfo>(), new List<List<string>>());
+				var config1 = new ParsedConfig("Dup", new ParsedPropertyInfo[0], new List<List<string>>());
+				var config2 = new ParsedConfig("Dup", new ParsedPropertyInfo[0], new List<List<string>>());
 
 				Result<string, string> result = _configsSerializer.SerializeParsedConfigsAsJsonObject(
 					new List<ParsedConfig> { config1, config2 }, _parsersByName);
@@ -35,7 +35,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 			[Test]
 			public void SerializeParsedConfigs_DuplicatePropertyNames_ReturnsError()
 			{
-				var properties = new List<ParsedPropertyInfo>
+				var properties = new ParsedPropertyInfo[]
 				{
 					new ParsedPropertyInfo("Id", "int"),
 					new ParsedPropertyInfo("Id", "int")
@@ -56,7 +56,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 			[Test]
 			public void ParseToEntitiesList_NullName_ReturnsError()
 			{
-				var config = new ParsedConfig(null, new List<ParsedPropertyInfo>(), new List<List<string>>());
+				var config = new ParsedConfig(null, new ParsedPropertyInfo[0], new List<List<string>>());
 
 				var result = _configsSerializer.ParseToEntitiesList(config, _parsersByName);
 
@@ -76,7 +76,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 			[Test]
 			public void ParseToEntitiesList_NullEntities_ReturnsError()
 			{
-				var config = new ParsedConfig("Name", new List<ParsedPropertyInfo>(), null);
+				var config = new ParsedConfig("Name", new ParsedPropertyInfo[0], null);
 
 				var result = _configsSerializer.ParseToEntitiesList(config, _parsersByName);
 
@@ -92,7 +92,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 				};
 				var serializer = new ConfigsSerializer(brokenParsers);
 
-				var properties = new List<ParsedPropertyInfo>
+				var properties = new ParsedPropertyInfo[]
 				{
 					new ParsedPropertyInfo("Items", "xList<int>y")
 				};
@@ -118,7 +118,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 				};
 				var serializer = new ConfigsSerializer(brokenParsers);
 
-				var properties = new List<ParsedPropertyInfo>
+				var properties = new ParsedPropertyInfo[]
 				{
 					new ParsedPropertyInfo("Items", "List<int>")
 				};
