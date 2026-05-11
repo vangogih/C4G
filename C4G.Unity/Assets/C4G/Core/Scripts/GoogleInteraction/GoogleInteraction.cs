@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -25,7 +26,16 @@ namespace C4G.Core.GoogleInteraction
 
 			var clientSecretBytes = Encoding.UTF8.GetBytes(clientSecret);
 			var clientSecretMemoryStream = new MemoryStream(clientSecretBytes);
-			GoogleClientSecrets googleClientSecrets = await GoogleClientSecrets.FromStreamAsync(clientSecretMemoryStream, ct);
+            GoogleClientSecrets googleClientSecrets;
+            try
+			{
+				googleClientSecrets = await GoogleClientSecrets.FromStreamAsync(clientSecretMemoryStream, ct);
+			}
+			catch (Exception e)
+			{
+				return Result<IList<IList<object>>, C4GGoogleInteractionError>.FromError(new C4GGoogleInteractionError($"Exception during google client secret reading\n{e}"));
+			}
+			
 			var dataStore = new FileDataStore("C4G");
 
 			UserCredential credential = await AuthorizeAsync(googleClientSecrets, dataStore, ct);
@@ -61,9 +71,15 @@ namespace C4G.Core.GoogleInteraction
 			});
 
 			SpreadsheetsResource.ValuesResource.GetRequest request = sheetsService.Spreadsheets.Values.Get(tableId, sheetName);
-			ValueRange response = await request.ExecuteAsync(ct);
-
-			return Result<IList<IList<object>>, C4GGoogleInteractionError>.FromValue(response.Values);
+			try
+			{
+				ValueRange response = await request.ExecuteAsync(ct);
+				return Result<IList<IList<object>>, C4GGoogleInteractionError>.FromValue(response.Values);
+			}
+			catch (Exception e)
+			{
+				return Result<IList<IList<object>>, C4GGoogleInteractionError>.FromError(new C4GGoogleInteractionError($"Exception during sheet '{sheetName}' get request'\n{e}"));
+			}
 		}
 	}
 }
