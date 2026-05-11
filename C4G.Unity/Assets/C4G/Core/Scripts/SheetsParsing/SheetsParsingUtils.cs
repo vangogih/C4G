@@ -18,7 +18,7 @@ namespace C4G.Core.SheetsParsing
     {
         internal static Result<ParsedConfig, C4GSheetsParsingError> ParseHorizontal(string sheetName, IList<IList<object>> sheetData, int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
         {
-            string errorPrefix = $"C4G Error. Sheet name '{sheetName}'. ";
+            string errorPrefix = $"Sheet name '{sheetName}'. ";
 
             string validationError = ValidateIndicesHorizontal(sheetName, startRowIndex, startColumnIndex, endRowIndex, endColumnIndex);
             if (!string.IsNullOrEmpty(validationError))
