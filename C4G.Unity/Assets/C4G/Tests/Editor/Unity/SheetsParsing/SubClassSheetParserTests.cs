@@ -7,12 +7,12 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
     [TestFixture]
     public class SubClassSheetParserTests
     {
-        private Core.SheetsParsing.SheetsParsing _sheetsParsing;
+        private SheetsParsingFacade _sheetsParsingFacade;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            _sheetsParsing = new Core.SheetsParsing.SheetsParsing();
+            _sheetsParsingFacade = new SheetsParsingFacade();
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -71,7 +71,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -104,7 +104,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -137,7 +137,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -176,7 +176,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 
             // Act
             var parsedConfigs = new List<ParsedConfig>();
-            var result = _sheetsParsing.ParseSheetToList(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
+            var result = _sheetsParsingFacade.ParseSheetToList(sheetName, sheetData, new VerticalSheetParser(), parsedConfigs);
 
             // Assert
             Assert.IsTrue(result.IsOk);
