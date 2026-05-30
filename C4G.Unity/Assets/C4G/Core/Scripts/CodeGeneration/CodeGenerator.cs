@@ -11,6 +11,7 @@ namespace C4G.Core.CodeGeneration
     public sealed class CodeGenerator : ICodeGenerator
     {
         private readonly CodeWriter _codeWriter = new CodeWriter("    ");
+        private readonly List<string> _resolvedTypes = new(); 
 
         public Result<string, C4GCodeGenerationError> GenerateDTOClass(ParsedConfig parsedConfig, IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
         {
@@ -19,6 +20,22 @@ namespace C4G.Core.CodeGeneration
                 return Result<string, C4GCodeGenerationError>.FromError(new C4GCodeGenerationError(error, null));
 
             _codeWriter.Clear();
+            _resolvedTypes.Clear();
+
+            for (int i = 0; i < parsedConfig.Properties.Length; i++)
+            {
+                ParsedPropertyInfo property = parsedConfig.Properties[i];
+                string actualType = ResolveType(property.Type, aliasParsersByName, out bool isAlias);
+                if (isAlias && !string.Equals(property.Type, actualType, StringComparison.Ordinal))
+                {
+                    _codeWriter.AddUsing($"{property.Type} = {actualType}");
+                    _resolvedTypes.Add(property.Type);
+                }
+                else
+                {
+                    _resolvedTypes.Add(actualType);
+                }
+            }
 
             _codeWriter
                 .AddUsing("System.Collections.Generic")
@@ -34,18 +51,18 @@ namespace C4G.Core.CodeGeneration
                                 ParsedPropertyInfo property = parsedConfig.Properties[j];
                                 if (property.SubTypeIndex == i)
                                 {
-                                    string actualType = ResolveType(property.Type, aliasParsersByName);
+                                    string actualType = _resolvedTypes[j];
                                     w1.WritePublicProperty(property.Name, actualType);
                                 }
                             }
                         });
                     }
-                    for (int propertyIndex = 0; propertyIndex < parsedConfig.Properties.Length; propertyIndex++)
+                    for (int i = 0; i < parsedConfig.Properties.Length; i++)
                     {
-                        ParsedPropertyInfo property = parsedConfig.Properties[propertyIndex];
+                        ParsedPropertyInfo property = parsedConfig.Properties[i];
                         if (property.SubTypeIndex < 0)
                         {
-                            string actualType = ResolveType(property.Type, aliasParsersByName);
+                            string actualType = _resolvedTypes[i];
                             w.WritePublicProperty(property.Name, actualType);
                         }
                     }
@@ -81,10 +98,14 @@ namespace C4G.Core.CodeGeneration
             return Result<string, C4GCodeGenerationError>.FromValue(generatedClass);
         }
 
-        private string ResolveType(string type, IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
+        private string ResolveType(string type, IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName, out bool isAlias)
         {
+            isAlias = false;
+
             if (aliasParsersByName.TryGetValue(type, out IC4GTypeParser parser))
             {
+                isAlias = true;
+
                 var stack = new Stack<object>();
                 var result = new StringBuilder();
 
