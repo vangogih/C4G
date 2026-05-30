@@ -14,7 +14,6 @@ namespace C4G.Tests.Editor.Unity.Utils
 			Assert.IsTrue(result.IsOk);
 			Assert.AreEqual(42, result.Value);
 			Assert.IsNull(result.Error);
-			Assert.IsNull(result.StackTrace);
 		}
 
 		[Test]
@@ -24,7 +23,6 @@ namespace C4G.Tests.Editor.Unity.Utils
 
 			Assert.IsFalse(result.IsOk);
 			Assert.AreEqual("fail", result.Error);
-			Assert.IsNotNull(result.StackTrace);
 			Assert.AreEqual(default(int), result.Value);
 		}
 
@@ -48,7 +46,6 @@ namespace C4G.Tests.Editor.Unity.Utils
 
 			Assert.That(text, Does.Contain("IsOk - False"));
 			Assert.That(text, Does.Contain("Error - broken"));
-			Assert.That(text, Does.Contain("StackTrace"));
 		}
 
 		[Test]
@@ -58,7 +55,6 @@ namespace C4G.Tests.Editor.Unity.Utils
 
 			Assert.IsTrue(result.IsOk);
 			Assert.IsNull(result.Error);
-			Assert.IsNull(result.StackTrace);
 		}
 
 		[Test]
@@ -68,7 +64,6 @@ namespace C4G.Tests.Editor.Unity.Utils
 
 			Assert.IsFalse(result.IsOk);
 			Assert.AreEqual("oops", result.Error);
-			Assert.IsNotNull(result.StackTrace);
 		}
 
 		[Test]
@@ -90,7 +85,6 @@ namespace C4G.Tests.Editor.Unity.Utils
 
 			Assert.IsFalse(result.IsOk);
 			Assert.AreEqual("inner", result.Error);
-			Assert.AreEqual(source.StackTrace, result.StackTrace);
 		}
 
 		[Test]
@@ -113,7 +107,6 @@ namespace C4G.Tests.Editor.Unity.Utils
 
 			Assert.That(text, Does.Contain("IsOk - False"));
 			Assert.That(text, Does.Contain("Error - bad"));
-			Assert.That(text, Does.Contain("StackTrace"));
 		}
 
 		[Test]

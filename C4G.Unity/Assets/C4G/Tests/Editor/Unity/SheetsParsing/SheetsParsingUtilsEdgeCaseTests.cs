@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using C4G.Core.Errors;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
@@ -22,7 +23,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			var sheetData = new List<IList<object>>();
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -37,7 +38,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -52,7 +53,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new VerticalSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new VerticalSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -68,7 +69,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalManyConfigsOnOneSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalManyConfigsOnOneSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -83,7 +84,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalManyConfigsOnOneSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalManyConfigsOnOneSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -98,7 +99,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalManyConfigsOnOneSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalManyConfigsOnOneSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -112,7 +113,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalManyConfigsOnOneSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalManyConfigsOnOneSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -126,10 +127,10 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("End column index"));
+			Assert.That(result.Error.Message, Does.Contain("End column index"));
 		}
 
 		[Test]
@@ -141,10 +142,10 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("End column index"));
+			Assert.That(result.Error.Message, Does.Contain("End column index"));
 		}
 
 		[Test]
@@ -156,10 +157,10 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalManyConfigsOnOneSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalManyConfigsOnOneSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Start row index"));
+			Assert.That(result.Error.Message, Does.Contain("Start row index"));
 		}
 
 		[Test]
@@ -173,10 +174,10 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalManyConfigsOnOneSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new HorizontalManyConfigsOnOneSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("End column index"));
+			Assert.That(result.Error.Message, Does.Contain("End column index"));
 		}
 
 		[Test]
@@ -190,10 +191,10 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new VerticalManyConfigsOnOneSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new VerticalManyConfigsOnOneSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("End row index"));
+			Assert.That(result.Error.Message, Does.Contain("End row index"));
 		}
 
 		[Test]
@@ -209,10 +210,10 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new VerticalManyConfigsOnOneSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new VerticalManyConfigsOnOneSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Start column index"));
+			Assert.That(result.Error.Message, Does.Contain("Start column index"));
 		}
 
 		[Test]
@@ -228,7 +229,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new VerticalManyConfigsOnOneSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new VerticalManyConfigsOnOneSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -246,7 +247,7 @@ namespace C4G.Tests.Editor.Unity.SheetsParsing
 			};
 			var configs = new List<ParsedConfig>();
 
-			Result<string> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new VerticalManyConfigsOnOneSheetParser(), configs);
+			Result<C4GSheetsParsingError> result = _sheetsParsingFacade.ParseSheetToList("S", sheetData, new VerticalManyConfigsOnOneSheetParser(), configs);
 
 			Assert.IsFalse(result.IsOk);
 		}

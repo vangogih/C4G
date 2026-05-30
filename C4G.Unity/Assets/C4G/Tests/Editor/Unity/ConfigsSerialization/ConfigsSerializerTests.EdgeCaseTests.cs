@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using C4G.Core.ConfigsSerialization;
+using C4G.Core.Errors;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NUnit.Framework;
@@ -14,7 +15,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 			[Test]
 			public void SerializeParsedConfigs_NullInput_ReturnsError()
 			{
-				Result<string, string> result = _configsSerializer.SerializeParsedConfigsAsJsonObject(null, _parsersByName);
+				Result<string, C4GConfigsSerializationError> result = _configsSerializer.SerializeParsedConfigsAsJsonObject(null, _parsersByName);
 
 				Assert.IsFalse(result.IsOk);
 			}
@@ -25,11 +26,11 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 				var config1 = new ParsedConfig("Dup", new ParsedPropertyInfo[0], new List<List<string>>());
 				var config2 = new ParsedConfig("Dup", new ParsedPropertyInfo[0], new List<List<string>>());
 
-				Result<string, string> result = _configsSerializer.SerializeParsedConfigsAsJsonObject(
+				Result<string, C4GConfigsSerializationError> result = _configsSerializer.SerializeParsedConfigsAsJsonObject(
 					new List<ParsedConfig> { config1, config2 }, _parsersByName);
 
 				Assert.IsFalse(result.IsOk);
-				Assert.That(result.Error, Does.Contain("Duplicate"));
+				Assert.That(result.Error.Message, Does.Contain("Duplicate"));
 			}
 
 			[Test]
@@ -46,11 +47,11 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 				};
 				var config = new ParsedConfig("Sheet", properties, entities);
 
-				Result<string, string> result = _configsSerializer.SerializeParsedConfigsAsJsonObject(
+				Result<string, C4GConfigsSerializationError> result = _configsSerializer.SerializeParsedConfigsAsJsonObject(
 					new List<ParsedConfig> { config }, _parsersByName);
 
 				Assert.IsFalse(result.IsOk);
-				Assert.That(result.Error, Does.Contain("duplicated"));
+				Assert.That(result.Error.Message, Does.Contain("duplicated"));
 			}
 
 			[Test]
@@ -106,7 +107,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 					new List<ParsedConfig> { config }, _parsersByName);
 
 				Assert.IsFalse(result.IsOk);
-				Assert.That(result.Error, Does.Contain("matches only part"));
+				Assert.That(result.Error.Message, Does.Contain("matches only part"));
 			}
 
 			[Test]
@@ -132,7 +133,49 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
 					new List<ParsedConfig> { config }, _parsersByName);
 
 				Assert.IsFalse(result.IsOk);
-				Assert.That(result.Error, Does.Contain("captures"));
+				Assert.That(result.Error.Message, Does.Contain("captures"));
+			}
+
+			[Test]
+			public void ParseToEntitiesList_InvalidValueInSubType_ReturnsError()
+			{
+				var properties = new ParsedPropertyInfo[]
+				{
+					new ParsedPropertyInfo("Id", "int"),
+					new ParsedPropertyInfo("Age", "int") { SubTypeIndex = 0 }
+				};
+				var entities = new List<List<string>>
+				{
+					new List<string> { "1", "not_a_number" }
+				};
+				var config = new ParsedConfig("Sheet", properties, entities);
+				config.SubTypes.Add("Person");
+
+				var result = _configsSerializer.ParseToEntitiesList(config, _parsersByName);
+
+				Assert.IsFalse(result.IsOk);
+			}
+
+			[Test]
+			public void ParseToEntitiesList_DuplicatePropertyNamesInSameSubType_ReturnsError()
+			{
+				var properties = new ParsedPropertyInfo[]
+				{
+					new ParsedPropertyInfo("Id", "int"),
+					new ParsedPropertyInfo("Name", "string") { SubTypeIndex = 0 },
+					new ParsedPropertyInfo("Name", "string") { SubTypeIndex = 0 }
+				};
+				var entities = new List<List<string>>
+				{
+					new List<string> { "1", "Alice", "Duplicate" }
+				};
+				var config = new ParsedConfig("Sheet", properties, entities);
+				config.SubTypes.Add("Person");
+
+				var result = _configsSerializer.ParseToEntitiesList(config, _parsersByName);
+
+				Assert.IsFalse(result.IsOk);
+				Assert.That(result.Error.Message, Does.Contain("duplicated"));
 			}
 		}
 	}

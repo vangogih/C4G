@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using C4G.Core.CodeGeneration;
 using C4G.Core.ConfigsSerialization;
+using C4G.Core.Errors;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NSubstitute;
@@ -32,7 +33,7 @@ namespace C4G.Tests.Editor.Unity
 				new ParsedConfig("Monster", new ParsedPropertyInfo[0], new List<List<string>>())
 			};
 
-			Result<string, string> output = _codeGenerator.GenerateRootConfigClass("GameConfig", configs);
+			Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateRootConfigClass("GameConfig", configs);
 
 			Assert.IsTrue(output.IsOk);
 			Assert.That(output.Value, Does.Contain("public partial class GameConfig"));
@@ -48,7 +49,7 @@ namespace C4G.Tests.Editor.Unity
 				new ParsedConfig("Item", new ParsedPropertyInfo[0], new List<List<string>>())
 			};
 
-			Result<string, string> output = _codeGenerator.GenerateRootConfigClass("Root", configs);
+			Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateRootConfigClass("Root", configs);
 
 			Assert.IsTrue(output.IsOk);
 			Assert.That(output.Value, Does.Contain("public partial class Root"));
@@ -61,7 +62,7 @@ namespace C4G.Tests.Editor.Unity
 		{
 			var configs = new List<ParsedConfig>();
 
-			Result<string, string> output = _codeGenerator.GenerateRootConfigClass("Empty", configs);
+			Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateRootConfigClass("Empty", configs);
 
 			Assert.IsTrue(output.IsOk);
 			Assert.That(output.Value, Does.Contain("public partial class Empty"));
@@ -80,7 +81,7 @@ namespace C4G.Tests.Editor.Unity
 			};
 			var parsedConfig = new ParsedConfig("Event", propertyInfos, new List<List<string>>());
 
-			Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+			Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
 			Assert.IsTrue(output.IsOk);
 			Assert.That(output.Value, Does.Contain("System.DateTime"));
@@ -95,7 +96,7 @@ namespace C4G.Tests.Editor.Unity
 			};
 			var parsedConfig = new ParsedConfig("Child", propertyInfos, new List<List<string>>());
 
-			Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+			Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
 			Assert.IsTrue(output.IsOk);
 			Assert.That(output.Value, Does.Contain("public partial class Child"));
@@ -133,7 +134,7 @@ namespace C4G.Tests.Editor.Unity
 			};
 			var config = new ParsedConfig("Cfg", props, new List<List<string>>());
 
-			Result<string, string> output = _codeGenerator.GenerateDTOClass(config, aliases);
+			Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(config, aliases);
 
 			Assert.IsTrue(output.IsOk);
 			Assert.That(output.Value, Does.Contain(typeParam.Name));
@@ -159,7 +160,7 @@ namespace C4G.Tests.Editor.Unity
 			};
 			var config = new ParsedConfig("Cfg2", props, new List<List<string>>());
 
-			Result<string, string> output = _codeGenerator.GenerateDTOClass(config, aliases);
+			Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(config, aliases);
 
 			Assert.IsTrue(output.IsOk);
 			Assert.That(output.Value, Does.Contain("DynGeneric"));

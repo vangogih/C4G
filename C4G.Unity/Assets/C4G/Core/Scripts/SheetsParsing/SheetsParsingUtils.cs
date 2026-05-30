@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using C4G.Core.Errors;
 using C4G.Core.Utils;
 
 namespace C4G.Core.SheetsParsing
@@ -15,16 +16,16 @@ namespace C4G.Core.SheetsParsing
 
     internal static class SheetsParsingUtils
     {
-        internal static Result<ParsedConfig, string> ParseHorizontal(string sheetName, IList<IList<object>> sheetData, int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
+        internal static Result<ParsedConfig, C4GSheetsParsingError> ParseHorizontal(string sheetName, IList<IList<object>> sheetData, int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
         {
-            string errorPrefix = $"C4G Error. Sheet name '{sheetName}'. ";
+            string errorPrefix = $"Sheet name '{sheetName}'. ";
 
             string validationError = ValidateIndicesHorizontal(sheetName, startRowIndex, startColumnIndex, endRowIndex, endColumnIndex);
             if (!string.IsNullOrEmpty(validationError))
-                return Result<ParsedConfig, string>.FromError(validationError);
+                return Result<ParsedConfig, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError(validationError, null));
 
             if (sheetData.Count <= endRowIndex)
-                return Result<ParsedConfig, string>.FromError($"{errorPrefix}Rows amount '{sheetData.Count}' < expected '{endRowIndex + 1}'");
+                return Result<ParsedConfig, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Rows amount '{sheetData.Count}' < expected '{endRowIndex + 1}'", null));
 
             int propertiesAmount = endRowIndex - startRowIndex + 1;
             ParsedPropertyInfo[] properties = new ParsedPropertyInfo[propertiesAmount];
@@ -43,15 +44,15 @@ namespace C4G.Core.SheetsParsing
                 IList<object> row = sheetData[rowIndex];
 
                 if (row.Count <= endColumnIndex)
-                    return Result<ParsedConfig, string>.FromError($"{errorPrefix}Row '{rowIndex + 1}' length '{row.Count}' < expected '{endColumnIndex + 1}'");
+                    return Result<ParsedConfig, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Row '{rowIndex + 1}' length '{row.Count}' < expected '{endColumnIndex + 1}'", null));
 
                 string propertyName = (string)row[startColumnIndex];
                 if (string.IsNullOrEmpty(propertyName))
-                    return Result<ParsedConfig, string>.FromError($"{errorPrefix}Cell [{rowIndex + 1}][{startColumnIndex + 1}] must contain property name, but has null or empty value instead");
+                    return Result<ParsedConfig, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Cell [{rowIndex + 1}][{startColumnIndex + 1}] must contain property name, but has null or empty value instead", null));
 
                 string propertyType = (string)row[startColumnIndex + 1];
                 if (string.IsNullOrEmpty(propertyType))
-                    return Result<ParsedConfig, string>.FromError($"{errorPrefix}Cell [{rowIndex + 1}][{startColumnIndex + 2}] must contain property type, but has null or empty value instead");
+                    return Result<ParsedConfig, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Cell [{rowIndex + 1}][{startColumnIndex + 2}] must contain property type, but has null or empty value instead", null));
 
                 var parsedPropertyInfo = new ParsedPropertyInfo(propertyName, propertyType);
                 properties[rowIndex - startRowIndex] = parsedPropertyInfo;
@@ -63,12 +64,12 @@ namespace C4G.Core.SheetsParsing
             }
 
             var parsedConfig = new ParsedConfig(sheetName, properties, entities);
-            return Result<ParsedConfig, string>.FromValue(parsedConfig);
+            return Result<ParsedConfig, C4GSheetsParsingError>.FromValue(parsedConfig);
         }
 
         private static string ValidateIndicesHorizontal(string sheetName, int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
         {
-            string errorPrefix = $"C4G Error. Sheet name '{sheetName}'. ";
+            string errorPrefix = $"Sheet name '{sheetName}'. ";
 
             if (startRowIndex < 0)
                 return $"{errorPrefix}Start row index '{startRowIndex}' must be greater than or equal to 0";
@@ -83,24 +84,24 @@ namespace C4G.Core.SheetsParsing
             return string.Empty;
         }
 
-        internal static Result<ParsedConfig, string> ParseVertical(string sheetName, IList<IList<object>> sheetData, int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
+        internal static Result<ParsedConfig, C4GSheetsParsingError> ParseVertical(string sheetName, IList<IList<object>> sheetData, int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
         {
-            string errorPrefix = $"C4G Error. Sheet name '{sheetName}'. ";
+            string errorPrefix = $"Sheet name '{sheetName}'. ";
 
             string validationError = ValidateIndicesVertical(sheetName, startRowIndex, startColumnIndex, endRowIndex, endColumnIndex);
             if (!string.IsNullOrEmpty(validationError))
-                return Result<ParsedConfig, string>.FromError(validationError);
+                return Result<ParsedConfig, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError(validationError, null));
 
             if (sheetData.Count <= endRowIndex)
-                return Result<ParsedConfig, string>.FromError($"{errorPrefix}Rows amount '{sheetData.Count}' < expected '{endRowIndex + 1}'");
+                return Result<ParsedConfig, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Rows amount '{sheetData.Count}' < expected '{endRowIndex + 1}'", null));
 
             IList<object> namesRow = sheetData[startRowIndex];
             if (namesRow.Count <= endColumnIndex)
-                return Result<ParsedConfig, string>.FromError($"{errorPrefix}Row '{startRowIndex + 1}' length '{namesRow.Count}' < expected '{endColumnIndex + 1}'");
+                return Result<ParsedConfig, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Row '{startRowIndex + 1}' length '{namesRow.Count}' < expected '{endColumnIndex + 1}'", null));
 
             IList<object> typesRow = sheetData[startRowIndex + 1];
             if (typesRow.Count <= endColumnIndex)
-                return Result<ParsedConfig, string>.FromError($"{errorPrefix}Row '{startRowIndex + 2}' length '{typesRow.Count}' < expected '{endColumnIndex + 1}'");
+                return Result<ParsedConfig, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Row '{startRowIndex + 2}' length '{typesRow.Count}' < expected '{endColumnIndex + 1}'", null));
 
             int propertiesAmount = endColumnIndex - startColumnIndex + 1;
             ParsedPropertyInfo[] properties = new ParsedPropertyInfo[propertiesAmount];
@@ -109,11 +110,11 @@ namespace C4G.Core.SheetsParsing
             {
                 string propertyName = (string)namesRow[columnIndex];
                 if (string.IsNullOrEmpty(propertyName))
-                    return Result<ParsedConfig, string>.FromError($"{errorPrefix}Cell [{startRowIndex + 1}][{columnIndex + 1}] must contain property name, but has null or empty value instead");
+                    return Result<ParsedConfig, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Cell [{startRowIndex + 1}][{columnIndex + 1}] must contain property name, but has null or empty value instead", null));
 
                 string propertyType = (string)typesRow[columnIndex];
                 if (string.IsNullOrEmpty(propertyType))
-                    return Result<ParsedConfig, string>.FromError($"{errorPrefix}Cell [{startRowIndex + 2}][{columnIndex + 1}] must contain property type, but has null or empty value instead");
+                    return Result<ParsedConfig, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Cell [{startRowIndex + 2}][{columnIndex + 1}] must contain property type, but has null or empty value instead", null));
 
                 var parsedPropertyInfo = new ParsedPropertyInfo(propertyName, propertyType);
                 properties[columnIndex - startColumnIndex] = parsedPropertyInfo;
@@ -128,7 +129,7 @@ namespace C4G.Core.SheetsParsing
                 IList<object> row = sheetData[rowIndex];
 
                 if (row.Count <= endColumnIndex)
-                    return Result<ParsedConfig, string>.FromError($"{errorPrefix}Row '{rowIndex + 1}' length '{row.Count}' < expected '{endColumnIndex + 1}'");
+                    return Result<ParsedConfig, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Row '{rowIndex + 1}' length '{row.Count}' < expected '{endColumnIndex + 1}'", null));
 
                 List<string> entityValues = new List<string>(propertiesAmount);
                 for (int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++)
@@ -140,12 +141,12 @@ namespace C4G.Core.SheetsParsing
             }
 
             var parsedConfig = new ParsedConfig(sheetName, properties, entities);
-            return Result<ParsedConfig, string>.FromValue(parsedConfig);
+            return Result<ParsedConfig, C4GSheetsParsingError>.FromValue(parsedConfig);
         }
 
         private static string ValidateIndicesVertical(string sheetName, int startRowIndex, int startColumnIndex, int endRowIndex, int endColumnIndex)
         {
-            string errorPrefix = $"C4G Error. Sheet name '{sheetName}'. ";
+            string errorPrefix = $"Sheet name '{sheetName}'. ";
 
             if (startRowIndex < 0)
                 return $"{errorPrefix}Start row index '{startRowIndex}' must be greater than or equal to 0";
@@ -160,9 +161,9 @@ namespace C4G.Core.SheetsParsing
             return string.Empty;
         }
 
-        internal static Result<List<ConfigFrame>, string> ParseConfigFrames(string sheetName, IList<IList<object>> sheetData)
+        internal static Result<List<ConfigFrame>, C4GSheetsParsingError> ParseConfigFrames(string sheetName, IList<IList<object>> sheetData)
         {
-            string errorPrefix = $"C4G Error. Sheet name '{sheetName}'. ";
+            string errorPrefix = $"Sheet name '{sheetName}'. ";
 
             var configFrameStarts = new List<ConfigFrame>();
             var configFrames = new List<ConfigFrame>();
@@ -172,7 +173,7 @@ namespace C4G.Core.SheetsParsing
                 IList<object> row = sheetData[rowIndex];
 
                 if (row == null)
-                    return Result<List<ConfigFrame>, string>.FromError($"{errorPrefix}Row '{rowIndex + 1}' is null but shouldn't");
+                    return Result<List<ConfigFrame>, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Row '{rowIndex + 1}' is null but shouldn't", null));
 
                 for (int columnIndex = 0; columnIndex < row.Count; columnIndex++)
                 {
@@ -188,7 +189,7 @@ namespace C4G.Core.SheetsParsing
                         string name = cellTextSplitByPoint[1];
                         bool nameValid = !string.IsNullOrEmpty(name);
                         if (!nameValid)
-                            return Result<List<ConfigFrame>, string>.FromError($"{errorPrefix}Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has invalid name");
+                            return Result<List<ConfigFrame>, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has invalid name", null));
 
                         var configFrame = new ConfigFrame
                         {
@@ -203,7 +204,7 @@ namespace C4G.Core.SheetsParsing
                         string name = cellTextSplitByPoint[1];
                         bool nameValid = !string.IsNullOrEmpty(name);
                         if (!nameValid)
-                            return Result<List<ConfigFrame>, string>.FromError($"{errorPrefix}Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has invalid name");
+                            return Result<List<ConfigFrame>, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has invalid name", null));
 
                         bool found = false;
                         for (int configFrameIndex = configFrameStarts.Count - 1; configFrameIndex >= 0; --configFrameIndex)
@@ -213,7 +214,7 @@ namespace C4G.Core.SheetsParsing
                             if (columnIndex >= configFrame.StartColumnIndex)
                             {
                                 if (!name.Equals(configFrame.Name, StringComparison.Ordinal))
-                                    return Result<List<ConfigFrame>, string>.FromError($"{errorPrefix}Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has end with geometrically matching start cell [{configFrame.StartRowIndex + 1}][{configFrame.StartColumnIndex + 1}] but with different name '{configFrame.Name}'");
+                                    return Result<List<ConfigFrame>, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has end with geometrically matching start cell [{configFrame.StartRowIndex + 1}][{configFrame.StartColumnIndex + 1}] but with different name '{configFrame.Name}'", null));
 
                                 configFrame.EndRowIndex = rowIndex;
                                 configFrame.EndColumnIndex = columnIndex;
@@ -225,15 +226,15 @@ namespace C4G.Core.SheetsParsing
                         }
 
                         if (!found)
-                            return Result<List<ConfigFrame>, string>.FromError($"{errorPrefix}Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has end but there are no matching starts");
+                            return Result<List<ConfigFrame>, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}Cell [{rowIndex + 1}][{columnIndex + 1}] '{cellText}' has end but there are no matching starts", null));
                     }
                 }
             }
 
             if (configFrameStarts.Count > 0)
-                return Result<List<ConfigFrame>, string>.FromError($"{errorPrefix}There are no matching ends for '{configFrameStarts.Count}' starts");
+                return Result<List<ConfigFrame>, C4GSheetsParsingError>.FromError(new C4GSheetsParsingError($"{errorPrefix}There are no matching ends for '{configFrameStarts.Count}' starts", null));
 
-            return Result<List<ConfigFrame>, string>.FromValue(configFrames);
+            return Result<List<ConfigFrame>, C4GSheetsParsingError>.FromValue(configFrames);
         }
     }
 }

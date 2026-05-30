@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using C4G.Core.ConfigsSerialization;
+using C4G.Core.Errors;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 
@@ -11,11 +12,11 @@ namespace C4G.Core.CodeGeneration
     {
         private readonly CodeWriter _codeWriter = new CodeWriter("    ");
 
-        public Result<string, string> GenerateDTOClass(ParsedConfig parsedConfig, IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
+        public Result<string, C4GCodeGenerationError> GenerateDTOClass(ParsedConfig parsedConfig, IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
         {
             bool isValid = ValidateParsedConfig(parsedConfig, out string error);
             if (!isValid)
-                return Result<string, string>.FromError(error);
+                return Result<string, C4GCodeGenerationError>.FromError(new C4GCodeGenerationError(error, null));
 
             _codeWriter.Clear();
 
@@ -57,10 +58,10 @@ namespace C4G.Core.CodeGeneration
 
             string generatedClass = _codeWriter.Build();
 
-            return Result<string, string>.FromValue(generatedClass);
+            return Result<string, C4GCodeGenerationError>.FromValue(generatedClass);
         }
 
-        public Result<string, string> GenerateRootConfigClass(string name, List<ParsedConfig> parsedConfigs)
+        public Result<string, C4GCodeGenerationError> GenerateRootConfigClass(string name, List<ParsedConfig> parsedConfigs)
         {
             _codeWriter.Clear();
 
@@ -77,7 +78,7 @@ namespace C4G.Core.CodeGeneration
 
             string generatedClass = _codeWriter.Build();
 
-            return Result<string, string>.FromValue(generatedClass);
+            return Result<string, C4GCodeGenerationError>.FromValue(generatedClass);
         }
 
         private string ResolveType(string type, IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
@@ -155,11 +156,11 @@ namespace C4G.Core.CodeGeneration
             error = string.Empty;
 
             if (string.IsNullOrEmpty(parsedConfig.Name))
-                error = "Code generation error. ParsedConfig name is null or empty";
+                error = "ParsedConfig name is null or empty";
             else if (parsedConfig.Properties == null)
-                error = "Code generation error. ParsedConfig properties are null";
+                error = "ParsedConfig properties are null";
             else if (parsedConfig.Entities == null)
-                error = "Code generation error. ParsedConfig entities are null";
+                error = "ParsedConfig entities are null";
 
             return string.IsNullOrEmpty(error);
         }

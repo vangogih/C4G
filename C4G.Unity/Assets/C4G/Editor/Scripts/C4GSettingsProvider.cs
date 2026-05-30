@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using C4G.Core.ConfigsSerialization;
+using C4G.Core.Errors;
 using C4G.Core.Settings;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
@@ -21,7 +22,7 @@ namespace C4G.Editor
         [SerializeField] private List<SerializedSheetDefinition> _sheetDefinitions = new List<SerializedSheetDefinition>();
         [SerializeField] private List<SerializedAliasDefinition> _aliasDefinitions = new List<SerializedAliasDefinition>();
 
-        Result<C4GSettings, string> IC4GSettingsProvider.GetSettings()
+        Result<C4GSettings, C4GSettingsError> IC4GSettingsProvider.GetSettings()
         {
             var sheetParsersByName = new Dictionary<string, SheetParserBase>(_sheetDefinitions.Count, StringComparer.Ordinal);
             foreach (SerializedSheetDefinition sheetDefinition in _sheetDefinitions)
@@ -29,13 +30,13 @@ namespace C4G.Editor
                 string sheetName = sheetDefinition.Name;
 
                 if (string.IsNullOrEmpty(sheetName))
-                    return Result<C4GSettings, string>.FromError($"C4G Error. Null or empty sheet name");
+                    return Result<C4GSettings, C4GSettingsError>.FromError(new C4GSettingsError($"Null or empty sheet name", null));
 
                 if (sheetParsersByName.ContainsKey(sheetName))
-                    return Result<C4GSettings, string>.FromError($"C4G Error. Duplicated sheet name '{sheetName}'");
+                    return Result<C4GSettings, C4GSettingsError>.FromError(new C4GSettingsError($"Duplicated sheet name '{sheetName}'", null));
 
                 if (sheetDefinition.Parser == null)
-                    return Result<C4GSettings, string>.FromError($"C4G Error. Parser is null for sheet name '{sheetName}'");
+                    return Result<C4GSettings, C4GSettingsError>.FromError(new C4GSettingsError($"Parser is null for sheet name '{sheetName}'", null));
 
                 sheetParsersByName.Add(sheetName, sheetDefinition.Parser);
             }
@@ -49,10 +50,10 @@ namespace C4G.Editor
                     string aliasName = aliasDefinition.Name;
 
                     if (string.IsNullOrEmpty(aliasName))
-                        return Result<C4GSettings, string>.FromError($"C4G Error. Null or empty alias name");
+                        return Result<C4GSettings, C4GSettingsError>.FromError(new C4GSettingsError($"Null or empty alias name", null));
 
                     if (aliasParsersByName.ContainsKey(aliasName))
-                        return Result<C4GSettings, string>.FromError($"C4G Error. Duplicated alias name '{aliasName}'");
+                        return Result<C4GSettings, C4GSettingsError>.FromError(new C4GSettingsError($"Duplicated alias name '{aliasName}'", null));
 
                     Type parserType = C4GTypeParserSerializationHelper.ParserTypes[parserTypeIndex];
                     IC4GTypeParser parser = (IC4GTypeParser)Activator.CreateInstance(parserType);
@@ -69,7 +70,7 @@ namespace C4G.Editor
                 sheetParsersByName,
                 aliasParsersByName);
 
-            return Result<C4GSettings, string>.FromValue(settings);
+            return Result<C4GSettings, C4GSettingsError>.FromValue(settings);
         }
 
         public string TableId => _tableId;

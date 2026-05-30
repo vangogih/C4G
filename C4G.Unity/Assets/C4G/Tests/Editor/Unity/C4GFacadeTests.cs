@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using C4G.Core;
 using C4G.Core.CodeGeneration;
 using C4G.Core.ConfigsSerialization;
+using C4G.Core.Errors;
 using C4G.Core.GoogleInteraction;
 using C4G.Core.IO;
 using C4G.Core.Settings;
@@ -72,18 +73,18 @@ namespace C4G.Tests.Editor.Unity
 			var cts = new CancellationTokenSource();
 			cts.Cancel();
 
-			Result<string> result = await _facade.RunAsync(cts.Token);
+			Result<C4GErrorBase> result = await _facade.RunAsync(cts.Token);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("cancelled"));
+			Assert.That(result.Error.Message, Does.Contain("cancelled"));
 		}
 
 		[Test]
 		public async Task RunAsync_SettingsProviderFails_ReturnsError()
 		{
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromError("settings broken"));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromError(new C4GSettingsError("settings broken")));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -99,12 +100,12 @@ namespace C4G.Tests.Editor.Unity
 				serializedConfigsFolderFullPath: _tempSerDir,
 				sheetParsersByName: new Dictionary<string, SheetParserBase>(),
 				aliasParsersByName: new Dictionary<string, IC4GTypeParser>());
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Table id"));
+			Assert.That(result.Error.Message, Does.Contain("Table id"));
 		}
 
 		[Test]
@@ -118,12 +119,12 @@ namespace C4G.Tests.Editor.Unity
 				serializedConfigsFolderFullPath: _tempSerDir,
 				sheetParsersByName: new Dictionary<string, SheetParserBase>(),
 				aliasParsersByName: new Dictionary<string, IC4GTypeParser>());
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Client secret"));
+			Assert.That(result.Error.Message, Does.Contain("Client secret"));
 		}
 
 		[Test]
@@ -137,12 +138,12 @@ namespace C4G.Tests.Editor.Unity
 				serializedConfigsFolderFullPath: _tempSerDir,
 				sheetParsersByName: new Dictionary<string, SheetParserBase>(),
 				aliasParsersByName: new Dictionary<string, IC4GTypeParser>());
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Root config name"));
+			Assert.That(result.Error.Message, Does.Contain("Root config name"));
 		}
 
 		[Test]
@@ -156,12 +157,12 @@ namespace C4G.Tests.Editor.Unity
 				serializedConfigsFolderFullPath: _tempSerDir,
 				sheetParsersByName: new Dictionary<string, SheetParserBase>(),
 				aliasParsersByName: new Dictionary<string, IC4GTypeParser>());
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Generated code folder full path"));
+			Assert.That(result.Error.Message, Does.Contain("Generated code folder full path"));
 		}
 
 		[Test]
@@ -175,12 +176,12 @@ namespace C4G.Tests.Editor.Unity
 				serializedConfigsFolderFullPath: _tempSerDir,
 				sheetParsersByName: new Dictionary<string, SheetParserBase>(),
 				aliasParsersByName: new Dictionary<string, IC4GTypeParser>());
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Generated code folder"));
+			Assert.That(result.Error.Message, Does.Contain("Generated code folder"));
 		}
 
 		[Test]
@@ -194,12 +195,12 @@ namespace C4G.Tests.Editor.Unity
 				serializedConfigsFolderFullPath: null,
 				sheetParsersByName: new Dictionary<string, SheetParserBase>(),
 				aliasParsersByName: new Dictionary<string, IC4GTypeParser>());
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Serialized configs folder full path"));
+			Assert.That(result.Error.Message, Does.Contain("Serialized configs folder full path"));
 		}
 
 		[Test]
@@ -213,12 +214,12 @@ namespace C4G.Tests.Editor.Unity
 				serializedConfigsFolderFullPath: "/non/existent/ser/abc123",
 				sheetParsersByName: new Dictionary<string, SheetParserBase>(),
 				aliasParsersByName: new Dictionary<string, IC4GTypeParser>());
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Serialized configs folder"));
+			Assert.That(result.Error.Message, Does.Contain("Serialized configs folder"));
 		}
 
 		[Test]
@@ -232,12 +233,12 @@ namespace C4G.Tests.Editor.Unity
 				serializedConfigsFolderFullPath: _tempSerDir,
 				sheetParsersByName: null,
 				aliasParsersByName: new Dictionary<string, IC4GTypeParser>());
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Sheet parsers"));
+			Assert.That(result.Error.Message, Does.Contain("Sheet parsers"));
 		}
 
 		[Test]
@@ -255,12 +256,12 @@ namespace C4G.Tests.Editor.Unity
 				serializedConfigsFolderFullPath: _tempSerDir,
 				sheetParsersByName: sheetParsers,
 				aliasParsersByName: new Dictionary<string, IC4GTypeParser>());
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Sheet name is null or empty"));
+			Assert.That(result.Error.Message, Does.Contain("Sheet name is null or empty"));
 		}
 
 		[Test]
@@ -278,12 +279,12 @@ namespace C4G.Tests.Editor.Unity
 				serializedConfigsFolderFullPath: _tempSerDir,
 				sheetParsersByName: sheetParsers,
 				aliasParsersByName: new Dictionary<string, IC4GTypeParser>());
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Sheet parser for sheet name"));
+			Assert.That(result.Error.Message, Does.Contain("Sheet parser for sheet name"));
 		}
 
 		[Test]
@@ -297,12 +298,12 @@ namespace C4G.Tests.Editor.Unity
 				serializedConfigsFolderFullPath: _tempSerDir,
 				sheetParsersByName: new Dictionary<string, SheetParserBase>(),
 				aliasParsersByName: null);
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Alias parser by name"));
+			Assert.That(result.Error.Message, Does.Contain("Alias parser by name"));
 		}
 
 		[Test]
@@ -320,12 +321,12 @@ namespace C4G.Tests.Editor.Unity
 				serializedConfigsFolderFullPath: _tempSerDir,
 				sheetParsersByName: new Dictionary<string, SheetParserBase>(),
 				aliasParsersByName: aliasParsers);
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("Alias parser with name"));
+			Assert.That(result.Error.Message, Does.Contain("Alias parser with name"));
 		}
 
 		[Test]
@@ -336,11 +337,11 @@ namespace C4G.Tests.Editor.Unity
 				{ "Sheet1", new VerticalSheetParser() }
 			};
 			var settings = CreateValidSettings(sheetParsers);
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
-				.Returns(Task.FromResult(Result<IList<IList<object>>, string>.FromError("google fail")));
+				.Returns(Task.FromResult(Result<IList<IList<object>>, C4GGoogleInteractionError>.FromError(new C4GGoogleInteractionError("google fail"))));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -354,19 +355,19 @@ namespace C4G.Tests.Editor.Unity
 				{ "Sheet1", new VerticalSheetParser() }
 			};
 			var settings = CreateValidSettings(sheetParsers);
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
 				.Returns(callInfo =>
 				{
 					cts.Cancel();
-					return Task.FromResult(Result<IList<IList<object>>, string>.FromValue(
+					return Task.FromResult(Result<IList<IList<object>>, C4GGoogleInteractionError>.FromValue(
 						(IList<IList<object>>)new List<IList<object>>()));
 				});
 
-			Result<string> result = await _facade.RunAsync(cts.Token);
+			Result<C4GErrorBase> result = await _facade.RunAsync(cts.Token);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("cancelled"));
+			Assert.That(result.Error.Message, Does.Contain("cancelled"));
 		}
 
 		[Test]
@@ -377,13 +378,13 @@ namespace C4G.Tests.Editor.Unity
 				{ "Sheet1", new VerticalSheetParser() }
 			};
 			var settings = CreateValidSettings(sheetParsers);
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
 			var emptySheet = (IList<IList<object>>)new List<IList<object>>();
 			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
-				.Returns(Task.FromResult(Result<IList<IList<object>>, string>.FromValue(emptySheet)));
+				.Returns(Task.FromResult(Result<IList<IList<object>>, C4GGoogleInteractionError>.FromValue(emptySheet)));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -396,7 +397,7 @@ namespace C4G.Tests.Editor.Unity
 				{ "Sheet1", new VerticalSheetParser() }
 			};
 			var settings = CreateValidSettings(sheetParsers);
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
 			IList<IList<object>> sheetData = new List<IList<object>>
 			{
@@ -405,12 +406,12 @@ namespace C4G.Tests.Editor.Unity
 				new List<object> { "1" }
 			};
 			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
-				.Returns(Task.FromResult(Result<IList<IList<object>>, string>.FromValue(sheetData)));
+				.Returns(Task.FromResult(Result<IList<IList<object>>, C4GGoogleInteractionError>.FromValue(sheetData)));
 
 			_io.WriteToFile(Arg.Any<string>(), Arg.Is<string>(f => f.EndsWith(".cs")), Arg.Any<string>())
-				.Returns(Result<string>.FromError("write dto failed"));
+				.Returns(Result<C4GIOError>.FromError(new C4GIOError("write dto failed")));
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -423,7 +424,7 @@ namespace C4G.Tests.Editor.Unity
 				{ "Sheet1", new VerticalSheetParser() }
 			};
 			var settings = CreateValidSettings(sheetParsers);
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
 			IList<IList<object>> sheetData = new List<IList<object>>
 			{
@@ -432,7 +433,7 @@ namespace C4G.Tests.Editor.Unity
 				new List<object> { "1" }
 			};
 			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
-				.Returns(Task.FromResult(Result<IList<IList<object>>, string>.FromValue(sheetData)));
+				.Returns(Task.FromResult(Result<IList<IList<object>>, C4GGoogleInteractionError>.FromValue(sheetData)));
 
 			int writeCallCount = 0;
 			_io.WriteToFile(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
@@ -440,13 +441,13 @@ namespace C4G.Tests.Editor.Unity
 				{
 					writeCallCount++;
 					if (writeCallCount == 1)
-						return Result<string>.Ok;
+						return Result<C4GIOError>.Ok;
 					if (writeCallCount == 2)
-						return Result<string>.FromError("root config write failed");
-					return Result<string>.Ok;
+						return Result<C4GIOError>.FromError(new C4GIOError("root config write failed"));
+					return Result<C4GIOError>.Ok;
 				});
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -459,7 +460,7 @@ namespace C4G.Tests.Editor.Unity
 				{ "Sheet1", new VerticalSheetParser() }
 			};
 			var settings = CreateValidSettings(sheetParsers);
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
 			IList<IList<object>> sheetData = new List<IList<object>>
 			{
@@ -468,7 +469,7 @@ namespace C4G.Tests.Editor.Unity
 				new List<object> { "1" }
 			};
 			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
-				.Returns(Task.FromResult(Result<IList<IList<object>>, string>.FromValue(sheetData)));
+				.Returns(Task.FromResult(Result<IList<IList<object>>, C4GGoogleInteractionError>.FromValue(sheetData)));
 
 			int writeCallCount = 0;
 			_io.WriteToFile(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
@@ -476,11 +477,11 @@ namespace C4G.Tests.Editor.Unity
 				{
 					writeCallCount++;
 					if (writeCallCount <= 2)
-						return Result<string>.Ok;
-					return Result<string>.FromError("serialized config write failed");
+						return Result<C4GIOError>.Ok;
+					return Result<C4GIOError>.FromError(new C4GIOError("serialized config write failed"));
 				});
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
 		}
@@ -493,7 +494,7 @@ namespace C4G.Tests.Editor.Unity
 				{ "Sheet1", new VerticalSheetParser() }
 			};
 			var settings = CreateValidSettings(sheetParsers);
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
 			IList<IList<object>> sheetData = new List<IList<object>>
 			{
@@ -502,12 +503,12 @@ namespace C4G.Tests.Editor.Unity
 				new List<object> { "1" }
 			};
 			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
-				.Returns(Task.FromResult(Result<IList<IList<object>>, string>.FromValue(sheetData)));
+				.Returns(Task.FromResult(Result<IList<IList<object>>, C4GGoogleInteractionError>.FromValue(sheetData)));
 
 			_io.WriteToFile(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
-				.Returns(Result<string>.Ok);
+				.Returns(Result<C4GIOError>.Ok);
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsTrue(result.IsOk);
 		}
@@ -516,12 +517,12 @@ namespace C4G.Tests.Editor.Unity
 		public async Task RunAsync_NoSheets_SucceedsWithEmptyConfig()
 		{
 			var settings = CreateValidSettings();
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
 			_io.WriteToFile(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
-				.Returns(Result<string>.Ok);
+				.Returns(Result<C4GIOError>.Ok);
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsTrue(result.IsOk);
 		}
@@ -539,7 +540,7 @@ namespace C4G.Tests.Editor.Unity
 				{ "Sheet1", new VerticalSheetParser() }
 			};
 			var settings = CreateValidSettings(sheetParsers, aliasParsers);
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
 			IList<IList<object>> sheetData = new List<IList<object>>
 			{
@@ -548,12 +549,12 @@ namespace C4G.Tests.Editor.Unity
 				new List<object> { "1" }
 			};
 			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
-				.Returns(Task.FromResult(Result<IList<IList<object>>, string>.FromValue(sheetData)));
+				.Returns(Task.FromResult(Result<IList<IList<object>>, C4GGoogleInteractionError>.FromValue(sheetData)));
 
 			_io.WriteToFile(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
-				.Returns(Result<string>.Ok);
+				.Returns(Result<C4GIOError>.Ok);
 
-			Result<string> result = await _facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await _facade.RunAsync(CancellationToken.None);
 
 			Assert.IsTrue(result.IsOk);
 		}
@@ -563,7 +564,7 @@ namespace C4G.Tests.Editor.Unity
 		{
 			var mockCodeGen = Substitute.For<ICodeGenerator>();
 			mockCodeGen.GenerateDTOClass(Arg.Any<ParsedConfig>(), Arg.Any<IReadOnlyDictionary<string, IC4GTypeParser>>())
-				.Returns(Result<string, string>.FromError("dto gen failed"));
+				.Returns(Result<string, C4GCodeGenerationError>.FromError(new C4GCodeGenerationError("dto gen failed")));
 			var facade = new C4GFacade(_settingsProvider, _googleInteraction, _io, mockCodeGen, _configsSerializer);
 
 			var sheetParsers = new Dictionary<string, SheetParserBase>
@@ -571,7 +572,7 @@ namespace C4G.Tests.Editor.Unity
 				{ "Sheet1", new VerticalSheetParser() }
 			};
 			var settings = CreateValidSettings(sheetParsers);
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
 			IList<IList<object>> sheetData = new List<IList<object>>
 			{
@@ -580,12 +581,12 @@ namespace C4G.Tests.Editor.Unity
 				new List<object> { "1" }
 			};
 			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
-				.Returns(Task.FromResult(Result<IList<IList<object>>, string>.FromValue(sheetData)));
+				.Returns(Task.FromResult(Result<IList<IList<object>>, C4GGoogleInteractionError>.FromValue(sheetData)));
 
-			Result<string> result = await facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("dto gen failed"));
+			Assert.That(result.Error.Message, Does.Contain("dto gen failed"));
 		}
 
 		[Test]
@@ -593,9 +594,9 @@ namespace C4G.Tests.Editor.Unity
 		{
 			var mockCodeGen = Substitute.For<ICodeGenerator>();
 			mockCodeGen.GenerateDTOClass(Arg.Any<ParsedConfig>(), Arg.Any<IReadOnlyDictionary<string, IC4GTypeParser>>())
-				.Returns(Result<string, string>.FromValue("class Sheet1 {}"));
+				.Returns(Result<string, C4GCodeGenerationError>.FromValue("class Sheet1 {}"));
 			mockCodeGen.GenerateRootConfigClass(Arg.Any<string>(), Arg.Any<List<ParsedConfig>>())
-				.Returns(Result<string, string>.FromError("root gen failed"));
+				.Returns(Result<string, C4GCodeGenerationError>.FromError(new C4GCodeGenerationError("root gen failed")));
 			var facade = new C4GFacade(_settingsProvider, _googleInteraction, _io, mockCodeGen, _configsSerializer);
 
 			var sheetParsers = new Dictionary<string, SheetParserBase>
@@ -603,7 +604,7 @@ namespace C4G.Tests.Editor.Unity
 				{ "Sheet1", new VerticalSheetParser() }
 			};
 			var settings = CreateValidSettings(sheetParsers);
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
 			IList<IList<object>> sheetData = new List<IList<object>>
 			{
@@ -612,15 +613,15 @@ namespace C4G.Tests.Editor.Unity
 				new List<object> { "1" }
 			};
 			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
-				.Returns(Task.FromResult(Result<IList<IList<object>>, string>.FromValue(sheetData)));
+				.Returns(Task.FromResult(Result<IList<IList<object>>, C4GGoogleInteractionError>.FromValue(sheetData)));
 
 			_io.WriteToFile(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
-				.Returns(Result<string>.Ok);
+				.Returns(Result<C4GIOError>.Ok);
 
-			Result<string> result = await facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("root gen failed"));
+			Assert.That(result.Error.Message, Does.Contain("root gen failed"));
 		}
 
 		[Test]
@@ -628,7 +629,7 @@ namespace C4G.Tests.Editor.Unity
 		{
 			var mockSerializer = Substitute.For<IConfigsSerializer>();
 			mockSerializer.SerializeParsedConfigsAsJsonObject(Arg.Any<List<ParsedConfig>>(), Arg.Any<IReadOnlyDictionary<string, IC4GTypeParser>>())
-				.Returns(Result<string, string>.FromError("serialization failed"));
+				.Returns(Result<string, C4GConfigsSerializationError>.FromError(new C4GConfigsSerializationError("serialization failed")));
 			var facade = new C4GFacade(_settingsProvider, _googleInteraction, _io, _codeGenerator, mockSerializer);
 
 			var sheetParsers = new Dictionary<string, SheetParserBase>
@@ -636,7 +637,7 @@ namespace C4G.Tests.Editor.Unity
 				{ "Sheet1", new VerticalSheetParser() }
 			};
 			var settings = CreateValidSettings(sheetParsers);
-			_settingsProvider.GetSettings().Returns(Result<C4GSettings, string>.FromValue(settings));
+			_settingsProvider.GetSettings().Returns(Result<C4GSettings, C4GSettingsError>.FromValue(settings));
 
 			IList<IList<object>> sheetData = new List<IList<object>>
 			{
@@ -645,15 +646,15 @@ namespace C4G.Tests.Editor.Unity
 				new List<object> { "1" }
 			};
 			_googleInteraction.LoadSheetAsync("Sheet1", "table123", "secret", Arg.Any<CancellationToken>())
-				.Returns(Task.FromResult(Result<IList<IList<object>>, string>.FromValue(sheetData)));
+				.Returns(Task.FromResult(Result<IList<IList<object>>, C4GGoogleInteractionError>.FromValue(sheetData)));
 
 			_io.WriteToFile(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
-				.Returns(Result<string>.Ok);
+				.Returns(Result<C4GIOError>.Ok);
 
-			Result<string> result = await facade.RunAsync(CancellationToken.None);
+			Result<C4GErrorBase> result = await facade.RunAsync(CancellationToken.None);
 
 			Assert.IsFalse(result.IsOk);
-			Assert.That(result.Error, Does.Contain("serialization failed"));
+			Assert.That(result.Error.Message, Does.Contain("serialization failed"));
 		}
 	}
 }

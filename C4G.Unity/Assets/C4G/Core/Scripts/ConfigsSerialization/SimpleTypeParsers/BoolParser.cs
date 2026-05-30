@@ -1,4 +1,5 @@
 ﻿using System;
+using C4G.Core.Errors;
 using C4G.Core.Utils;
 
 namespace C4G.Core.ConfigsSerialization.SimpleTypeParsers
@@ -8,11 +9,11 @@ namespace C4G.Core.ConfigsSerialization.SimpleTypeParsers
     {
         Type IC4GTypeParser.ParsingType { get; } = typeof(bool);
 
-        Result<object, string> IC4GTypeParser.Parse(string value)
+        Result<object, C4GConfigsSerializationError> IC4GTypeParser.Parse(string value)
         {
             return bool.TryParse(value, out bool boolValue)
-                ? Result<object, string>.FromValue(boolValue)
-                : Result<object, string>.FromError($"Could not parse '{value}' as bool");
+                ? Result<object, C4GConfigsSerializationError>.FromValue(boolValue)
+                : Result<object, C4GConfigsSerializationError>.FromError(new C4GConfigsSerializationError($"Could not parse '{value}' as bool", null));
         }
     }
 }

@@ -7,6 +7,7 @@ using C4G.Core.Utils;
 using Newtonsoft.Json;
 using Entity = System.Collections.Generic.IReadOnlyDictionary<string, object>;
 using EntitiesList = System.Collections.Generic.IReadOnlyList<System.Collections.Generic.IReadOnlyDictionary<string, object>>;
+using C4G.Core.Errors;
 
 namespace C4G.Core.ConfigsSerialization
 {
@@ -37,54 +38,54 @@ namespace C4G.Core.ConfigsSerialization
             _collectionParsers = collectionParsers;
         }
         
-        public Result<EntitiesList, string> ParseToEntitiesList(
+        public Result<EntitiesList, C4GConfigsSerializationError> ParseToEntitiesList(
             ParsedConfig parsedConfig,
             IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
         {
             bool isValid = ValidateParsedConfig(parsedConfig, out string error);
             if (!isValid)
-                return Result<EntitiesList, string>.FromError(error);
+                return Result<EntitiesList, C4GConfigsSerializationError>.FromError(new C4GConfigsSerializationError(error, null));
 
             var entities = new List<Entity>(parsedConfig.Entities.Count);
 
             foreach (IReadOnlyCollection<string> entityData in parsedConfig.Entities)
             {
-                Result<Entity, string> entityDataDictResult = GetEntityDataDict(entityData, parsedConfig.Properties, parsedConfig.SubTypes, aliasParsersByName);
+                Result<Entity, C4GConfigsSerializationError> entityDataDictResult = GetEntityDataDict(entityData, parsedConfig.Properties, parsedConfig.SubTypes, aliasParsersByName);
                 if (!entityDataDictResult.IsOk)
-                    return Result<EntitiesList, string>.FromError(entityDataDictResult.Error);
+                    return Result<EntitiesList, C4GConfigsSerializationError>.FromError(entityDataDictResult.Error);
                 entities.Add(entityDataDictResult.Value);
             }
 
-            return Result<EntitiesList, string>.FromValue(entities);
+            return Result<EntitiesList, C4GConfigsSerializationError>.FromValue(entities);
         }
 
-        public Result<string, string> SerializeParsedConfigsAsJsonObject(
+        public Result<string, C4GConfigsSerializationError> SerializeParsedConfigsAsJsonObject(
             List<ParsedConfig> parsedConfigs,
             IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
         {
             if (parsedConfigs == null)
-                return Result<string, string>.FromError("Parsed configs cannot be null");
+                return Result<string, C4GConfigsSerializationError>.FromError(new C4GConfigsSerializationError("Parsed configs cannot be null", null));
 
             var result = new Dictionary<string, EntitiesList>(parsedConfigs.Count);
 
             foreach (ParsedConfig parsedConfig in parsedConfigs)
             {
-                Result<EntitiesList, string> sheetSerializationResult = ParseToEntitiesList(parsedConfig, aliasParsersByName);
+                Result<EntitiesList, C4GConfigsSerializationError> sheetSerializationResult = ParseToEntitiesList(parsedConfig, aliasParsersByName);
                 if (!sheetSerializationResult.IsOk)
-                    return Result<string, string>.FromError(sheetSerializationResult.Error);
+                    return Result<string, C4GConfigsSerializationError>.FromError(sheetSerializationResult.Error);
 
                 if (result.ContainsKey(parsedConfig.Name))
-                    return Result<string, string>.FromError($"Duplicate sheet name '{parsedConfig.Name}'");
+                    return Result<string, C4GConfigsSerializationError>.FromError(new C4GConfigsSerializationError($"Duplicate sheet name '{parsedConfig.Name}'", null));
 
                 result.Add(parsedConfig.Name, sheetSerializationResult.Value);
             }
 
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
 
-            return Result<string, string>.FromValue(json);
+            return Result<string, C4GConfigsSerializationError>.FromValue(json);
         }
 
-        private Result<Entity, string> GetEntityDataDict(
+        private Result<Entity, C4GConfigsSerializationError> GetEntityDataDict(
             IReadOnlyCollection<string> entityData,
             IReadOnlyList<ParsedPropertyInfo> properties,
             List<string> subTypes,
@@ -99,9 +100,9 @@ namespace C4G.Core.ConfigsSerialization
                 if (property.SubTypeIndex < 0)
                 {
                     string serializedPropertyValue = entityData.ElementAt(index);
-                    Result<object, string> propertyValueResult = GetPropertyValue(property, serializedPropertyValue, aliasParsersByName);
+                    Result<object, C4GConfigsSerializationError> propertyValueResult = GetPropertyValue(property, serializedPropertyValue, aliasParsersByName);
                     if (!propertyValueResult.IsOk)
-                        return Result<Entity, string>.FromError(propertyValueResult.Error);
+                        return Result<Entity, C4GConfigsSerializationError>.FromError(propertyValueResult.Error);
 
                     entityDataDict[property.Name] = propertyValueResult.Value;
                 }
@@ -117,9 +118,9 @@ namespace C4G.Core.ConfigsSerialization
                     if (property.SubTypeIndex == i)
                     {
                         string serializedPropertyValue = entityData.ElementAt(index);
-                        Result<object, string> propertyValueResult = GetPropertyValue(property, serializedPropertyValue, aliasParsersByName);
+                        Result<object, C4GConfigsSerializationError> propertyValueResult = GetPropertyValue(property, serializedPropertyValue, aliasParsersByName);
                         if (!propertyValueResult.IsOk)
-                            return Result<Entity, string>.FromError(propertyValueResult.Error);
+                            return Result<Entity, C4GConfigsSerializationError>.FromError(propertyValueResult.Error);
 
                         subTypeDataDict[property.Name] = propertyValueResult.Value;
                     }
@@ -128,10 +129,10 @@ namespace C4G.Core.ConfigsSerialization
                 entityDataDict[$"{subType}_Instance"] = subTypeDataDict;
             }
 
-            return Result<Entity, string>.FromValue(entityDataDict);
+            return Result<Entity, C4GConfigsSerializationError>.FromValue(entityDataDict);
         }
 
-        private Result<object, string> GetPropertyValue(
+        private Result<object, C4GConfigsSerializationError> GetPropertyValue(
             ParsedPropertyInfo property,
             string serializedPropertyValue,
             IReadOnlyDictionary<string, IC4GTypeParser> aliasParsersByName)
@@ -148,12 +149,12 @@ namespace C4G.Core.ConfigsSerialization
                 if (match.Success)
                 {
                     if (match.Length != property.Type.Length)
-                        return Result<object, string>.FromError(
-                            $"Collection parser regex pattern '{typePattern}' matches only part '{match.Value}' of property type '{property.Type}', but should only match whole type");
+                        return Result<object, C4GConfigsSerializationError>.FromError(new C4GConfigsSerializationError(
+                            $"Collection parser regex pattern '{typePattern}' matches only part '{match.Value}' of property type '{property.Type}', but should only match whole type", null));
 
                     if (match.Groups.Count != 2)
-                        return Result<object, string>.FromError(
-                            $"Collection parser regex pattern '{typePattern}' captures '{match.Groups.Count}' groups but should capture only 2 - Collection pattern itself and collection type");
+                        return Result<object, C4GConfigsSerializationError>.FromError(new C4GConfigsSerializationError(
+                            $"Collection parser regex pattern '{typePattern}' captures '{match.Groups.Count}' groups but should capture only 2 - Collection pattern itself and collection type", null));
 
                     string elementType = match.Groups[1].Value;
 
@@ -166,16 +167,16 @@ namespace C4G.Core.ConfigsSerialization
                 return parser.Parse(serializedPropertyValue);
             }
 
-            return Result<object, string>.FromError($"Cannot parse property with type '{property.Type}'");
+            return Result<object, C4GConfigsSerializationError>.FromError(new C4GConfigsSerializationError($"Cannot parse property with type '{property.Type}'", null));
         }
 
-        private static Result<object, string> ParseList(string serializedList, string elementType, char separator)
+        private static Result<object, C4GConfigsSerializationError> ParseList(string serializedList, string elementType, char separator)
         {
             if (string.IsNullOrWhiteSpace(serializedList))
-                return Result<object, string>.FromValue(new List<object>());
+                return Result<object, C4GConfigsSerializationError>.FromValue(new List<object>());
 
             if (!SimpleTypeParsers.TryGetValue(elementType, out IC4GTypeParser simpleTypeParser))
-                return Result<object, string>.FromError($"Cannot parse list elements type '{elementType}'");
+                return Result<object, C4GConfigsSerializationError>.FromError(new C4GConfigsSerializationError($"Cannot parse list elements type '{elementType}'", null));
 
             var result = new List<object>();
             string[] serializedElements = serializedList.Split(separator);
@@ -184,22 +185,22 @@ namespace C4G.Core.ConfigsSerialization
             {
                 string trimmedSerializedElement = serializedElement.Trim();
                 if (string.IsNullOrEmpty(trimmedSerializedElement))
-                    return Result<object, string>.FromError(
-                        $"Cannot parse empty element in list '{serializedList}' with type '{elementType}'");
+                    return Result<object, C4GConfigsSerializationError>.FromError(new C4GConfigsSerializationError(
+                        $"Cannot parse empty element in list '{serializedList}' with type '{elementType}'", null));
 
-                Result<object, string> elementParseResult = simpleTypeParser.Parse(trimmedSerializedElement);
+                Result<object, C4GConfigsSerializationError> elementParseResult = simpleTypeParser.Parse(trimmedSerializedElement);
 
                 if (!elementParseResult.IsOk)
                 {
-                    return Result<object, string>.FromError(
+                    return Result<object, C4GConfigsSerializationError>.FromError(new C4GConfigsSerializationError(
                         $"Cannot parse collection element '{serializedElement}' as {elementType}\n" +
-                        $"Inner error: {elementParseResult.Error}");
+                        $"Inner error: {elementParseResult.Error}", null));
                 }
 
                 result.Add(elementParseResult.Value);
             }
 
-            return Result<object, string>.FromValue(result);
+            return Result<object, C4GConfigsSerializationError>.FromValue(result);
         }
 
         private static bool ValidateParsedConfig(ParsedConfig parsedConfig, out string error)
@@ -207,11 +208,11 @@ namespace C4G.Core.ConfigsSerialization
             error = string.Empty;
 
             if (string.IsNullOrEmpty(parsedConfig.Name))
-                error = "Configs serialization error. ParsedConfig name is null or empty";
+                error = "ParsedConfig name is null or empty";
             else if (parsedConfig.Properties == null)
-                error = "Configs serialization error. ParsedConfig properties are null";
+                error = "ParsedConfig properties are null";
             else if (parsedConfig.Entities == null)
-                error = "Configs serialization error. ParsedConfig entities are null";
+                error = "ParsedConfig entities are null";
             else
             {
                 HashSet<string> propertyNamesHashSet = new HashSet<string>();
@@ -219,7 +220,7 @@ namespace C4G.Core.ConfigsSerialization
                 {
                     if (parsedPropertyInfo.SubTypeIndex < 0 && !propertyNamesHashSet.Add(parsedPropertyInfo.Name))
                     {
-                        error = "Configs serialization error. ParsedConfig has duplicated property names";
+                        error = "ParsedConfig has duplicated property names";
                         break;
                     }
                 }
@@ -233,7 +234,7 @@ namespace C4G.Core.ConfigsSerialization
                         {
                             if (parsedPropertyInfo.SubTypeIndex == i && !propertyNamesHashSet.Add(parsedPropertyInfo.Name))
                             {
-                                error = "Configs serialization error. ParsedConfig has duplicated property names";
+                                error = "ParsedConfig has duplicated property names";
                                 break;
                             }
                         }
@@ -246,7 +247,7 @@ namespace C4G.Core.ConfigsSerialization
                     {
                         if (entity.Count != parsedConfig.Properties.Length)
                         {
-                            error = "Configs serialization error. Entity count doesn't match properties count";
+                            error = "Entity count doesn't match properties count";
                             break;
                         }
                     }

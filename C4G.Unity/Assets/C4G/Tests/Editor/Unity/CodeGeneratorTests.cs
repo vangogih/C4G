@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using C4G.Core.CodeGeneration;
 using C4G.Core.ConfigsSerialization;
+using C4G.Core.Errors;
 using C4G.Core.SheetsParsing;
 using C4G.Core.Utils;
 using NSubstitute;
@@ -52,7 +53,7 @@ public partial class ClassName
             var parsedConfig = new ParsedConfig(className, propertyInfos, entities);
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -69,10 +70,10 @@ public partial class ClassName
             var parsedConfigWithNullEntities = new ParsedConfig("ClassName", Array.Empty<ParsedPropertyInfo>(), null);
 
             // Act
-            Result<string, string> nullNameOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithNullName, _parsersByName);
-            Result<string, string> emptyNameOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithEmptyName, _parsersByName);
-            Result<string, string> nullPropsOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithNullProps, _parsersByName);
-            Result<string, string> nullEntitiesOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithNullEntities, _parsersByName);
+            Result<string, C4GCodeGenerationError> nullNameOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithNullName, _parsersByName);
+            Result<string, C4GCodeGenerationError> emptyNameOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithEmptyName, _parsersByName);
+            Result<string, C4GCodeGenerationError> nullPropsOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithNullProps, _parsersByName);
+            Result<string, C4GCodeGenerationError> nullEntitiesOutput = _codeGenerator.GenerateDTOClass(parsedConfigWithNullEntities, _parsersByName);
 
             // Assert
             Assert.IsFalse(nullNameOutput.IsOk);
@@ -103,7 +104,7 @@ public partial class Character
             var parsedConfig = new ParsedConfig("Character", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -131,7 +132,7 @@ public partial class Item
             var parsedConfig = new ParsedConfig("Item", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -160,7 +161,7 @@ public partial class Container
             var parsedConfig = new ParsedConfig("Container", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -188,7 +189,7 @@ public partial class Data
             var parsedConfig = new ParsedConfig("Data", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -217,7 +218,7 @@ public partial class Grid
             var parsedConfig = new ParsedConfig("Grid", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -246,7 +247,7 @@ public partial class Mapping
             var parsedConfig = new ParsedConfig("Mapping", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -274,7 +275,7 @@ public partial class ComplexData
             var parsedConfig = new ParsedConfig("ComplexData", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -312,7 +313,7 @@ public partial class MixedClass
             var parsedConfig = new ParsedConfig("MixedClass", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -338,7 +339,7 @@ public partial class TestClass
             var parsedConfig = new ParsedConfig("TestClass", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -369,7 +370,7 @@ public partial class TestClass
             var parsedConfig = new ParsedConfig("TestClass", propertyInfos, new List<List<string>>());
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -406,7 +407,7 @@ public partial class TestClass
             parsedConfig.SubTypes.Add("Address");
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -448,7 +449,7 @@ public partial class TestClass
             parsedConfig.SubTypes.Add("Phone");
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);
@@ -483,7 +484,7 @@ public partial class TestClass
             parsedConfig.SubTypes.Add("Address");
 
             // Act
-            Result<string, string> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
 
             // Assert
             Assert.IsTrue(output.IsOk);

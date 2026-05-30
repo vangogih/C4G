@@ -1,5 +1,6 @@
 ﻿using System;
 using C4G.Core.ConfigsSerialization;
+using C4G.Core.Errors;
 using C4G.Core.Utils;
 using NUnit.Framework;
 
@@ -24,7 +25,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             IC4GTypeParser parser = _rarityParser;
 
             // Act
-            Result<object, string> result = parser.Parse("Rare");
+            Result<object, C4GConfigsSerializationError> result = parser.Parse("Rare");
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -38,11 +39,11 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             IC4GTypeParser parser = _rarityParser;
 
             // Act
-            Result<object, string> result = parser.Parse("999");
+            Result<object, C4GConfigsSerializationError> result = parser.Parse("999");
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.That(result.Error, Does.Contain("is not defined in enum"));
+            Assert.That(result.Error.Message, Does.Contain("is not defined in enum"));
         }
 
         [Test]
@@ -52,11 +53,11 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             IC4GTypeParser parser = _rarityParser;
 
             // Act
-            Result<object, string> result = parser.Parse("InvalidValue");
+            Result<object, C4GConfigsSerializationError> result = parser.Parse("InvalidValue");
 
             // Assert
             Assert.IsFalse(result.IsOk);
-            Assert.That(result.Error, Does.Contain("Exception during enum parsing"));
+            Assert.That(result.Error.Message, Does.Contain("Exception during enum parsing"));
         }
 
         [Test]
@@ -79,7 +80,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             IC4GTypeParser parser = _flagsParser;
 
             // Act
-            Result<object, string> result = parser.Parse("Flag1, Flag2");
+            Result<object, C4GConfigsSerializationError> result = parser.Parse("Flag1, Flag2");
 
             // Assert
             Assert.IsTrue(result.IsOk);
@@ -93,7 +94,7 @@ namespace C4G.Tests.Editor.Unity.ConfigsSerialization
             IC4GTypeParser parser = _flagsParser;
 
             // Act
-            Result<object, string> result = parser.Parse("8");
+            Result<object, C4GConfigsSerializationError> result = parser.Parse("8");
 
             // Assert
             Assert.IsTrue(result.IsOk);
