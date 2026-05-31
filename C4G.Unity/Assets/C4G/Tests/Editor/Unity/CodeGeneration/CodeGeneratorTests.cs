@@ -8,7 +8,7 @@ using NSubstitute;
 using NUnit.Framework;
 using System;
 
-namespace C4G.Tests.Editor.Unity
+namespace C4G.Tests.Editor.Unity.CodeGeneration
 {
     public class CodeGeneratorTests
     {
@@ -119,7 +119,7 @@ public partial class Character
             string expectedOutput =
 $@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
 
-using TestEnum = C4G.Tests.Editor.Unity.TestEnum;
+using TestEnum = C4G.CodeGeneration.TestNamespace.TestEnum;
 using System.Collections.Generic;
 
 public partial class Item
@@ -127,7 +127,7 @@ public partial class Item
     public TestEnum TestEnum {{ get; set; }}
 }}
 ";
-            IC4GTypeParser parser = CreateParserForType(typeof(TestEnum));
+            IC4GTypeParser parser = CreateParserForType(typeof(C4G.CodeGeneration.TestNamespace.TestEnum));
             _parsersByName.Add("TestEnum", parser);
 
             var propertyInfos = new[] { new ParsedPropertyInfo("TestEnum", "TestEnum") };
@@ -537,7 +537,10 @@ public partial class TestClass
             return parser;
         }
     }
+}
 
+namespace C4G.CodeGeneration.TestNamespace
+{
     public enum TestEnum
     {
         // ReSharper disable UnusedMember.Global
