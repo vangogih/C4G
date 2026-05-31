@@ -8,7 +8,7 @@ using NSubstitute;
 using NUnit.Framework;
 using System;
 
-namespace C4G.Tests.Editor.Unity
+namespace C4G.Tests.Editor.Unity.CodeGeneration
 {
     public class CodeGeneratorTests
     {
@@ -89,11 +89,12 @@ public partial class ClassName
             string expectedOutput =
 $@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
 
+using Health = System.Int32;
 using System.Collections.Generic;
 
 public partial class Character
 {{
-    public System.Int32 Health {{ get; set; }}
+    public Health Health {{ get; set; }}
 }}
 ";
 
@@ -118,14 +119,15 @@ public partial class Character
             string expectedOutput =
 $@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
 
+using TestEnum = C4G.CodeGeneration.TestNamespace.TestEnum;
 using System.Collections.Generic;
 
 public partial class Item
 {{
-    public C4G.Tests.Editor.Unity.TestEnum TestEnum {{ get; set; }}
+    public TestEnum TestEnum {{ get; set; }}
 }}
 ";
-            IC4GTypeParser parser = CreateParserForType(typeof(TestEnum));
+            IC4GTypeParser parser = CreateParserForType(typeof(C4G.CodeGeneration.TestNamespace.TestEnum));
             _parsersByName.Add("TestEnum", parser);
 
             var propertyInfos = new[] { new ParsedPropertyInfo("TestEnum", "TestEnum") };
@@ -140,7 +142,7 @@ public partial class Item
         }
 
         [Test]
-        public void GenerateDTOClass_ListAlias()
+        public void GenerateDTOClass_EnumAliasNameMatchesFullTypeName()
         {
             // Arrange
             string expectedOutput =
@@ -148,9 +150,40 @@ $@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
 
 using System.Collections.Generic;
 
+public partial class Item
+{{
+    public TestEnumWithoutNamespace TestEnumWithoutNamespace {{ get; set; }}
+}}
+";
+            IC4GTypeParser parser = CreateParserForType(typeof(TestEnumWithoutNamespace));
+            _parsersByName.Add("TestEnum", parser);
+
+            var propertyInfos = new[] { new ParsedPropertyInfo("TestEnumWithoutNamespace", "TestEnumWithoutNamespace") };
+            var parsedConfig = new ParsedConfig("Item", propertyInfos, new List<List<string>>());
+
+            // Act
+            Result<string, C4GCodeGenerationError> output = _codeGenerator.GenerateDTOClass(parsedConfig, _parsersByName);
+
+            // Assert
+            Assert.IsTrue(output.IsOk);
+            Assert.IsFalse(output.Value.Contains("using TestEnumWithoutNamespace = TestEnumWithoutNamespace;"),
+                "Self-referential using alias must not be generated");
+            Assert.AreEqual(expectedOutput, output.Value);
+        }
+
+        [Test]
+        public void GenerateDTOClass_ListAlias()
+        {
+            // Arrange
+            string expectedOutput =
+$@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
+
+using IntList = System.Collections.Generic.List<System.Int32>;
+using System.Collections.Generic;
+
 public partial class Container
 {{
-    public System.Collections.Generic.List<System.Int32> Items {{ get; set; }}
+    public IntList Items {{ get; set; }}
 }}
 ";
 
@@ -175,11 +208,12 @@ public partial class Container
             string expectedOutput =
 $@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
 
+using IntArray = System.Int32[];
 using System.Collections.Generic;
 
 public partial class Data
 {{
-    public System.Int32[] Values {{ get; set; }}
+    public IntArray Values {{ get; set; }}
 }}
 ";
             IC4GTypeParser parser = CreateParserForType(typeof(int[]));
@@ -203,11 +237,12 @@ public partial class Data
             string expectedOutput =
 $@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
 
+using IntMatrix = System.Int32[,];
 using System.Collections.Generic;
 
 public partial class Grid
 {{
-    public System.Int32[,] Matrix {{ get; set; }}
+    public IntMatrix Matrix {{ get; set; }}
 }}
 ";
 
@@ -232,11 +267,12 @@ public partial class Grid
             string expectedOutput =
 $@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
 
+using IntToStringMap = System.Collections.Generic.Dictionary<System.Int32, System.String>;
 using System.Collections.Generic;
 
 public partial class Mapping
 {{
-    public System.Collections.Generic.Dictionary<System.Int32, System.String> IntToStringMap {{ get; set; }}
+    public IntToStringMap IntToStringMap {{ get; set; }}
 }}
 ";
 
@@ -261,11 +297,12 @@ public partial class Mapping
             string expectedOutput =
 $@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
 
+using ComplexMap = System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.List<System.Int32>>;
 using System.Collections.Generic;
 
 public partial class ComplexData
 {{
-    public System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.List<System.Int32>> ComplexMap {{ get; set; }}
+    public ComplexMap ComplexMap {{ get; set; }}
 }}
 ";
             IC4GTypeParser parser = CreateParserForType(typeof(Dictionary<string, List<int>>));
@@ -289,13 +326,15 @@ public partial class ComplexData
             string expectedOutput =
 $@"{CodeWriter.GENERATED_CODE_DISCLAIMER}
 
+using Health = System.Int32;
+using IntArray = System.Int32[];
 using System.Collections.Generic;
 
 public partial class MixedClass
 {{
-    public System.Int32 Health {{ get; set; }}
+    public Health Health {{ get; set; }}
     public int Level {{ get; set; }}
-    public System.Int32[] Scores {{ get; set; }}
+    public IntArray Scores {{ get; set; }}
 }}
 ";
 
@@ -498,7 +537,10 @@ public partial class TestClass
             return parser;
         }
     }
+}
 
+namespace C4G.CodeGeneration.TestNamespace
+{
     public enum TestEnum
     {
         // ReSharper disable UnusedMember.Global
@@ -508,4 +550,14 @@ public partial class TestClass
         Legendary
         // ReSharper restore UnusedMember.Global
     }
+}
+
+public enum TestEnumWithoutNamespace
+{
+    // ReSharper disable UnusedMember.Global
+    Common,
+    Rare,
+    Epic,
+    Legendary
+    // ReSharper restore UnusedMember.Global
 }

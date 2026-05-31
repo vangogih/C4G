@@ -14,7 +14,7 @@ namespace C4G.Core.CodeGeneration
 
         private readonly string _indentString;
         private readonly StringBuilder _builder;
-        private readonly HashSet<string> _usings;
+        private readonly List<string> _usings;
 
         private int _indentLevel;
 
@@ -22,13 +22,21 @@ namespace C4G.Core.CodeGeneration
         {
             _indentString = indentString;
             _builder = new StringBuilder();
-            _usings = new HashSet<string>();
+            _usings = new List<string>();
         }
 
         internal CodeWriter AddUsing(string directive)
         {
-            if (!string.IsNullOrWhiteSpace(directive))
-                _usings.Add(directive);
+            if (string.IsNullOrWhiteSpace(directive))
+                return this;
+
+            int count = _usings.Count;
+            for (int i = 0; i < count; i++)
+            {
+                if (string.Equals(directive, _usings[i], StringComparison.Ordinal))
+                    return this;
+            }
+            _usings.Add(directive);
             return this;
         }
 

@@ -10,7 +10,7 @@ using C4G.Core.Utils;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace C4G.Tests.Editor.Unity
+namespace C4G.Tests.Editor.Unity.CodeGeneration
 {
 	[TestFixture]
 	public class CodeGeneratorRootConfigTests
